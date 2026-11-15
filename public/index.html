@@ -771,7 +771,7 @@ function pGuests(){
    <div class="grid g2">${evs.map(e=>{const s=rsvpStats(e.id);const tot=s.invited||1;return `<div class="card stack" style="gap:8px"><div class="split"><h3>${esc(e.name)}</h3><span class="small muted num">${s.invited} invited</span></div>
      <div class="meter" style="display:flex"><i style="width:${s.yes/tot*100}%"></i><i style="width:${s.no/tot*100}%;background:var(--red)"></i></div>
      <div class="row small num"><span class="pill p-yes">${s.yes} coming</span><span class="pill p-pend">${s.pend} no reply</span><span class="pill p-no">${s.no} not coming</span><span>Headcount <b>${s.heads}</b></span></div></div>`}).join("")}</div>
-   <div class="row"><input id="gsearch" data-act="gsearch" placeholder="Search name, phone or group" value="${esc(ui.gsearch)}" style="flex:1 1 220px"><button class="btn pri" data-act="editg">Add guest</button></div>
+   <div class="row"><input id="gsearch" data-act="gsearch" placeholder="Search name, phone or group" value="${esc(ui.gsearch)}" style="flex:1 1 220px"><button class="btn" data-act="exportrsvp">Export RSVP list</button><button class="btn pri" data-act="editg">Add guest</button></div>
    <div class="chips">${filt.map(f=>`<button class="chip ${ui.gfilter===f[0]?"on":""}" data-act="gfilter" data-id="${f[0]}">${f[0].endsWith(":")?"<b>"+esc(f[1])+"</b>":esc(f[1])}</button>`).join("")}</div>
    ${gs.length?`<div class="tbl"><table><thead><tr><th>Guest</th><th>Side</th>${evs.map(e=>`<th>${esc(e.name.split(" ")[0])}</th>`).join("")}<th class="r">+1s</th><th></th></tr></thead><tbody>
    ${gs.map(g=>`<tr><td><b>${esc(g.name)}</b><div class="small muted">${esc(g.phone)}${g.group?" · "+esc(g.group):""}</div>${g.note?`<div class="small">“${esc(g.note)}”</div>`:""}</td><td>${esc(g.side)}</td>
@@ -867,6 +867,15 @@ function vWedding(asGuest){
    <section class="card stack" style="gap:6px"><h2>Gifts</h2><p class="muted">${esc(w.gifts.note)}</p><p><b>${esc(w.gifts.momoNet)}</b>: <span class="num" style="user-select:all">${esc(w.gifts.momoNum)}</span> (${esc(w.gifts.momoName)}) <button class="btn sm" data-act="copy" data-id="${esc(w.gifts.momoNum)}">Copy number</button></p></section>
   </div>`;
 }
+function exportRsvp(){const evs=S.wedding.events,lab={yes:"Coming",no:"Not coming",pending:"No reply"};
+  const q=v=>{v=String(v??"");if(/^[=+\-@]/.test(v))v="'"+v;return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+  const head=["Name","WhatsApp","Group","Side",...evs.flatMap(e=>[e.name+": invited",e.name+": RSVP"]),"Plus-ones allowed","Plus-ones coming","Message"];
+  const rows=S.guests.map(g=>{const inv=(g.events||"").split(",");return [g.name,String(g.phone||"").replace(/[^\d+]/g,"").replace(/^(\+?\d{3,4})(\d{3})(\d+)$/,"$1 $2 $3").replace(/^\+/,"00"),g.group,g.side,...evs.flatMap(e=>inv.includes(e.id)?["Yes",lab[g.rsvp?.[e.id]||"pending"]||g.rsvp?.[e.id]]:["No",""]),+g.plus||0,g.plusUsed!=null&&g.plusUsed!==""?plusComing(g):"",g.note||""]});
+  const tot=evs.map(e=>{const st=rsvpStats(e.id);return st?`${e.name}: ${st.yes} coming, ${st.no} not coming, ${st.pend} no reply, headcount ${st.heads}`:""}).filter(Boolean);
+  const csv="\ufeff"+[head,...rows].map(r=>r.map(q).join(",")).join("\r\n")+(tot.length?"\r\n\r\n"+tot.map(t=>q(t)).join("\r\n"):"");
+  const name=`${S.wedding.p1}-${S.wedding.p2}-rsvp-${new Date().toISOString().slice(0,10)}.csv`.replace(/[^\w.-]+/g,"-");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);
+  toast(`RSVP list downloaded (${S.guests.length} guest${S.guests.length===1?"":"s"})`)}
 function plusComing(g){const pl=+g.plus||0;return g.plusUsed!=null&&g.plusUsed!==""?Math.min(+g.plusUsed,pl):pl}
 function rsvpForm(g){
   const evs=S.wedding.events.filter(e=>(g.events||"").split(",").includes(e.id));
@@ -1188,6 +1197,7 @@ document.addEventListener("click",async e=>{
     case"editmode":e.preventDefault();if(role()!=="admin")break;ui.editMode=!ui.editMode;ui.aboutEdit=false;if(ui.editMode&&["admin",""].includes(location.hash.slice(1)))location.hash="home";rerender();toast(ui.editMode?"Edit mode on":"Edit mode off");break;
     case"edreset":{[...document.querySelectorAll("#app [data-edit], #foot [data-edit]")].forEach(el=>delete CONTENT[el.dataset.edit]);saveContent();applyCats();rerender();toast("Page restored to the original text");break}
     case"edherodel":delete CONTENT["img.hero"];saveContent();rerender();break;
+    case"exportrsvp":exportRsvp();break;
     case"docs":docsModal(id);break;
     case"docview":docView(id,t.dataset.did);break;
     case"docdel":{const i=S.budget.items.find(x=>x.id===id);if(i){i.docs=(i.docs||[]).filter(x=>x.id!==t.dataset.did);save();rerender();docsModal(id);toast("Document removed")}break}
