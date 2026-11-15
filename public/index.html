@@ -794,10 +794,38 @@ function guestModal(id){
    <div class="row" style="justify-content:space-between">${id?`<button type="button" class="btn danger" data-act="delg" data-id="${id}">Remove guest</button>`:"<span></span>"}<div class="row"><button type="button" class="btn" data-act="close">Cancel</button><button class="btn pri">Save</button></div></div></form>`);
 }
 const VSTAT=["Enquired","Booked","Deposit paid","Paid in full"];
+const VCAT2BUDGET={planners:"Other",decor:"Décor",catering:"Food & drinks",cakes:"Food & drinks",photo:"Photo & video",mc:"Entertainment",music:"Entertainment",kente:"Attire",attire:"Attire",beauty:"Beauty",venues:"Venue",rentals:"Rentals",ushers:"Other",transport:"Transport",print:"Stationery"};
+function vendorSummary(){
+  const vs=S.myVendors,tot=vs.reduce((a,v)=>a+(+v.agreed||0),0),paid=vs.reduce((a,v)=>a+(+v.paid||0),0),bal=tot-paid,noQuote=vs.filter(v=>!(+v.agreed)).length;
+  const bt=budgetTotals(),budget=+S.budget.total||0,base=budget||bt.est,left=base-tot,over=base>0&&tot>base;
+  const pct=x=>base>0?Math.round(x/base*100):0,w=x=>base>0?Math.min(100,x/Math.max(base,tot)*100):0;
+  const paidPct=tot?Math.round(paid/tot*100):0;
+  const stat=(label,val,sub,style="")=>`<div class="card stat"><span class="small muted">${label}</span><b class="num" style="white-space:nowrap;font-size:clamp(19px,5.2vw,26px);${style}">${val}</b><span class="small muted num">${sub}</span></div>`;
+  const rows={};
+  vs.forEach(v=>{const c=VCAT2BUDGET[v.cat]||"Other";(rows[c]||(rows[c]={b:0,a:0,p:0})).a+=+v.agreed||0;rows[c].p+=+v.paid||0});
+  S.budget.items.forEach(i=>{(rows[i.cat]||(rows[i.cat]={b:0,a:0,p:0})).b+=+i.est||0});
+  const cats=Object.keys(rows).filter(c=>rows[c].a||rows[c].p).sort((x,y)=>rows[y].a-rows[x].a);
+  return `<div class="stack" style="gap:12px">
+   <div class="grid g4">
+    ${stat("Agreed with vendors",fmt(tot),`${vs.length} vendor${vs.length===1?"":"s"}${noQuote?` · ${noQuote} awaiting quote`:""}`)}
+    ${stat("Paid so far",fmt(paid),`${paidPct}% of agreed`,"color:var(--accent)")}
+    ${stat("Balance to pay",fmt(bal),bal>0?"Still owed to vendors":"All settled",bal>0?"color:var(--gold-ink)":"")}
+    ${stat(budget?"Total budget":"Planned budget",fmt(base),base?(over?`Over by ${fmt(tot-base)}`:`${fmt(left)} not yet committed`):`<a href="#budget">Set your budget</a>`,over?"color:var(--red)":"")}
+   </div>
+   ${base?`<div class="card stack" style="gap:10px">
+     <div class="split"><h3>Vendors against your budget</h3><span class="small num" style="${over?"color:var(--red);font-weight:700":""}">${over?`Over budget by ${fmt(tot-base)}`:`${pct(tot)}% of budget agreed`}</span></div>
+     <div class="meter" style="display:flex;height:14px" role="img" aria-label="Paid ${fmt(paid)}, unpaid ${fmt(Math.max(0,bal))}, budget ${fmt(base)}"><i style="width:${w(paid)}%"></i><i style="width:${w(Math.max(0,bal))}%;background:var(${over?"--red":"--gold"})"></i></div>
+     <div class="row small num" style="gap:14px"><span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--accent);vertical-align:-1px"></i> Paid ${fmt(paid)} (${pct(paid)}%)</span><span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--gold);vertical-align:-1px"></i> Agreed, not paid ${fmt(Math.max(0,bal))}</span>${over?"":`<span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--sunk);border:1px solid var(--line);vertical-align:-1px"></i> Left in budget ${fmt(left)}</span>`}</div>
+     ${!budget?`<span class="small muted">No total budget set, so this compares against the planned items in your <a href="#budget">Budget</a>.</span>`:""}
+     ${cats.length?`<div class="tbl"><table style="white-space:nowrap"><thead><tr><th>Budget area</th><th class="r">Budgeted</th><th class="r">Agreed</th><th class="r">Paid</th><th class="r">Difference</th></tr></thead><tbody>
+      ${cats.map(c=>{const r=rows[c],d=r.b-r.a;return `<tr><td>${esc(c)}</td><td class="r num">${r.b?fmt(r.b):'<span class="muted">Not budgeted</span>'}</td><td class="r num">${fmt(r.a)}</td><td class="r num">${fmt(r.p)}</td><td class="r num" style="${d<0?"color:var(--red);font-weight:700":"color:var(--accent)"}">${d<0?"Over by "+fmt(-d):d>0?"Under by "+fmt(d):"On budget"}</td></tr>`}).join("")}
+     </tbody></table></div>`:""}
+   </div>`:""}
+  </div>`;
+}
 function pMyVendors(){
-  const tot=S.myVendors.reduce((a,v)=>a+(+v.agreed||0),0),paid=S.myVendors.reduce((a,v)=>a+(+v.paid||0),0);
   return `<div class="stack">
-   <div class="row small num"><span>Agreed with vendors <b>${fmt(tot)}</b></span><span>Paid <b>${fmt(paid)}</b></span><span>Balance <b>${fmt(tot-paid)}</b></span></div>
+   ${vendorSummary()}
    ${S.myVendors.length?`<div class="grid g2">${S.myVendors.map(v=>{const st=VSTAT.indexOf(v.status);return `<div class="card stack" style="gap:8px">
      <div class="split"><div><h3>${esc(v.name)}</h3><span class="small muted">${esc(catName(v.cat))}</span></div><span class="pill ${st>=3?"p-yes":st>=1?"p-neutral":"p-pend"}">${esc(v.status)}</span></div>
      <dl class="kv"><dt>Agreed</dt><dd class="num">${v.agreed?fmt(v.agreed):"Waiting for quote"}</dd><dt>Paid</dt><dd class="num">${fmt(v.paid)}</dd><dt>Balance</dt><dd class="num"><b>${fmt((+v.agreed||0)-(+v.paid||0))}</b></dd><dt>Phone</dt><dd><span style="user-select:all">${esc(v.phone)}</span></dd>${v.notes?`<dt>Notes</dt><dd>${esc(v.notes)}</dd>`:""}</dl>
