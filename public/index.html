@@ -625,7 +625,7 @@ function vPlanner(){
 }
 function budgetTotals(){const it=S.budget.items;return{est:it.reduce((a,b)=>a+(+b.est||0),0),actual:it.reduce((a,b)=>a+(+b.actual||0),0),paid:it.reduce((a,b)=>a+(+b.paid||0),0)}}
 function rsvpStats(ev){const gs=S.guests.filter(g=>(g.events||"").split(",").includes(ev));const s={invited:gs.length,yes:0,no:0,pend:0,heads:0};
-  gs.forEach(g=>{const r=g.rsvp?.[ev]||"pending";if(r==="yes"){s.yes++;s.heads+=1+(+g.plus||0)}else if(r==="no")s.no++;else s.pend++});return s}
+  gs.forEach(g=>{const r=g.rsvp?.[ev]||"pending";if(r==="yes"){s.yes++;s.heads+=1+plusComing(g)}else if(r==="no")s.no++;else s.pend++});return s}
 function pOverview(){
   const w=S.wedding,t=budgetTotals(),spent=Math.max(t.actual,t.paid);
   const evCards=w.events.map(e=>{const d=daysTo(e.date),s=rsvpStats(e.id);
@@ -769,7 +769,7 @@ function pGuests(){
    ${gs.length?`<div class="tbl"><table><thead><tr><th>Guest</th><th>Side</th>${evs.map(e=>`<th>${esc(e.name.split(" ")[0])}</th>`).join("")}<th class="r">+1s</th><th></th></tr></thead><tbody>
    ${gs.map(g=>`<tr><td><b>${esc(g.name)}</b><div class="small muted">${esc(g.phone)}${g.group?" · "+esc(g.group):""}</div>${g.note?`<div class="small">“${esc(g.note)}”</div>`:""}</td><td>${esc(g.side)}</td>
      ${evs.map(e=>`<td>${(g.events||"").split(",").includes(e.id)?pill(g.rsvp?.[e.id]||"pending"):'<span class="small muted">Not invited</span>'}</td>`).join("")}
-     <td class="r num">${+g.plus||0}</td><td class="r"><div class="row" style="justify-content:flex-end;gap:6px;flex-wrap:nowrap"><a class="btn sm wa" href="${waLink(g)}" target="_blank" rel="noopener">WhatsApp</a><button class="btn sm ghost" data-act="editg" data-id="${g.id}">Edit</button></div></td></tr>`).join("")}
+     <td class="r num">${g.plusUsed!=null&&g.plusUsed!==""&&+g.plus?`<span title="Plus-ones confirmed by the guest">${plusComing(g)} of ${+g.plus}</span>`:+g.plus||0}</td><td class="r"><div class="row" style="justify-content:flex-end;gap:6px;flex-wrap:nowrap"><a class="btn sm wa" href="${waLink(g)}" target="_blank" rel="noopener">WhatsApp</a><button class="btn sm ghost" data-act="editg" data-id="${g.id}">Edit</button></div></td></tr>`).join("")}
    </tbody></table></div>`:`<div class="empty">No guests match this view.</div>`}
    <p class="small muted">The WhatsApp button opens a ready-written invite to that guest. Guests reply on your wedding page and their answer shows up here.</p></div>`;
 }
@@ -860,12 +860,13 @@ function vWedding(asGuest){
    <section class="card stack" style="gap:6px"><h2>Gifts</h2><p class="muted">${esc(w.gifts.note)}</p><p><b>${esc(w.gifts.momoNet)}</b>: <span class="num" style="user-select:all">${esc(w.gifts.momoNum)}</span> (${esc(w.gifts.momoName)}) <button class="btn sm" data-act="copy" data-id="${esc(w.gifts.momoNum)}">Copy number</button></p></section>
   </div>`;
 }
+function plusComing(g){const pl=+g.plus||0;return g.plusUsed!=null&&g.plusUsed!==""?Math.min(+g.plusUsed,pl):pl}
 function rsvpForm(g){
   const evs=S.wedding.events.filter(e=>(g.events||"").split(",").includes(e.id));
   return `<form class="stack" style="gap:10px;margin-top:6px" data-form="rsvp" data-id="${g.id}"><p>Akwaaba, <b>${esc(g.name)}</b>! Will you join us?</p>
    ${evs.map(e=>`<fieldset class="card" style="padding:12px;margin:0"><legend class="small" style="font-weight:700">${esc(e.name)} · ${esc(longDate(e.date))}</legend><div class="row">
      ${[["yes","Joyfully accept"],["no","Regretfully decline"]].map(([v,l])=>`<label class="row" style="gap:6px"><input type="radio" style="width:18px" name="r_${e.id}" id="rs-${e.id}-${v}" value="${v}" ${g.rsvp?.[e.id]===v?"checked":""} required> ${l}</label>`).join("")}</div></fieldset>`).join("")}
-   ${+g.plus?`<p class="small muted">Your invitation includes ${+g.plus} guest${+g.plus>1?"s":""} with you.</p>`:""}
+   ${+g.plus?`<label class="f">Your invitation includes ${+g.plus} guest${+g.plus>1?"s":""} with you. Will you bring ${+g.plus>1?"them":"your plus-one"}?<select name="plusUsed" id="rs-plus">${Array.from({length:+g.plus+1},(_,n)=>`<option value="${n}" ${String(g.plusUsed??"")===String(n)?"selected":""}>${n===0?"No, just me":+g.plus===1?"Yes, I'm bringing my plus-one":`Yes, ${n} guest${n>1?"s":""} with me`}</option>`).join("")}</select></label>`:""}
    <label class="f">Message for the couple (optional)<textarea id="rs-note" name="note" style="min-height:60px">${esc(g.note)}</textarea></label>
    <div><button class="btn pri">Send my reply</button></div></form>`;
 }
@@ -1247,7 +1248,7 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
       if(id)Object.assign(S.budget.items.find(i=>i.id===id),rec);else S.budget.items.push({id:uid(),...rec});save();closeModal();rerender();toast("Budget saved");break}
     case"guest":{const evs=S.wedding.events.filter(ev=>d["inv_"+ev.id]).map(ev=>ev.id).join(",");const rsvp={};S.wedding.events.forEach(ev=>rsvp[ev.id]=d["rsvp_"+ev.id]||"pending");
       const rec={name:d.name.trim(),phone:d.phone.trim(),group:d.group.trim(),side:d.side,plus:+d.plus||0,events:evs,rsvp};
-      if(id)Object.assign(S.guests.find(g=>g.id===id),rec);else S.guests.push({id:uid(),note:"",...rec});save();closeModal();rerender();toast("Guest saved");break}
+      if(id){const g0=S.guests.find(g=>g.id===id);Object.assign(g0,rec);if(g0.plusUsed!=null&&g0.plusUsed!=="")g0.plusUsed=Math.min(+g0.plusUsed,rec.plus)}else S.guests.push({id:uid(),note:"",...rec});save();closeModal();rerender();toast("Guest saved");break}
     case"myvendor":{const rec={name:d.name.trim(),cat:d.cat,phone:d.phone.trim(),agreed:+d.agreed||0,paid:+d.paid||0,status:d.status,notes:d.notes.trim(),vendorId:f.dataset.vid||""};
       if(id)Object.assign(S.myVendors.find(v=>v.id===id),rec);else S.myVendors.push({id:uid(),...rec});save();closeModal();
       if(!id&&rec.vendorId){toast("Added to My vendors");}else{rerender();toast("Vendor saved")}break}
@@ -1335,7 +1336,7 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
     {const code=d.code.trim().toUpperCase().replace(/\s/g,""),a=accounts().find(x=>x.code===code);
       if(!a||!loadWedding(a.email)){const err=$("#gc-err");err.textContent="We couldn't find a wedding with that code. Check the message from the couple.";err.hidden=false;break}
       ui.guestOf=a.email;rerender();window.scrollTo(0,0);break}
-    case"rsvp":{const g=S.guests.find(x=>x.id===id);if(!g)break;g.rsvp=g.rsvp||{};S.wedding.events.forEach(ev=>{if(d["r_"+ev.id])g.rsvp[ev.id]=d["r_"+ev.id]});g.note=(d.note||"").trim();if(HOSTED&&mode==="guest"){const {error}=await DBX.sb.rpc("guest_rsvp",{wcode:myCode(),guest_id:g.id,answers:g.rsvp,note:g.note});if(error){toast("We couldn't send your reply. Please try again");break}}else save();
+    case"rsvp":{const g=S.guests.find(x=>x.id===id);if(!g)break;g.rsvp=g.rsvp||{};S.wedding.events.forEach(ev=>{if(d["r_"+ev.id])g.rsvp[ev.id]=d["r_"+ev.id]});g.note=(d.note||"").trim();if(d.plusUsed!==undefined)g.plusUsed=Math.min(+d.plusUsed||0,+g.plus||0);if(HOSTED&&mode==="guest"){const {error}=await DBX.sb.rpc("guest_rsvp",{wcode:myCode(),guest_id:g.id,answers:g.rsvp,note:g.note,plus_used:d.plusUsed!==undefined?g.plusUsed:null});if(error){toast("We couldn't send your reply. Please try again");break}}else save();
       const yes=Object.values(g.rsvp).includes("yes");$("#rsvp-out").innerHTML=`<p style="margin-top:8px"><b>Medaase, ${esc(g.name.split(" ")[0])}!</b> ${yes?"We can't wait to celebrate with you.":"We'll miss you, and thank you for letting us know."} Your reply is now in the couple's RSVP tracker.</p>`;break}
   }
 });
