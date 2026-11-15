@@ -32,7 +32,7 @@ Wedding planning website for couples in Ghana: a free public vendor directory, a
    update public.profiles set role = 'admin' where email = 'your@email.com';
    ```
    After that, sign in from the footer's "Site owner" link.
-4. **Website.** In Cloudflare, go to Workers & Pages → Create → Pages → Connect to Git. Choose this repository, leave the build command empty and set the output directory to `public`.
+4. **Website.** In Cloudflare, go to Workers & Pages → Create and connect this repository. `wrangler.jsonc` tells Cloudflare to serve the `public` folder, so each merge to `main` deploys automatically. The default deploy command (`npx wrangler deploy`) works as is.
 
 ## Testing locally
 
