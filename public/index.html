@@ -139,6 +139,7 @@ label.f > *{font-weight:400;color:var(--ink);font-size:15px}
 .p-pend{background:var(--gold-soft);color:var(--gold)}
 .p-neutral{background:var(--sunk);color:var(--muted)}
 .num{font-variant-numeric:tabular-nums}
+.card.link{font:inherit;color:inherit;text-align:left;cursor:pointer;display:block;width:100%}.card.link:hover{border-color:var(--accent)}.card.link .small{display:block}
 .stat b{display:block;font-family:var(--display);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
 .meter{height:8px;border-radius:99px;background:var(--sunk);overflow:hidden}
 .meter i{display:block;height:100%;background:var(--accent)}
@@ -621,7 +622,7 @@ function vHome(){
 
 
 /* ---------- Planner ---------- */
-const PTABS=[["overview","Overview"],["budget","Budget"],["guests","Guests & RSVP"],["todo","To-do"],["myvendors","My vendors"],["team","Team"],["photos","Photos"],["details","Story & details"]];
+const PTABS=[["overview","Overview"],["budget","Budget"],["myvendors","My vendors"],["todo","To-do"],["guests","Guests & RSVP"],["team","Team"],["photos","Photos"],["details","Story & details"]];
 function vPlanner(){
   const w=S.wedding;
   return `<div class="stack">
@@ -634,7 +635,7 @@ function budgetTotals(){const it=S.budget.items;return{est:it.reduce((a,b)=>a+(+
 function rsvpStats(ev){const gs=S.guests.filter(g=>(g.events||"").split(",").includes(ev));const s={invited:gs.length,yes:0,no:0,pend:0,heads:0};
   gs.forEach(g=>{const r=g.rsvp?.[ev]||"pending";if(r==="yes"){s.yes++;s.heads+=1+plusComing(g)}else if(r==="no")s.no++;else s.pend++});return s}
 function pOverview(){
-  const w=S.wedding,t=budgetTotals(),spent=Math.max(t.actual,t.paid);
+  const w=S.wedding,vAgreed=S.myVendors.reduce((a,v)=>a+(+v.agreed||0),0),vPaid=S.myVendors.reduce((a,v)=>a+(+v.paid||0),0);
   const evCards=w.events.map(e=>{const d=daysTo(e.date),s=rsvpStats(e.id);
     return `<div class="card event ${e.id==="eng"?"eng":""} stack" style="gap:8px"><div class="split"><h3>${esc(e.name)}</h3><span class="pill p-neutral num">${d==null?"No date":d>0?d+" days to go":d===0?"Today":"Done"}</span></div>
     <p class="small muted">${esc(longDate(e.date))} · ${esc(e.venue)}</p>
@@ -644,10 +645,10 @@ function pOverview(){
   const done=S.tasks.filter(x=>x.done).length;
   return `<div class="stack">
    <div class="grid g4">
-     <div class="card stat"><span class="small muted">Budget used</span><b>${Math.round(spent/(S.budget.total||1)*100)}%</b><span class="small muted num">${fmt(spent)} of ${fmt(S.budget.total)}</span></div>
-     <div class="card stat"><span class="small muted">Paid so far</span><b>${fmt(t.paid).replace("GH₵ ","₵")}</b><span class="small muted num">Balance due ${fmt(Math.max(t.actual,t.est)-t.paid)}</span></div>
-     <div class="card stat"><span class="small muted">Guests invited</span><b>${S.guests.length}</b><span class="small muted">${S.guests.filter(g=>Object.values(g.rsvp||{}).includes("pending")).length} still to reply</span></div>
-     <div class="card stat"><span class="small muted">Vendors booked</span><b>${booked}</b><span class="small muted">of ${S.myVendors.length} in your list</span></div>
+     <button class="card stat link" data-act="ptab" data-id="budget"><span class="small muted">Budget committed</span><b>${Math.round(vAgreed/(S.budget.total||1)*100)}%</b><span class="small muted num">${fmt(vAgreed)} agreed of ${fmt(S.budget.total)}</span></button>
+     <button class="card stat link" data-act="ptab" data-id="myvendors"><span class="small muted">Paid so far</span><b>${fmt(vPaid).replace("GH₵ ","₵")}</b><span class="small muted num">Balance due ${fmt(Math.max(0,vAgreed-vPaid))}</span></button>
+     <button class="card stat link" data-act="ptab" data-id="guests"><span class="small muted">Guests invited</span><b>${S.guests.length}</b><span class="small muted">${S.guests.filter(g=>Object.values(g.rsvp||{}).includes("pending")).length} still to reply</span></button>
+     <button class="card stat link" data-act="ptab" data-id="myvendors"><span class="small muted">Vendors booked</span><b>${booked}</b><span class="small muted">of ${S.myVendors.length} in your list</span></button>
    </div>
    <div class="grid g2">${evCards}</div>
    <div class="card"><div class="split" style="margin-bottom:6px"><h3>Coming up</h3><button class="btn sm" data-act="ptab" data-id="todo">See full to-do list</button></div>
@@ -696,32 +697,34 @@ function pTeam(){
   </div>`;
 }
 function pBudget(){
-  const t=budgetTotals(),items=S.budget.items,pct=Math.min(100,Math.max(t.actual,t.est)/(S.budget.total||1)*100),over=Math.max(t.actual,t.est)>S.budget.total;
+  const t=budgetTotals(),items=S.budget.items,pct=Math.min(100,t.est/(S.budget.total||1)*100),over=t.est>S.budget.total;
   const cats=[...new Set(items.map(i=>i.cat))];
   return `<div class="stack">
    <div class="card stack" style="gap:10px">
      <div class="split"><h3>Total budget</h3><form class="row" data-form="btotal"><label class="f" style="flex-direction:row;align-items:center;gap:8px">GH₵<input id="btotal" name="total" type="number" min="0" value="${+S.budget.total||0}" style="width:140px" class="num"></label><button class="btn sm">Update</button></form></div>
      <div class="meter"><i class="${over?"over":""}" style="width:${pct}%"></i></div>
-     ${docSummary()}
-     <div class="row small num"><span>Planned <b>${fmt(t.est)}</b></span><span>Agreed costs <b>${fmt(t.actual)}</b></span><span>Paid <b>${fmt(t.paid)}</b></span><span class="${over?"":"muted"}" style="${over?"color:var(--red);font-weight:700":""}">${over?"Over budget by "+fmt(Math.max(t.actual,t.est)-S.budget.total):"Left to allocate "+fmt(S.budget.total-Math.max(t.actual,t.est))}</span></div>
+     <div class="row small num"><span>Planned <b>${fmt(t.est)}</b></span><span class="${over?"":"muted"}" style="${over?"color:var(--red);font-weight:700":""}">${over?"Over budget by "+fmt(t.est-S.budget.total):"Left to plan "+fmt(S.budget.total-t.est)}</span></div>
+     <p class="small muted">Agreed prices, payments, invoices and receipts are kept with each vendor in <button class="btn sm" data-act="ptab" data-id="myvendors">My vendors</button></p>
    </div>
-   <div class="tbl"><table><thead><tr><th>Item</th><th class="r">Planned</th><th class="r">Agreed</th><th class="r">Paid</th><th>Paid by</th><th>Invoices & receipts</th><th></th></tr></thead><tbody>
-   ${cats.map(c=>`<tr><td colspan="7" style="background:var(--sunk);font-weight:700;font-size:13px">${esc(c)}</td></tr>`+items.filter(i=>i.cat===c).map(i=>`<tr><td>${esc(i.item)}</td><td class="r num">${fmt(i.est)}</td><td class="r num">${i.actual?fmt(i.actual):'<span class="muted">–</span>'}</td><td class="r num">${fmt(i.paid)}</td><td>${i.method?`<span class="pill p-neutral">${esc(i.method)}</span>`:""}</td><td>${docCell(i)}</td><td class="r"><button class="btn sm ghost" data-act="editb" data-id="${i.id}">Edit</button></td></tr>`).join("")).join("")}
-   </tbody><tfoot><tr><td>Total</td><td class="r num">${fmt(t.est)}</td><td class="r num">${fmt(t.actual)}</td><td class="r num">${fmt(t.paid)}</td><td colspan="3"></td></tr></tfoot></table></div>
+   <div class="tbl"><table><thead><tr><th>Item</th><th class="r">Planned</th><th></th></tr></thead><tbody>
+   ${cats.map(c=>`<tr><td colspan="3" style="background:var(--sunk);font-weight:700;font-size:13px">${esc(c)}</td></tr>`+items.filter(i=>i.cat===c).map(i=>`<tr><td>${esc(i.item)}</td><td class="r num">${fmt(i.est)}</td><td class="r"><button class="btn sm ghost" data-act="editb" data-id="${i.id}">Edit</button></td></tr>`).join("")).join("")}
+   </tbody><tfoot><tr><td>Total planned</td><td class="r num">${fmt(t.est)}</td><td></td></tr></tfoot></table></div>
    <div><button class="btn pri" data-act="editb">Add budget item</button></div></div>`;
 }
 const DOCT={invoice:"Invoice received",receipt:"Receipt for payment"};
+function docItem(id){return S.myVendors.find(x=>x.id===id)||S.budget.items.find(x=>x.id===id)}
+const docName=i=>i.name||i.item||"",docAgreed=i=>+(i.agreed??i.actual)||0;
 function docCell(i){const d=i.docs||[],inv=d.filter(x=>x.type==="invoice").length,rec=d.filter(x=>x.type==="receipt").length;
   const missing=(+i.paid>0)&&!rec;
-  return `<button class="btn sm" data-act="docs" data-id="${i.id}" aria-label="Invoices and receipts for ${esc(i.item)}">${d.length?`${inv?inv+" invoice"+(inv>1?"s":""):""}${inv&&rec?" · ":""}${rec?rec+" receipt"+(rec>1?"s":""):""}`:"Attach"}</button>${missing?' <span class="pill p-pend" title="Payments recorded but no receipt attached">No receipt</span>':""}`}
-function docSummary(){const it=S.budget.items,all=it.flatMap(i=>i.docs||[]),miss=it.filter(i=>+i.paid>0&&!(i.docs||[]).some(d=>d.type==="receipt")).length;
-  return `<div class="row small"><span>Invoices <b class="num">${all.filter(d=>d.type==="invoice").length}</b></span><span>Receipts <b class="num">${all.filter(d=>d.type==="receipt").length}</b></span>${miss?`<span class="pill p-pend">${miss} paid item${miss>1?"s":""} without a receipt</span>`:all.length?'<span class="pill p-yes">Every payment has a receipt</span>':""}</div>`}
+  return `<button class="btn sm" data-act="docs" data-id="${i.id}" aria-label="Invoices and receipts for ${esc(docName(i))}">${d.length?`${inv?inv+" invoice"+(inv>1?"s":""):""}${inv&&rec?" · ":""}${rec?rec+" receipt"+(rec>1?"s":""):""}`:"Attach"}</button>${missing?' <span class="pill p-pend" title="Payments recorded but no receipt attached">No receipt</span>':""}`}
+function docSummary(){const it=S.myVendors,all=it.flatMap(i=>i.docs||[]),miss=it.filter(i=>+i.paid>0&&!(i.docs||[]).some(d=>d.type==="receipt")).length;
+  return `<div class="row small"><span>Invoices <b class="num">${all.filter(d=>d.type==="invoice").length}</b></span><span>Receipts <b class="num">${all.filter(d=>d.type==="receipt").length}</b></span>${miss?`<span class="pill p-pend">${miss} paid vendor${miss>1?"s":""} without a receipt</span>`:all.length?'<span class="pill p-yes">Every payment has a receipt</span>':""}</div>`}
 function fileSize(n){return n>1048576?(n/1048576).toFixed(1)+" MB":Math.max(1,Math.round(n/1024))+" KB"}
-function docsModal(id){const i=S.budget.items.find(x=>x.id===id);if(!i)return;const d=(i.docs||[]).slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+function docsModal(id){const i=docItem(id);if(!i)return;const d=(i.docs||[]).slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
   const list=type=>{const xs=d.filter(x=>x.type===type);return xs.length?xs.map(x=>`<div class="docrow">${x.mime.startsWith("image/")&&!x.src.startsWith("docs:")?`<img src="${x.src}" alt="">`:`<span class="docicon" aria-hidden="true">${x.mime.startsWith("image/")?"IMG":"PDF"}</span>`}
      <div style="flex:1;min-width:0"><b class="small" style="word-break:break-word">${esc(x.name)}</b><div class="small muted num">${x.date?esc(new Date(x.date+"T00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})):""}${x.amount?" · "+fmt(x.amount):""} · ${fileSize(x.size||0)}${x.by?" · added by "+esc(x.by):""}</div>${x.note?`<div class="small">${esc(x.note)}</div>`:""}</div>
      <div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm" data-act="docview" data-id="${i.id}" data-did="${x.id}">View</button><button class="btn sm ghost danger" data-act="docdel" data-id="${i.id}" data-did="${x.id}" aria-label="Delete">×</button></div></div>`).join(""):`<p class="small muted">None yet.</p>`};
-  modal(`<div class="split"><div><span class="eyebrow">${esc(i.cat)}</span><h2>${esc(i.item)}</h2><p class="small muted num">Agreed ${i.actual?fmt(i.actual):"–"} · Paid ${fmt(i.paid)}</p></div><button class="btn sm ghost" data-act="close" aria-label="Close">×</button></div>
+  modal(`<div class="split"><div><span class="eyebrow">${esc(i.name?catName(i.cat):i.cat)}</span><h2>${esc(docName(i))}</h2><p class="small muted num">Agreed ${docAgreed(i)?fmt(docAgreed(i)):"–"} · Paid ${fmt(i.paid)}</p></div><button class="btn sm ghost" data-act="close" aria-label="Close">×</button></div>
    <div class="stack" style="gap:6px"><h3>Invoices received</h3>${list("invoice")}</div>
    <div class="stack" style="gap:6px"><h3>Receipts for payments</h3>${list("receipt")}</div>
    <form class="card stack" style="gap:8px;padding:12px" data-form="doc" data-id="${i.id}"><b>Attach a document</b>
@@ -738,7 +741,7 @@ let pdfjsP=null;
 function loadPdfJs(){if(window.pdfjsLib&&window.pdfjsWorker)return Promise.resolve(window.pdfjsLib);if(pdfjsP)return pdfjsP;
   const add=src=>new Promise((res,rej)=>{const sc=document.createElement("script");sc.src=src;sc.onload=res;sc.onerror=rej;document.head.appendChild(sc)});
   pdfjsP=add("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js").then(()=>add("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js")).then(()=>window.pdfjsLib).catch(e=>{pdfjsP=null;throw e});return pdfjsP}
-async function docView(itemId,docId){const i=S.budget.items.find(x=>x.id===itemId),x=i&&(i.docs||[]).find(d=>d.id===docId);if(!x)return;
+async function docView(itemId,docId){const i=docItem(itemId),x=i&&(i.docs||[]).find(d=>d.id===docId);if(!x)return;
   modal(`<div class="split"><div><span class="eyebrow">${esc(DOCT[x.type])}</span><h2 style="word-break:break-word">${esc(x.name)}</h2></div><div class="row"><button class="btn sm" data-act="docs" data-id="${itemId}">Back</button><button class="btn sm ghost" data-act="close" aria-label="Close">×</button></div></div>
    <div id="docbox" class="stack" style="gap:8px">${x.mime.startsWith("image/")&&!x.src.startsWith("docs:")?`<img src="${x.src}" alt="${esc(x.name)}" style="width:100%;border-radius:6px">`:'<p class="small muted">Opening…</p>'}</div>`);
   let bytes;
@@ -751,15 +754,14 @@ async function docView(itemId,docId){const i=S.budget.items.find(x=>x.id===itemI
     for(let n=1;n<=Math.min(pdf.numPages,5);n++){const pg=await pdf.getPage(n);const vp=pg.getViewport({scale:1.4});const c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;c.style.cssText="width:100%;border:1px solid var(--line);border-radius:6px;background:#fff";
       box.appendChild(c);await pg.render({canvasContext:c.getContext("2d"),viewport:vp}).promise}
     if(pdf.numPages>5)box.insertAdjacentHTML("beforeend",`<p class="small muted">Showing the first 5 of ${pdf.numPages} pages.</p>`)}
-  catch(e){const box=$("#docbox");if(box)box.innerHTML='<p class="small">This PDF couldn\'t be shown here. It is still saved with this budget item.</p>'}}
+  catch(e){const box=$("#docbox");if(box)box.innerHTML='<p class="small">This PDF couldn\'t be shown here. It is still saved here.</p>'}}
 function budgetModal(id){
   const i=S.budget.items.find(x=>x.id===id)||{cat:"",item:"",est:"",actual:"",paid:"",method:""};
   const cats=["Engagement","Venue","Food & drinks","Attire","Photo & video","Décor","Rentals","Entertainment","Stationery","Beauty","Transport","Gifts & aseda","Other"];
   modal(`<h2>${id?"Edit":"Add"} budget item</h2><form class="stack" style="gap:10px" data-form="budget" data-id="${id||""}">
    <label class="f">Category<select name="cat" id="b-cat">${cats.map(c=>`<option ${c===i.cat?"selected":""}>${c}</option>`).join("")}</select></label>
    <label class="f">Item<input name="item" id="b-item" required value="${esc(i.item)}" placeholder="e.g. Drinks for the engagement"></label>
-   <div class="grid g3"><label class="f">Planned (GH₵)<input name="est" id="b-est" type="number" min="0" value="${esc(i.est)}"></label><label class="f">Agreed price (GH₵)<input name="actual" id="b-act" type="number" min="0" value="${esc(i.actual)}"></label><label class="f">Paid so far (GH₵)<input name="paid" id="b-paid" type="number" min="0" value="${esc(i.paid)}"></label></div>
-   <label class="f">Paid by<select name="method" id="b-meth">${["","MoMo","Cash","Bank transfer","Card"].map(m=>`<option value="${m}" ${m===i.method?"selected":""}>${m||"Not paid yet"}</option>`).join("")}</select></label>
+   <label class="f">Planned amount (GH₵)<input name="est" id="b-est" type="number" min="0" value="${esc(i.est)}"></label>
    <div class="row" style="justify-content:space-between">${id?`<button type="button" class="btn danger" data-act="delb" data-id="${id}">Delete</button>`:"<span></span>"}<div class="row"><button type="button" class="btn" data-act="close">Cancel</button><button class="btn pri">Save</button></div></div></form>`);
 }
 function pGuests(){
@@ -812,6 +814,7 @@ function vendorSummary(){
     ${stat("Balance to pay",fmt(bal),bal>0?"Still owed to vendors":"All settled",bal>0?"color:var(--gold-ink)":"")}
     ${stat(budget?"Total budget":"Planned budget",fmt(base),base?(over?`Over by ${fmt(tot-base)}`:`${fmt(left)} not yet committed`):`<a href="#budget">Set your budget</a>`,over?"color:var(--red)":"")}
    </div>
+   ${S.myVendors.length?docSummary():""}
    ${base?`<div class="card stack" style="gap:10px">
      <div class="split"><h3>Vendors against your budget</h3><span class="small num" style="${over?"color:var(--red);font-weight:700":""}">${over?`Over budget by ${fmt(tot-base)}`:`${pct(tot)}% of budget agreed`}</span></div>
      <div class="meter" style="display:flex;height:14px" role="img" aria-label="Paid ${fmt(paid)}, unpaid ${fmt(Math.max(0,bal))}, budget ${fmt(base)}"><i style="width:${w(paid)}%"></i><i style="width:${w(Math.max(0,bal))}%;background:var(${over?"--red":"--gold"})"></i></div>
@@ -828,8 +831,8 @@ function pMyVendors(){
    ${vendorSummary()}
    ${S.myVendors.length?`<div class="grid g2">${S.myVendors.map(v=>{const st=VSTAT.indexOf(v.status);return `<div class="card stack" style="gap:8px">
      <div class="split"><div><h3>${esc(v.name)}</h3><span class="small muted">${esc(catName(v.cat))}</span></div><span class="pill ${st>=3?"p-yes":st>=1?"p-neutral":"p-pend"}">${esc(v.status)}</span></div>
-     <dl class="kv"><dt>Agreed</dt><dd class="num">${v.agreed?fmt(v.agreed):"Waiting for quote"}</dd><dt>Paid</dt><dd class="num">${fmt(v.paid)}</dd><dt>Balance</dt><dd class="num"><b>${fmt((+v.agreed||0)-(+v.paid||0))}</b></dd><dt>Phone</dt><dd><span style="user-select:all">${esc(v.phone)}</span></dd>${v.notes?`<dt>Notes</dt><dd>${esc(v.notes)}</dd>`:""}</dl>
-     <div class="row"><button class="btn sm" data-act="editv" data-id="${v.id}">Update</button></div></div>`}).join("")}</div>`:`<div class="empty">No vendors yet. Add one below, or pick from the vendor directory.</div>`}
+     <dl class="kv"><dt>Agreed</dt><dd class="num">${v.agreed?fmt(v.agreed):"Waiting for quote"}</dd><dt>Paid</dt><dd class="num">${fmt(v.paid)}</dd><dt>Balance</dt><dd class="num"><b>${fmt((+v.agreed||0)-(+v.paid||0))}</b></dd>${v.method?`<dt>Paid by</dt><dd>${esc(v.method)}</dd>`:""}<dt>Phone</dt><dd><span style="user-select:all">${esc(v.phone)}</span></dd>${v.notes?`<dt>Notes</dt><dd>${esc(v.notes)}</dd>`:""}</dl>
+     <div class="row"><button class="btn sm" data-act="editv" data-id="${v.id}">Update</button>${docCell(v)}</div></div>`}).join("")}</div>`:`<div class="empty">No vendors yet. Add one below, or pick from the vendor directory.</div>`}
    <div class="row"><button class="btn pri" data-act="editv">Add a vendor</button><a class="btn" href="#vendors">Browse the directory</a></div></div>`;
 }
 function myVendorModal(id,fromDir){
@@ -841,6 +844,8 @@ function myVendorModal(id,fromDir){
    <label class="f">Phone<input name="phone" id="mv-phone" value="${esc(v.phone)}"></label></div>
    <div class="grid g3"><label class="f">Agreed fee (GH₵)<input name="agreed" id="mv-agreed" type="number" min="0" value="${esc(v.agreed)}"></label><label class="f">Paid (GH₵)<input name="paid" id="mv-paid" type="number" min="0" value="${esc(v.paid)}"></label>
    <label class="f">Status<select name="status" id="mv-status">${VSTAT.map(s=>`<option ${s===v.status?"selected":""}>${s}</option>`).join("")}</select></label></div>
+   <label class="f">Paid by<select name="method" id="mv-meth">${["","MoMo","Cash","Bank transfer","Card"].map(m=>`<option value="${m}" ${m===(v.method||"")?"selected":""}>${m||"Not paid yet"}</option>`).join("")}</select></label>
+   ${id?`<div class="split card" style="padding:10px 12px"><span class="small"><b>Invoices & receipts</b><br><span class="muted">${(v.docs||[]).length} attached</span></span><button type="button" class="btn sm" data-act="docs" data-id="${id}">${(v.docs||[]).length?"View or attach":"Attach"}</button></div>`:`<p class="small muted">Save the vendor first, then use Update to attach invoices and receipts.</p>`}
    <label class="f">Notes<textarea name="notes" id="mv-notes" placeholder="Deposit terms, contact person, delivery time">${esc(v.notes)}</textarea></label>
    <div class="row" style="justify-content:space-between">${id?`<button type="button" class="btn danger" data-act="delv" data-id="${id}">Remove</button>`:"<span></span>"}<div class="row"><button type="button" class="btn" data-act="close">Cancel</button><button class="btn pri">Save</button></div></div></form>`);
 }
@@ -1228,7 +1233,7 @@ document.addEventListener("click",async e=>{
     case"exportrsvp":exportRsvp();break;
     case"docs":docsModal(id);break;
     case"docview":docView(id,t.dataset.did);break;
-    case"docdel":{const i=S.budget.items.find(x=>x.id===id);if(i){i.docs=(i.docs||[]).filter(x=>x.id!==t.dataset.did);save();rerender();docsModal(id);toast("Document removed")}break}
+    case"docdel":{const i=docItem(id);if(i){i.docs=(i.docs||[]).filter(x=>x.id!==t.dataset.did);save();rerender();docsModal(id);toast("Document removed")}break}
     case"vdetail":vendorModal(id);if(!allVendors().find(v=>v.id===id)?.sample)bumpStat(id,"views");break;
     case"wastat":bumpStat(id,"wa");return;
     case"choosePlan":planModal(id);break;
@@ -1289,12 +1294,12 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
   switch(k){
     case"task":if(d.t.trim()){S.tasks.push({id:uid(),t:d.t.trim(),phase:id||"6m",due:d.due||"",who:d.who||"",done:false});save();rerender();toast("To-do added")}break;
     case"btotal":S.budget.total=+d.total||0;save();rerender();toast("Budget updated");break;
-    case"budget":{const rec={cat:d.cat,item:d.item.trim(),est:+d.est||0,actual:+d.actual||0,paid:+d.paid||0,method:d.method};
+    case"budget":{const rec={cat:d.cat,item:d.item.trim(),est:+d.est||0};
       if(id)Object.assign(S.budget.items.find(i=>i.id===id),rec);else S.budget.items.push({id:uid(),...rec});save();closeModal();rerender();toast("Budget saved");break}
     case"guest":{const evs=S.wedding.events.filter(ev=>d["inv_"+ev.id]).map(ev=>ev.id).join(",");const rsvp={};S.wedding.events.forEach(ev=>rsvp[ev.id]=d["rsvp_"+ev.id]||"pending");
       const rec={name:d.name.trim(),phone:d.phone.trim(),group:d.group.trim(),side:d.side,plus:+d.plus||0,events:evs,rsvp};
       if(id){const g0=S.guests.find(g=>g.id===id);Object.assign(g0,rec);if(g0.plusUsed!=null&&g0.plusUsed!=="")g0.plusUsed=Math.min(+g0.plusUsed,rec.plus)}else S.guests.push({id:uid(),note:"",...rec});save();closeModal();rerender();toast("Guest saved");break}
-    case"myvendor":{const rec={name:d.name.trim(),cat:d.cat,phone:d.phone.trim(),agreed:+d.agreed||0,paid:+d.paid||0,status:d.status,notes:d.notes.trim(),vendorId:f.dataset.vid||""};
+    case"myvendor":{const rec={name:d.name.trim(),cat:d.cat,phone:d.phone.trim(),agreed:+d.agreed||0,paid:+d.paid||0,method:d.method||"",status:d.status,notes:d.notes.trim(),vendorId:f.dataset.vid||""};
       if(id)Object.assign(S.myVendors.find(v=>v.id===id),rec);else S.myVendors.push({id:uid(),...rec});save();closeModal();
       if(!id&&rec.vendorId){toast("Added to My vendors");}else{rerender();toast("Vendor saved")}break}
     case"details":collectDetails();save();rerender();break;
@@ -1365,7 +1370,7 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
     case"taskgroup":{S.taskGroups=S.taskGroups||[];S.taskGroups.push({id:"g"+uid(),label:d.label.trim()});save();rerender();toast("Group created");break}
     case"invite":{if(!isCoupleLead())break;S.team.push({id:uid(),name:d.name.trim(),role:d.role,phone:d.phone.trim(),email:"",status:"invited",code:inviteCode()});save();rerender();toast("Invite created. Send them the code");break}
     case"about":{if(role()!=="admin")break;const A=collectAbout();A.team=A.team.filter(t=>t.name.trim()||t.role.trim());setAbout(A);ui.aboutEdit=false;rerender();window.scrollTo(0,0);toast("About us page updated");break}
-    case"doc":{const i=S.budget.items.find(x=>x.id===id);const file=$("#dc-file").files[0];if(!i||!file)break;
+    case"doc":{const i=docItem(id);const file=$("#dc-file").files[0];if(!i||!file)break;
       const isPdf=file.type==="application/pdf"||/\.pdf$/i.test(file.name);if(!isPdf&&!file.type.startsWith("image/")){toast("Attach a photo or a PDF");break}
       if(isPdf&&file.size>1.5*1048576){toast("That PDF is over 1.5 MB. Try a smaller file or a photo of it");break}
       (async()=>{let src,mime,size;try{if(isPdf){src=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)});mime="application/pdf";size=file.size}
