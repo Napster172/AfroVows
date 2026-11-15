@@ -324,6 +324,11 @@ const CATDEF=Object.fromEntries(CATS.map(c=>[c[0],c[1]]));
 function applyCats(){CATS.forEach(c=>c[1]=TV("cat."+c[0],CATDEF[c[0]]))}
 applyCats();
 const catName=id=>(CATS.find(c=>c[0]===id)||[,"Other"])[1];
+const BEXTRA={engagement:"Engagement items",gifts:"Gifts & aseda",other:"Other"};
+const BLEGACY={"Engagement":"engagement","Venue":"venues","Food & drinks":"catering","Attire":"attire","Photo & video":"photo","Décor":"decor","Rentals":"rentals","Entertainment":"music","Stationery":"print","Beauty":"beauty","Transport":"transport","Gifts & aseda":"gifts","Other":"other"};
+const BORDER=()=>["engagement",...CATS.map(c=>c[0]),"gifts","other"];
+const bcat=i=>BLEGACY[i.cat]||i.cat||"other";
+const bcatName=id=>BEXTRA[id]||(CATS.some(c=>c[0]===id)?catName(id):id);
 const V=(id,name,cat,city,region,blurb,pk,phone,events)=>({id,name,cat,city,region,blurb,packages:pk.map(([n,p,u])=>({name:n,price:p,unit:u||""})),phone,events,sample:true});
 const SAMPLE_VENDORS=[
  V("v1","Adwoa & Co. Events","planners","Accra","Greater Accra","Full planning for engagement and white wedding, including family liaison for the engagement list.",[["Day-of coordination",8000],["Partial planning",18000],["Full planning (both ceremonies)",35000]],"+233 00 000 0101","both"),
@@ -669,7 +674,7 @@ function pTodo(){
   const vis=x=>f==="all"||(f==="none"?!x.who:x.who===f);
   const groups=PHASES.map(([id,label])=>({id,label,builtin:true})).concat((S.taskGroups||[]).map(g=>({id:g.id,label:g.label,builtin:false})));
   const count=r=>S.tasks.filter(x=>!x.done&&(r==="none"?!x.who:x.who===r)).length;
-  return `<div class="stack">
+  return `<div class="stack">${todoDash(groups)}
    <p class="muted small">${anchor?`Counting back from your first ceremony on <b>${esc(longDate(anchor))}</b>. Set a due date and who's in charge of each item.`:`Add your ceremony dates in Story & details to see target dates for each stage.`}</p>
    <div class="chips"><button class="chip ${f==="all"?"on":""}" data-act="twho" data-id="all">Everything</button>${["Bride","Groom"].map(r=>`<button class="chip ${f===r?"on":""}" data-act="twho" data-id="${r}">${esc(partnerName(r))}'s to-dos <span class="num">${count(r)}</span></button>`).join("")}<button class="chip ${f==="none"?"on":""}" data-act="twho" data-id="none">Not assigned <span class="num">${count("none")}</span></button></div>
    ${groups.map(g=>{const all=S.tasks.filter(x=>x.phase===g.id),ts=all.filter(vis).sort(byDue),dn=all.filter(x=>x.done).length,late=all.filter(x=>!x.done&&x.due&&daysTo(x.due)<0).length;
@@ -681,6 +686,24 @@ function pTodo(){
        <form class="row" data-form="task" data-id="${g.id}" style="margin-top:6px"><input id="nt-${g.id}" name="t" placeholder="Add a to-do" required style="flex:1 1 200px"><select name="who" id="nw-${g.id}" aria-label="Who's in charge" style="width:auto"><option value="">Not assigned</option>${["Bride","Groom"].map(r=>`<option value="${r}" ${f===r?"selected":""}>${esc(partnerName(r))}</option>`).join("")}</select><input type="date" name="due" id="nd-${g.id}" aria-label="Due date" style="width:auto"><button class="btn sm">Add</button></form></section>`}).join("")}
    <form class="card row" data-form="taskgroup" style="border-style:dashed"><b style="flex:1 1 100%">Create your own group</b><input id="ng-label" name="label" required placeholder="e.g. Engagement list items, Honeymoon, Church requirements" style="flex:1 1 240px"><button class="btn pri sm">Create group</button></form>
   </div>`;
+}
+function todoDash(groups){
+  const T=S.tasks,n=T.length,dn=T.filter(x=>x.done).length,open=T.filter(x=>!x.done);
+  const late=open.filter(x=>x.due&&daysTo(x.due)<0).length,soon=open.filter(x=>x.due&&daysTo(x.due)>=0&&daysTo(x.due)<=14).length,nodate=open.filter(x=>!x.due).length;
+  const pc=n?Math.round(dn/n*100):0;
+  const stat=(label,val,sub,style="")=>`<div class="card stat"><span class="small muted">${label}</span><b class="num" style="${style}">${val}</b><span class="small muted num">${sub}</span></div>`;
+  const bar=(label,a,b)=>`<div class="stack" style="gap:4px"><div class="split small"><span>${esc(label)}</span><span class="num muted">${a} of ${b} done</span></div><div class="meter"><i style="width:${b?a/b*100:0}%"></i></div></div>`;
+  const ppl=[["Bride",partnerName("Bride")],["Groom",partnerName("Groom")],["none","Not assigned"]].map(([r,l])=>{const xs=T.filter(x=>r==="none"?!x.who:x.who===r);return [l,xs.filter(x=>x.done).length,xs.length]}).filter(x=>x[2]);
+  return `<div class="grid g4">
+    ${stat("Done",pc+"%",`${dn} of ${n} to-dos`,"color:var(--accent)")}
+    ${stat("Overdue",late,late?"Past their due date":"Nothing overdue",late?"color:var(--red)":"")}
+    ${stat("Due in 2 weeks",soon,"Coming up soon",soon?"color:var(--gold-ink)":"")}
+    ${stat("Still to do",open.length,nodate?`${nodate} without a due date`:"All have due dates")}
+   </div>
+   <div class="grid g2">
+    <div class="card stack" style="gap:10px"><h3>Progress by stage</h3>${groups.map(g=>{const xs=T.filter(x=>x.phase===g.id);return xs.length?bar(g.label,xs.filter(x=>x.done).length,xs.length):""}).join("")||'<p class="small muted">No to-dos yet.</p>'}</div>
+    <div class="card stack" style="gap:10px"><h3>Progress by person</h3>${ppl.map(x=>bar(...x)).join("")||'<p class="small muted">No to-dos yet.</p>'}</div>
+   </div>`;
 }
 function pTeam(){
   const lead=isCoupleLead();
@@ -699,7 +722,7 @@ function pTeam(){
 }
 function pBudget(){
   const t=budgetTotals(),items=S.budget.items,pct=Math.min(100,t.est/(S.budget.total||1)*100),over=t.est>S.budget.total;
-  const cats=[...new Set(items.map(i=>i.cat))];
+  const ord=BORDER(),cats=[...new Set(items.map(bcat))].sort((a,b)=>(ord.indexOf(a)+1||99)-(ord.indexOf(b)+1||99));
   return `<div class="stack">
    <div class="card stack" style="gap:10px">
      <div class="split"><h3>Total budget</h3><form class="row" data-form="btotal"><label class="f" style="flex-direction:row;align-items:center;gap:8px">GH₵<input id="btotal" name="total" type="number" min="0" value="${+S.budget.total||0}" style="width:140px" class="num"></label><button class="btn sm">Update</button></form></div>
@@ -708,7 +731,7 @@ function pBudget(){
      <p class="small muted">Agreed prices, payments, invoices and receipts are kept with each vendor in <button class="btn sm" data-act="ptab" data-id="myvendors">My vendors</button></p>
    </div>
    <div class="tbl"><table><thead><tr><th>Item</th><th class="r">Planned</th><th></th></tr></thead><tbody>
-   ${cats.map(c=>`<tr><td colspan="3" style="background:var(--sunk);font-weight:700;font-size:13px">${esc(c)}</td></tr>`+items.filter(i=>i.cat===c).map(i=>`<tr><td>${esc(i.item)}</td><td class="r num">${fmt(i.est)}</td><td class="r"><button class="btn sm ghost" data-act="editb" data-id="${i.id}">Edit</button></td></tr>`).join("")).join("")}
+   ${cats.map(c=>`<tr><td colspan="3" style="background:var(--sunk);font-weight:700;font-size:13px">${esc(bcatName(c))}</td></tr>`+items.filter(i=>bcat(i)===c).map(i=>`<tr><td>${esc(i.item)}</td><td class="r num">${fmt(i.est)}</td><td class="r"><button class="btn sm ghost" data-act="editb" data-id="${i.id}">Edit</button></td></tr>`).join("")).join("")}
    </tbody><tfoot><tr><td>Total planned</td><td class="r num">${fmt(t.est)}</td><td></td></tr></tfoot></table></div>
    <div><button class="btn pri" data-act="editb">Add budget item</button></div></div>`;
 }
@@ -725,7 +748,7 @@ function docsModal(id){const i=docItem(id);if(!i)return;const d=(i.docs||[]).sli
   const list=type=>{const xs=d.filter(x=>x.type===type);return xs.length?xs.map(x=>`<div class="docrow">${x.mime.startsWith("image/")&&!x.src.startsWith("docs:")?`<img src="${x.src}" alt="">`:`<span class="docicon" aria-hidden="true">${x.mime.startsWith("image/")?"IMG":"PDF"}</span>`}
      <div style="flex:1;min-width:0"><b class="small" style="word-break:break-word">${esc(x.name)}</b><div class="small muted num">${x.date?esc(new Date(x.date+"T00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})):""}${x.amount?" · "+fmt(x.amount):""} · ${fileSize(x.size||0)}${x.by?" · added by "+esc(x.by):""}</div>${x.note?`<div class="small">${esc(x.note)}</div>`:""}</div>
      <div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm" data-act="docview" data-id="${i.id}" data-did="${x.id}">View</button><button class="btn sm ghost danger" data-act="docdel" data-id="${i.id}" data-did="${x.id}" aria-label="Delete">×</button></div></div>`).join(""):`<p class="small muted">None yet.</p>`};
-  modal(`<div class="split"><div><span class="eyebrow">${esc(i.name?catName(i.cat):i.cat)}</span><h2>${esc(docName(i))}</h2><p class="small muted num">Agreed ${docAgreed(i)?fmt(docAgreed(i)):"–"} · Paid ${fmt(i.paid)}</p></div><button class="btn sm ghost" data-act="close" aria-label="Close">×</button></div>
+  modal(`<div class="split"><div><span class="eyebrow">${esc(i.name?catName(i.cat):bcatName(bcat(i)))}</span><h2>${esc(docName(i))}</h2><p class="small muted num">Agreed ${docAgreed(i)?fmt(docAgreed(i)):"–"} · Paid ${fmt(i.paid)}</p></div><button class="btn sm ghost" data-act="close" aria-label="Close">×</button></div>
    <div class="stack" style="gap:6px"><h3>Invoices received</h3>${list("invoice")}</div>
    <div class="stack" style="gap:6px"><h3>Receipts for payments</h3>${list("receipt")}</div>
    <form class="card stack" style="gap:8px;padding:12px" data-form="doc" data-id="${i.id}"><b>Attach a document</b>
@@ -758,9 +781,9 @@ async function docView(itemId,docId){const i=docItem(itemId),x=i&&(i.docs||[]).f
   catch(e){const box=$("#docbox");if(box)box.innerHTML='<p class="small">This PDF couldn\'t be shown here. It is still saved here.</p>'}}
 function budgetModal(id){
   const i=S.budget.items.find(x=>x.id===id)||{cat:"",item:"",est:"",actual:"",paid:"",method:""};
-  const cats=["Engagement","Venue","Food & drinks","Attire","Photo & video","Décor","Rentals","Entertainment","Stationery","Beauty","Transport","Gifts & aseda","Other"];
+  const cur=id?bcat(i):"";
   modal(`<h2>${id?"Edit":"Add"} budget item</h2><form class="stack" style="gap:10px" data-form="budget" data-id="${id||""}">
-   <label class="f">Category<select name="cat" id="b-cat">${cats.map(c=>`<option ${c===i.cat?"selected":""}>${c}</option>`).join("")}</select></label>
+   <label class="f">Category<select name="cat" id="b-cat">${BORDER().map(c=>`<option value="${c}" ${c===cur?"selected":""}>${esc(bcatName(c))}</option>`).join("")}</select></label>
    <label class="f">Item<input name="item" id="b-item" required value="${esc(i.item)}" placeholder="e.g. Drinks for the engagement"></label>
    <label class="f">Planned amount (GH₵)<input name="est" id="b-est" type="number" min="0" value="${esc(i.est)}"></label>
    <div class="row" style="justify-content:space-between">${id?`<button type="button" class="btn danger" data-act="delb" data-id="${id}">Delete</button>`:"<span></span>"}<div class="row"><button type="button" class="btn" data-act="close">Cancel</button><button class="btn pri">Save</button></div></div></form>`);
@@ -797,7 +820,6 @@ function guestModal(id){
    <div class="row" style="justify-content:space-between">${id?`<button type="button" class="btn danger" data-act="delg" data-id="${id}">Remove guest</button>`:"<span></span>"}<div class="row"><button type="button" class="btn" data-act="close">Cancel</button><button class="btn pri">Save</button></div></div></form>`);
 }
 const VSTAT=["Enquired","Booked","Deposit paid","Paid in full"];
-const VCAT2BUDGET={planners:"Other",decor:"Décor",catering:"Food & drinks",cakes:"Food & drinks",photo:"Photo & video",mc:"Entertainment",music:"Entertainment",kente:"Attire",attire:"Attire",beauty:"Beauty",venues:"Venue",rentals:"Rentals",ushers:"Other",transport:"Transport",print:"Stationery"};
 function vendorSummary(){
   const vs=S.myVendors,tot=vs.reduce((a,v)=>a+(+v.agreed||0),0),paid=vs.reduce((a,v)=>a+(+v.paid||0),0),bal=tot-paid,noQuote=vs.filter(v=>!(+v.agreed)).length;
   const bt=budgetTotals(),budget=+S.budget.total||0,base=budget||bt.est,left=base-tot,over=base>0&&tot>base;
@@ -805,8 +827,8 @@ function vendorSummary(){
   const paidPct=tot?Math.round(paid/tot*100):0;
   const stat=(label,val,sub,style="")=>`<div class="card stat"><span class="small muted">${label}</span><b class="num" style="white-space:nowrap;font-size:clamp(19px,5.2vw,26px);${style}">${val}</b><span class="small muted num">${sub}</span></div>`;
   const rows={};
-  vs.forEach(v=>{const c=VCAT2BUDGET[v.cat]||"Other";(rows[c]||(rows[c]={b:0,a:0,p:0})).a+=+v.agreed||0;rows[c].p+=+v.paid||0});
-  S.budget.items.forEach(i=>{(rows[i.cat]||(rows[i.cat]={b:0,a:0,p:0})).b+=+i.est||0});
+  vs.forEach(v=>{const c=v.cat||"other";(rows[c]||(rows[c]={b:0,a:0,p:0})).a+=+v.agreed||0;rows[c].p+=+v.paid||0});
+  S.budget.items.forEach(i=>{const c=bcat(i);(rows[c]||(rows[c]={b:0,a:0,p:0})).b+=+i.est||0});
   const cats=Object.keys(rows).filter(c=>rows[c].a||rows[c].p).sort((x,y)=>rows[y].a-rows[x].a);
   return `<div class="stack" style="gap:12px">
    <div class="grid g4">
@@ -822,8 +844,8 @@ function vendorSummary(){
      <div class="meter" style="display:flex;height:14px" role="img" aria-label="Paid ${fmt(paid)}, unpaid ${fmt(Math.max(0,bal))}, budget ${fmt(base)}"><i style="width:${w(paid)}%"></i><i style="width:${w(Math.max(0,bal))}%;background:var(${over?"--red":"--gold"})"></i></div>
      <div class="row small num" style="gap:14px"><span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--accent);vertical-align:-1px"></i> Paid ${fmt(paid)} (${pct(paid)}%)</span><span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--gold);vertical-align:-1px"></i> Agreed, not paid ${fmt(Math.max(0,bal))}</span>${over?"":`<span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--sunk);border:1px solid var(--line);vertical-align:-1px"></i> Left in budget ${fmt(left)}</span>`}</div>
      ${!budget?`<span class="small muted">No total budget set, so this compares against the planned items in your <a href="#budget">Budget</a>.</span>`:""}
-     ${cats.length?`<div class="tbl"><table style="white-space:nowrap"><thead><tr><th>Budget area</th><th class="r">Budgeted</th><th class="r">Agreed</th><th class="r">Paid</th><th class="r">Difference</th></tr></thead><tbody>
-      ${cats.map(c=>{const r=rows[c],d=r.b-r.a;return `<tr><td>${esc(c)}</td><td class="r num">${r.b?fmt(r.b):'<span class="muted">Not budgeted</span>'}</td><td class="r num">${fmt(r.a)}</td><td class="r num">${fmt(r.p)}</td><td class="r num" style="${d<0?"color:var(--red);font-weight:700":"color:var(--accent)"}">${d<0?"Over by "+fmt(-d):d>0?"Under by "+fmt(d):"On budget"}</td></tr>`}).join("")}
+     ${cats.length?`<div class="tbl"><table style="white-space:nowrap"><thead><tr><th>Service</th><th class="r">Budgeted</th><th class="r">Agreed</th><th class="r">Paid</th><th class="r">Difference</th></tr></thead><tbody>
+      ${cats.map(c=>{const r=rows[c],d=r.b-r.a;return `<tr><td>${esc(bcatName(c))}</td><td class="r num">${r.b?fmt(r.b):'<span class="muted">Not budgeted</span>'}</td><td class="r num">${fmt(r.a)}</td><td class="r num">${fmt(r.p)}</td><td class="r num" style="${d<0?"color:var(--red);font-weight:700":"color:var(--accent)"}">${d<0?"Over by "+fmt(-d):d>0?"Under by "+fmt(d):"On budget"}</td></tr>`}).join("")}
      </tbody></table></div>`:""}
    </div>`:""}
   </div>`;
