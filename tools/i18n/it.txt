@@ -1111,3 +1111,4 @@
 1110|Modifica foto
 1111|Elemento della bacheca aggiornato
 1112|Modifica questo elemento
+1113|Solo foto di buone dimensioni il cui titolo indica ciò che hai cercato, prima le migliori. Foto con licenza libera da Openverse e Wikimedia Commons. Tocca una foto per vederne la fonte e il fotografo.

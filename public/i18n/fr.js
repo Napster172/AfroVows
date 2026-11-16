@@ -1110,5 +1110,6 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.fr={
 "Edit link": "Modifier le lien",
 "Edit photo": "Modifier la photo",
 "Board item updated": "Élément du tableau mis à jour",
-"Edit this item": "Modifier cet élément"
+"Edit this item": "Modifier cet élément",
+"Only good-sized photos whose title names what you searched, best matches first. Openly licensed photos from Openverse and Wikimedia Commons. Tap a photo to see its source and photographer.": "Uniquement des photos de bonne taille dont le titre correspond à votre recherche, les meilleures en premier. Photos sous licence libre d'Openverse et Wikimedia Commons. Touchez une photo pour voir sa source et son photographe."
 };

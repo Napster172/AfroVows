@@ -1111,3 +1111,4 @@
 1110|Modifier la photo
 1111|Élément du tableau mis à jour
 1112|Modifier cet élément
+1113|Uniquement des photos de bonne taille dont le titre correspond à votre recherche, les meilleures en premier. Photos sous licence libre d'Openverse et Wikimedia Commons. Touchez une photo pour voir sa source et son photographe.

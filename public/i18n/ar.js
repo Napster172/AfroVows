@@ -1110,5 +1110,6 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.ar={
 "Edit link": "تعديل الرابط",
 "Edit photo": "تعديل الصورة",
 "Board item updated": "تم تحديث عنصر اللوحة",
-"Edit this item": "تعديل هذا العنصر"
+"Edit this item": "تعديل هذا العنصر",
+"Only good-sized photos whose title names what you searched, best matches first. Openly licensed photos from Openverse and Wikimedia Commons. Tap a photo to see its source and photographer.": "صور بحجم جيد فقط يذكر عنوانها ما بحثت عنه، وأفضل النتائج أولاً. صور مرخصة ترخيصاً مفتوحاً من Openverse وWikimedia Commons. اضغط على صورة لترى مصدرها ومصوّرها."
 };

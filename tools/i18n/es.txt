@@ -1111,3 +1111,4 @@
 1110|Editar foto
 1111|Elemento del tablero actualizado
 1112|Editar este elemento
+1113|Solo fotos de buen tamaño cuyo título nombra lo que buscaste, las mejores primero. Fotos con licencia abierta de Openverse y Wikimedia Commons. Toca una foto para ver su fuente y su fotógrafo.
