@@ -599,7 +599,9 @@ function rerender(){const y=window.scrollY;route();window.scrollTo(0,y)}
 function featuredStrip(){const f=allVendors().filter(v=>planOf(v)==="featured");if(!f.length)return"";
   const day=Math.floor(Date.now()/864e5),pick=f.map((_,i)=>f[(i+day)%f.length]).slice(0,3);
   return `<section class="stack" style="gap:14px"><div class="split"><div><span class="eyebrow">${T("home.feat.eyebrow","Spotlight")}</span><h2>${T("home.feat.title","Featured vendors")}</h2></div><a class="btn sm" href="#vendors">See all vendors</a></div>
-   <div class="vgrid">${pick.map(v=>vendorCard(v,`<button class="btn sm" data-act="vdetail" data-id="${v.id}">Details & reviews</button>`)).join("")}</div></section>`}
+   <div class="vgrid">${pick.map(v=>vendorCard(v,`<button class="btn sm pri" data-act="addfromdir" data-id="${v.id}">${role()==="couple"?"Add to my vendors":"Save to my wedding"}</button>${contactBtns(v)}<button class="btn sm" data-act="vdetail" data-id="${v.id}">Details & reviews</button>`)).join("")}</div></section>`}
+function contactBtns(v){if(v.sample)return `<button class="btn sm" data-act="samplecontact">Contact</button>`;
+  return `<a class="btn sm wa" target="_blank" rel="noopener" data-act="wastat" data-id="${v.id}" href="https://wa.me/${waNum(v.phone)}">WhatsApp</a><a class="btn sm" href="tel:${esc(String(v.phone||"").replace(/[^\d+]/g,""))}">Call</a>`}
 function vHome(){
   const feats=[
     ["Two ceremonies, one plan","Plan the traditional engagement and the white wedding side by side, each with its own guests, venue and RSVPs."],
@@ -1330,6 +1332,7 @@ document.addEventListener("click",async e=>{
     case"docdel":{const i=docItem(id);if(i){i.docs=(i.docs||[]).filter(x=>x.id!==t.dataset.did);save();rerender();docsModal(id);toast("Document removed")}break}
     case"vdetail":vendorModal(id);if(!allVendors().find(v=>v.id===id)?.sample)bumpStat(id,"views");break;
     case"wastat":bumpStat(id,"wa");return;
+    case"samplecontact":toast("This is a sample listing, so it has no real number. Real vendors show WhatsApp and Call here.");break;
     case"choosePlan":planModal(id);break;
     case"plancancel":{const l=listings(),x=l.find(v=>v.owner===me);if(x){x.planReq=null;setListings(l);toast("Plan request cancelled");rerender()}break}
     case"planact":case"plandecline":case"planend":{const l=listings(),x=l.find(v=>v.id===id);if(!x)break;
@@ -1360,7 +1363,7 @@ document.addEventListener("click",async e=>{
     case"addduerow":$("#mv-dues").insertAdjacentHTML("beforeend",dueRow());break;
     case"delduerow":t.closest(".duerow").remove();break;
     case"delv":S.myVendors=S.myVendors.filter(v=>v.id!==id);save();closeModal();rerender();break;
-    case"addfromdir":e.preventDefault();if(me&&role()!=="couple"){toast("Saving vendors is for couple accounts. Sign out and sign in as a couple.");break}if(!me){ui.after="vendors";ui.authTab="signin";toast("Sign in to save vendors to your wedding");location.hash="signin";break}useCouple();myVendorModal(null,id);break;
+    case"addfromdir":e.preventDefault();if(me&&role()!=="couple"){toast("Saving vendors is for couple accounts. Sign out and sign in as a couple.");break}if(!me){ui.after=["","home"].includes(location.hash.slice(1))?"home":"vendors";ui.authTab="signin";toast("Sign in to save vendors to your wedding");location.hash="signin";break}useCouple();myVendorModal(null,id);break;
     case"vcat":ui.vcat=id;rerender();break;
     case"gocat":ui.vcat=id;location.hash="vendors";break;
     case"delp":S.photos=S.photos.filter(p=>p.id!==id);save();rerender();break;

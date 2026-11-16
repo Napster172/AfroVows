@@ -902,3 +902,5 @@
 901|rien de visible
 902|Agrandir la photo de couverture
 903|Agrandir la photo de réalisation {0}
+904|Appeler
+905|Ceci est une fiche d'exemple, sans vrai numéro. Les vrais prestataires affichent ici WhatsApp et Appeler.
