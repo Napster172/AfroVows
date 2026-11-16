@@ -902,5 +902,7 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.ar={
 "Changed since the live version:": "ما تغيّر عن النسخة المنشورة:",
 "nothing visible": "لا شيء ظاهر",
 "Enlarge cover photo": "تكبير صورة الغلاف",
-"Enlarge work photo {0}": "تكبير صورة العمل {0}"
+"Enlarge work photo {0}": "تكبير صورة العمل {0}",
+"Call": "اتصال",
+"This is a sample listing, so it has no real number. Real vendors show WhatsApp and Call here.": "هذا إعلان تجريبي، لذا لا يوجد رقم حقيقي. يعرض المزودون الحقيقيون هنا واتساب واتصال."
 };

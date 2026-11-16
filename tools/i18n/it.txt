@@ -902,3 +902,5 @@
 901|niente di visibile
 902|Ingrandisci foto di copertina
 903|Ingrandisci foto del lavoro {0}
+904|Chiama
+905|Questo è un annuncio di esempio, quindi non ha un numero reale. I fornitori reali mostrano qui WhatsApp e Chiama.

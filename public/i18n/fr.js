@@ -902,5 +902,7 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.fr={
 "Changed since the live version:": "Modifié par rapport à la version en ligne :",
 "nothing visible": "rien de visible",
 "Enlarge cover photo": "Agrandir la photo de couverture",
-"Enlarge work photo {0}": "Agrandir la photo de réalisation {0}"
+"Enlarge work photo {0}": "Agrandir la photo de réalisation {0}",
+"Call": "Appeler",
+"This is a sample listing, so it has no real number. Real vendors show WhatsApp and Call here.": "Ceci est une fiche d'exemple, sans vrai numéro. Les vrais prestataires affichent ici WhatsApp et Appeler."
 };
