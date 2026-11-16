@@ -904,3 +904,4 @@
 903|Ampliar foto de trabajo {0}
 904|Llamar
 905|Este es un anuncio de ejemplo, así que no tiene un número real. Los proveedores reales muestran aquí WhatsApp y Llamar.
+906|Responder por correo

@@ -1254,6 +1254,9 @@ function adminDetails(l){
     ${row("Registration no",l.reg?`<span class="num" style="user-select:all">${esc(l.reg)}</span>`:"Not given")}
     ${row("Submitted",l.submittedAt?esc(new Date(l.submittedAt).toLocaleString("en-GB",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})):"")}
    </dl></div></details>`}
+function replyMail(m){const when=new Date(m.at).toLocaleString("en-GB",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+  const body=`Hello ${m.name},\n\nThank you for contacting AfroVows.\n\n\n\nKind regards,\nThe AfroVows team\n\n---\nOn ${when} you wrote:\n${m.msg.split("\n").map(l=>"> "+l).join("\n")}`;
+  return "mailto:"+encodeURIComponent(m.email).replace(/%40/g,"@")+"?subject="+encodeURIComponent("Re: Your message to AfroVows")+"&body="+encodeURIComponent(body)}
 function vAdmin(){
   const all=listings(),tab=ui.atab||"pending";
   const groups={pending:all.filter(l=>l.status==="pending"),approved:all.filter(l=>l.status==="approved"),rejected:all.filter(l=>l.status==="rejected"||l.status==="removed")};
@@ -1263,7 +1266,7 @@ function vAdmin(){
   if(tab==="messages")return `<div class="stack"><div><span class="eyebrow"><span class="lock" aria-hidden="true"></span>Site owner · only you can see this</span><h1 style="font-size:clamp(26px,5vw,36px)">Contact messages</h1></div>${chips}
     ${msgs.length?msgs.map(m=>`<div class="card stack" style="gap:6px;${m.read?"":"border-left:4px solid var(--gold)"}"><div class="split"><b>${esc(m.name)} <span class="pill p-neutral">${esc(m.who)}</span></b><span class="small muted">${new Date(m.at).toLocaleString("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</span></div>
       <p class="small muted"><span style="user-select:all">${esc(m.email)}</span>${m.phone?` · <span style="user-select:all">${esc(m.phone)}</span>`:""}</p><p>${esc(m.msg)}</p>
-      <div class="row">${m.phone?`<a class="btn sm wa" target="_blank" rel="noopener" href="https://wa.me/${waNum(m.phone)}">Reply on WhatsApp</a>`:""}${m.read?"":`<button class="btn sm" data-act="msgread" data-id="${m.id}">Mark as read</button>`}<button class="btn sm danger" data-act="msgdel" data-id="${m.id}">Delete</button></div></div>`).join(""):`<div class="empty">No messages yet. Messages sent from the Contact us form on the home page land here.</div>`}</div>`;
+      <div class="row">${m.email?`<a class="btn sm pri" data-act="msgreply" data-id="${m.id}" href="${replyMail(m)}">Reply by email</a>`:""}${m.phone?`<a class="btn sm wa" target="_blank" rel="noopener" data-act="msgreply" data-id="${m.id}" href="https://wa.me/${waNum(m.phone)}?text=${encodeURIComponent(`Hello ${m.name}, thank you for contacting AfroVows. `)}">Reply on WhatsApp</a>`:""}${m.read?"":`<button class="btn sm" data-act="msgread" data-id="${m.id}">Mark as read</button>`}<button class="btn sm danger" data-act="msgdel" data-id="${m.id}">Delete</button></div></div>`).join(""):`<div class="empty">No messages yet. Messages sent from the Contact us form on the home page land here.</div>`}</div>`;
   if(tab==="plans"){const reqs=all.filter(l=>l.planReq),paid=all.filter(l=>planOf(l)!=="basic");
     const mrr=paid.reduce((a,l)=>a+planPrice(planOf(l)),0);
     return `<div class="stack"><div><span class="eyebrow"><span class="lock" aria-hidden="true"></span>Site owner · only you can see this</span><h1 style="font-size:clamp(26px,5vw,36px)">Paid plans</h1></div>${chips}
@@ -1334,6 +1337,7 @@ document.addEventListener("click",async e=>{
     case"docdel":{const i=docItem(id);if(i){i.docs=(i.docs||[]).filter(x=>x.id!==t.dataset.did);save();rerender();docsModal(id);toast("Document removed")}break}
     case"vdetail":vendorModal(id);if(!allVendors().find(v=>v.id===id)?.sample)bumpStat(id,"views");break;
     case"wastat":bumpStat(id,"wa");return;
+    case"msgreply":{const ms=messages(),x=ms.find(z=>z.id===id);if(x&&!x.read){x.read=true;setMessages(ms);setTimeout(rerender,300)}return}
     case"samplecontact":toast("This is a sample listing, so it has no real number. Real vendors show WhatsApp and Call here.");break;
     case"choosePlan":planModal(id);break;
     case"plancancel":{const l=listings(),x=l.find(v=>v.owner===me);if(x){x.planReq=null;setListings(l);toast("Plan request cancelled");rerender()}break}

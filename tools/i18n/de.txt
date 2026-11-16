@@ -904,3 +904,4 @@
 903|Arbeitsfoto {0} vergrößern
 904|Anrufen
 905|Dies ist ein Beispieleintrag ohne echte Nummer. Echte Anbieter zeigen hier WhatsApp und Anrufen.
+906|Per E-Mail antworten

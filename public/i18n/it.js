@@ -904,5 +904,6 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.it={
 "Enlarge cover photo": "Ingrandisci foto di copertina",
 "Enlarge work photo {0}": "Ingrandisci foto del lavoro {0}",
 "Call": "Chiama",
-"This is a sample listing, so it has no real number. Real vendors show WhatsApp and Call here.": "Questo è un annuncio di esempio, quindi non ha un numero reale. I fornitori reali mostrano qui WhatsApp e Chiama."
+"This is a sample listing, so it has no real number. Real vendors show WhatsApp and Call here.": "Questo è un annuncio di esempio, quindi non ha un numero reale. I fornitori reali mostrano qui WhatsApp e Chiama.",
+"Reply by email": "Rispondi via email"
 };
