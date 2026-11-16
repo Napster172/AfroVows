@@ -862,3 +862,26 @@
 861|{0} Monate
 862|{0} noch nicht verplant
 863|Sprache
+864|Paketbeschreibung
+865|Preis
+866|Pro (optional)
+867|z. B. Fotobegleitung ganztags
+868|z. B. pro Gast
+869|Preis in Ghana-Cedi
+870|Dieses Paket entfernen
+871|+ Weiteres Paket hinzufügen
+872|Lass den Preis leer, wenn Paare ein Angebot anfragen sollen.
+873|Social Media und Website
+874|+ Weiteren Link hinzufügen
+875|Instagram, Facebook, TikTok, YouTube, X, deine Website – alles, wo Paare deine Arbeit sehen können.
+876|z. B. instagram.com/deinunternehmen
+877|Link zu Social Media oder Website
+878|Diesen Link entfernen
+879|Wir prüfen, wem das Unternehmen gehört, bevor es online geht.
+880|Ausweisart des Inhabers *
+881|Ausweisnummer des Inhabers *
+882|z. B. GHA-{0}-{1}
+883|Ghana Card
+884|Führerschein
+885|Nur das AfroVows-Team sieht diese Nummern. Paare sehen sie nie.
+886|Online
