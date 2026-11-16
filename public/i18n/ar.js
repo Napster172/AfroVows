@@ -975,5 +975,16 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.ar={
 "Colours and outfits, what to bring, who to call on the day, contributions…": "الألوان والملابس، ما يجب إحضاره، بمن يتصلون يوم الزفاف، المساهمات…",
 "e.g. Church rehearsal": "مثال: بروفة في الكنيسة",
 "What to wear or bring, who's leading it…": "ماذا يرتدون أو يحضرون، ومن يقود…",
-"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.": "يمكن لكل من هنا فتح هذا المخطط والمساعدة في الميزانية والضيوف والمزودين والمهام، باستثناء وصفاء العريس ووصيفات العروس الذين يرون فقط تبويبات موكب الزفاف والصور والقصة والتفاصيل. ادعُ شخصًا ثم أرسل له رمز الدعوة. ينضم من تسجيل دخول الأزواج ثم الانضمام برمز دعوة."
+"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.": "يمكن لكل من هنا فتح هذا المخطط والمساعدة في الميزانية والضيوف والمزودين والمهام، باستثناء وصفاء العريس ووصيفات العروس الذين يرون فقط تبويبات موكب الزفاف والصور والقصة والتفاصيل. ادعُ شخصًا ثم أرسل له رمز الدعوة. ينضم من تسجيل دخول الأزواج ثم الانضمام برمز دعوة.",
+"Your listings": "إعلاناتك",
+"Offer more than one service? Add a separate listing for each one, for example photography and videography. Each listing is checked on its own and has its own plan.": "هل تقدّم أكثر من خدمة؟ أضف إعلانًا منفصلًا لكل خدمة، مثل التصوير الفوتوغرافي والفيديو. تتم مراجعة كل إعلان على حدة وله خطته الخاصة.",
+"+ Add another listing": "+ إضافة إعلان آخر",
+"Untitled listing": "إعلان بلا عنوان",
+"Delete this listing": "حذف هذا الإعلان",
+"Delete this listing?": "حذف هذا الإعلان؟",
+"This removes the draft for good. Your other listings stay as they are.": "ستُحذف هذه المسودة نهائيًا. تبقى إعلاناتك الأخرى كما هي.",
+"Keep it": "الاحتفاظ به",
+"New listing started. Pick its main service, add its packages and photos, then submit it for approval": "تم إنشاء إعلان جديد. اختر خدمته الرئيسية وأضف باقاته وصوره، ثم أرسله للموافقة",
+"Listing deleted": "تم حذف الإعلان",
+"Extra listings aren't switched on yet. Please contact AfroVows.": "الإعلانات الإضافية غير مفعّلة بعد. يُرجى التواصل مع AfroVows."
 };

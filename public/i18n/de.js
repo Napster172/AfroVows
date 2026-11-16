@@ -975,5 +975,16 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.de={
 "Colours and outfits, what to bring, who to call on the day, contributions…": "Farben und Outfits, was mitzubringen ist, wen man am Tag anruft, Beiträge…",
 "e.g. Church rehearsal": "z. B. Probe in der Kirche",
 "What to wear or bring, who's leading it…": "Was anziehen oder mitbringen, wer leitet…",
-"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.": "Alle hier können diesen Planer öffnen und beim Budget, bei Gästen, Dienstleistern und Aufgaben helfen – außer Groomsmen und Brautjungfern, die nur die Tabs Brautgefolge, Fotos sowie Geschichte & Details sehen. Lade jemanden ein und schicke ihm den Einladungscode. Beitreten geht über die Paar-Anmeldung und dann „Mit Einladungscode beitreten“."
+"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.": "Alle hier können diesen Planer öffnen und beim Budget, bei Gästen, Dienstleistern und Aufgaben helfen – außer Groomsmen und Brautjungfern, die nur die Tabs Brautgefolge, Fotos sowie Geschichte & Details sehen. Lade jemanden ein und schicke ihm den Einladungscode. Beitreten geht über die Paar-Anmeldung und dann „Mit Einladungscode beitreten“.",
+"Your listings": "Ihre Einträge",
+"Offer more than one service? Add a separate listing for each one, for example photography and videography. Each listing is checked on its own and has its own plan.": "Sie bieten mehr als eine Leistung an? Legen Sie für jede einen eigenen Eintrag an, zum Beispiel Fotografie und Video. Jeder Eintrag wird einzeln geprüft und hat seinen eigenen Tarif.",
+"+ Add another listing": "+ Weiteren Eintrag hinzufügen",
+"Untitled listing": "Eintrag ohne Titel",
+"Delete this listing": "Diesen Eintrag löschen",
+"Delete this listing?": "Diesen Eintrag löschen?",
+"This removes the draft for good. Your other listings stay as they are.": "Der Entwurf wird endgültig gelöscht. Ihre anderen Einträge bleiben unverändert.",
+"Keep it": "Behalten",
+"New listing started. Pick its main service, add its packages and photos, then submit it for approval": "Neuer Eintrag angelegt. Wählen Sie die Hauptleistung, fügen Sie Pakete und Fotos hinzu und reichen Sie ihn zur Prüfung ein",
+"Listing deleted": "Eintrag gelöscht",
+"Extra listings aren't switched on yet. Please contact AfroVows.": "Weitere Einträge sind noch nicht freigeschaltet. Bitte kontaktieren Sie AfroVows."
 };

@@ -254,7 +254,7 @@ const HOSTED=!!(SBC&&SBC.url&&SBC.key&&window.supabase);
 const DBX={sb:null,user:null,profile:null,snap:{},up:{},pub:[],timers:{},chains:{},meta:{}};
 const isUuid=s=>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(s||"");
 const rid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36);
-function dbErr(e){console.error(e);document.querySelectorAll(".toast").forEach(x=>x.remove());const d=document.createElement("div");d.className="toast";d.textContent="We couldn't save that. Check your connection and try again.";document.body.appendChild(d);setTimeout(()=>d.remove(),3500)}
+function dbErr(e){console.error(e);document.querySelectorAll(".toast").forEach(x=>x.remove());const d=document.createElement("div");d.className="toast";d.textContent=e&&e.code==="23505"&&/one_listing/.test(e.message||"")?"Extra listings aren't switched on yet. Please contact AfroVows.":"We couldn't save that. Check your connection and try again.";document.body.appendChild(d);setTimeout(()=>d.remove(),3500)}
 function dataUrlBlob(u){const [h,b]=u.split(",");const mime=(h.match(/data:([^;]+)/)||[])[1]||"application/octet-stream";const bin=atob(b);const a=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);return new Blob([a],{type:mime})}
 async function uploadData(u,bucket,folder){if(DBX.up[u])return DBX.up[u];
   const blob=dataUrlBlob(u),ext=blob.type==="application/pdf"?"pdf":blob.type==="image/png"?"png":"jpg",path=folder+"/"+rid()+"."+ext;
@@ -289,6 +289,7 @@ function onSet(k,v){
           const q=before?DBX.sb.from("listings").update(row).eq("id",l.id):DBX.sb.from("listings").insert(row);
           const {data,error}=await q.select().single();if(error)throw error;
           Object.assign(l,rowToListing(data));next[l.id]=JSON.stringify(listingToRow(l))}else next[l.id]=before}
+      for(const id in prev)if(!(id in next)){const {error}=await DBX.sb.from("listings").delete().eq("id",id);if(error)throw error}
       DBX.snap[k]=next;mem[k]=JSON.stringify(cur)}),300);return}
   if(k==="afrovows.reviews"){if(!DBX.user)return;queue(k,async()=>{const cur=JSON.parse(v||"{}"),prev=DBX.snap[k]||{},next={};
       for(const vid in cur)for(const r of cur[vid]){if(r.sample)continue;const s=JSON.stringify(r);next[r.id]=s;
@@ -1182,7 +1183,13 @@ function vendorPlanCard(l){const pl=l.id?planOf(l):"basic",req=l.planReq,mo=new 
    ${pl==="basic"?`<p class="small muted">Upgrade to see how many couples view your listing and tap WhatsApp, and to appear above Basic listings.</p>`
      :`<div class="grid g3"><div><span class="small muted">Views this month</span><div class="price num">${cur.views}</div></div><div><span class="small muted">WhatsApp taps this month</span><div class="price num">${cur.wa}</div></div><div><span class="small muted">All time</span><div class="num"><b>${tot.views}</b> views · <b>${tot.wa}</b> taps</div></div></div>`}
    ${l.status==="approved"||pl!=="basic"?plansHTML(pl,req&&req.plan):`<p class="small muted">You can choose a paid plan once your listing is approved.</p>`}</section>`}
-function myListing(){return listings().find(l=>l.owner===me)}
+/* A vendor login can hold several listings (one per service). ui.lid picks the one being edited. */
+const myListings=()=>listings().filter(l=>l.owner===me);
+function myListing(){const m=myListings();return m.find(l=>l.id===ui.lid)||m[0]}
+function listSwitcher(cur){const m=myListings();if(!m.length)return "";
+  return `<section class="card stack" style="gap:10px"><div class="split"><div><h3>Your listings</h3><p class="small muted">Offer more than one service? Add a separate listing for each one, for example photography and videography. Each listing is checked on its own and has its own plan.</p></div><button class="btn sm" data-act="addlisting">+ Add another listing</button></div>
+   ${m.length>1?`<div class="chips">${m.map(x=>`<button class="chip ${x.id===cur.id?"on":""}" data-act="pickls" data-id="${x.id}" aria-pressed="${x.id===cur.id}">${esc(x.name||"Untitled listing")}${x.cat?` · ${esc(catName(x.cat))}`:""}</button>`).join("")}</div>`:""}
+   ${m.length>1&&cur.id&&!cur.live?`<div><button class="btn sm ghost danger" data-act="dells" data-id="${cur.id}">Delete this listing</button></div>`:""}</section>`}
 const LFIELDS=["name","cat","events","contact","email","phone","city","region","areas","years","blurb","deposit","reg","idType","idNo","capMin","capMax"];
 /* Venue capacity in guests. capMin/capMax are stored as text from the form; either may be empty. */
 function capText(v){const a=+v.capMin||0,b=+v.capMax||0;if(v.cat!=="venues"||(!a&&!b))return "";return a&&b&&a!==b?`${a.toLocaleString("en-GB")} to ${b.toLocaleString("en-GB")} guests`:b?`Up to ${b.toLocaleString("en-GB")} guests`:`From ${a.toLocaleString("en-GB")} guests`}
@@ -1200,7 +1207,7 @@ function pkRow(p,i){p=p||{};const first=i===0;return `<div class="pkrow"><label 
 function socialRow(x){return `<div class="row socrow" style="gap:6px;flex-wrap:nowrap"><input name="soc" value="${esc(x||"")}" placeholder="e.g. instagram.com/yourbusiness" aria-label="Social media or website link" style="flex:1"><button type="button" class="btn sm ghost danger" data-act="delsocrow" aria-label="Remove this link">×</button></div>`}
 
 function draftFromForm(){const f=document.querySelector('[data-form="listing"]');const fd=f?Object.fromEntries(new FormData(f)):{};
-  const l=listings();let x=l.find(v=>v.owner===me);if(!x){x={id:"l"+uid(),owner:me,status:"draft",packages:[],gallery:[]};l.push(x)}
+  const l=listings(),cur=myListing();let x=cur&&l.find(v=>v.id===cur.id);if(!x){x={id:"l"+uid(),owner:me,status:"draft",packages:[],gallery:[]};l.push(x);ui.lid=x.id}
   LFIELDS.forEach(k=>{if(fd[k]!==undefined)x[k]=String(fd[k]).trim()});
   if(f){x.packages=[...f.querySelectorAll(".pkrow")].map(r=>({name:r.querySelector("[name=pk_name]").value.trim(),price:money(r.querySelector("[name=pk_fee]").value),unit:r.querySelector("[name=pk_unit]").value.trim()})).filter(p=>p.name);
     x.socials=[...f.querySelectorAll("[name=soc]")].map(i=>i.value.trim()).filter(Boolean);delete x.social}
@@ -1224,6 +1231,7 @@ function vVendorDash(){
     :l.status==="removed"?"Your listing was taken out of the directory. Contact AfroVows or update and resubmit.":"Fill in your details and submit them for review.";
   return `<div class="stack">
    <div class="split"><div><span class="eyebrow"><span class="lock" aria-hidden="true"></span>Vendor account</span><h1 style="font-size:clamp(26px,5vw,36px)">${esc(l.name||a.biz||"Your business")}</h1></div>${statusPill(l)}</div>
+   ${listSwitcher(l)}
    <div class="card small">${msg}</div>
    ${vendorPlanCard(l)}
    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:start;gap:20px">
@@ -1434,7 +1442,7 @@ document.addEventListener("click",async e=>{
     case"msgreply":{const ms=messages(),x=ms.find(z=>z.id===id);if(x&&!x.read){x.read=true;setMessages(ms);setTimeout(rerender,300)}return}
     case"samplecontact":toast("This is a sample listing, so it has no real number. Real vendors show WhatsApp and Call here.");break;
     case"choosePlan":planModal(id);break;
-    case"plancancel":{const l=listings(),x=l.find(v=>v.owner===me);if(x){x.planReq=null;setListings(l);toast("Plan request cancelled");rerender()}break}
+    case"plancancel":{const l=listings(),x=l.find(v=>v.id===(myListing()||{}).id);if(x){x.planReq=null;setListings(l);toast("Plan request cancelled");rerender()}break}
     case"planact":case"plandecline":case"planend":{const l=listings(),x=l.find(v=>v.id===id);if(!x)break;
       if(a==="planact"&&x.planReq){const mo=x.planReq.term==="year"?12:1;const base=x.plan===x.planReq.plan&&x.planUntil>Date.now()?x.planUntil:Date.now();x.plan=x.planReq.plan;x.planUntil=new Date(base).setMonth(new Date(base).getMonth()+mo);x.planTerm=x.planReq.term==="year"?"year":"month";x.planPaid=planPrice(x.plan)*(mo===12?10:1);x.planReq=null;toast("Plan activated until "+fmtDay(x.planUntil))}
       else if(a==="plandecline"){x.planReq=null;toast("Request declined")}
@@ -1442,6 +1450,13 @@ document.addEventListener("click",async e=>{
       setListings(l);rerender();break}
     case"delrev":{const r=allReviews();r[id]=(r[id]||[]).filter(x=>x.id!==t.dataset.rid);setReviews(r);toast("Review removed");rerender();vendorModal(id);break}
     case"tcat":ui.tcat=id;rerender();break;
+    case"pickls":{const [l]=draftFromForm();setListings(l);ui.lid=id;rerender();scrollTo(0,0);break}
+    case"addlisting":{const [l,x]=draftFromForm();const used=new Set(myListings().map(v=>v.cat));
+      const n={id:"l"+uid(),owner:me,status:"draft",packages:[],gallery:[],name:x.name||"",cat:(CATS.find(c=>!used.has(c[0]))||CATS[0])[0],events:x.events||"both"};
+      ["city","region","areas","years","contact","phone","email","idType","idNo","reg"].forEach(k=>{if(x[k])n[k]=x[k]});if(socials(x).length)n.socials=socials(x).slice();
+      l.push(n);setListings(l);ui.lid=n.id;rerender();scrollTo(0,0);toast("New listing started. Pick its main service, add its packages and photos, then submit it for approval");break}
+    case"dells":modal(`<h2>Delete this listing?</h2><p class="muted">This removes the draft for good. Your other listings stay as they are.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-act="close">Keep it</button><button class="btn danger" data-act="dellsyes" data-id="${id}">Delete</button></div>`);break;
+    case"dellsyes":{const x=listings().find(v=>v.id===id);if(x&&x.owner===me&&!x.live){setListings(listings().filter(v=>v.id!==id));ui.lid=null;closeModal();toast("Listing deleted");rerender()}break}
     case"mkcover":{const [l,x]=draftFromForm();const g=(x.gallery||[]).find(g=>g.id===id);if(g){x.photo=g.src;setListings(l);rerender();toast("Cover photo changed. Submit to send it for approval")}break}
     case"delgal":{const [l,x]=draftFromForm();x.gallery=(x.gallery||[]).filter(g=>g.id!==id);setListings(l);rerender();break}
     case"vauthtab":ui.vAuthTab=id;rerender();if(t.closest(".plans"))document.querySelector('[data-form="vsignup"]')?.scrollIntoView({behavior:"smooth",block:"center"});break;
@@ -1568,7 +1583,7 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
       if(k==="asignin")(async()=>{const err=$("#ad-err"),email=d.email.trim().toLowerCase(),a=acct(email);
       if(!a||a.role!=="admin"||a.demo||await hashPw(d.pw,a.salt)!==a.hash){err.textContent="That isn't a site owner login.";err.hidden=false;return}
       signIn(email);rerender()})();break;
-    case"planreq":{const l=listings(),x=l.find(v=>v.owner===me);if(!x)break;x.planReq={plan:id,term:d.term,ref:d.ref.trim(),at:Date.now()};setListings(l);closeModal();toast("Request sent. We'll switch on your plan once payment is confirmed");rerender();break}
+    case"planreq":{const l=listings(),x=l.find(v=>v.id===(myListing()||{}).id);if(!x)break;x.planReq={plan:id,term:d.term,ref:d.ref.trim(),at:Date.now()};setListings(l);closeModal();toast("Request sent. We'll switch on your plan once payment is confirmed");rerender();break}
     case"listing":{const [l,x]=draftFromForm();if(!x.packages.length)x.packages=[{name:"Ask for a quote",price:0,unit:""}];
       Object.assign(x,{status:"pending",note:"",submittedAt:Date.now()});setListings(l);toast("Submitted for approval");rerender();break}
     case"decide":{const l=listings(),x=l.find(v=>v.id===id);if(!x)break;const dec=e.submitter&&e.submitter.value;

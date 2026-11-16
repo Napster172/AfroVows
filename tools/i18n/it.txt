@@ -975,3 +975,14 @@
 974|es. Prove in chiesa
 975|Cosa indossare o portare, chi lo guida…
 976|Tutti qui possono aprire questo planner e aiutare con budget, ospiti, fornitori e attività, tranne groomsmen e damigelle, che vedono solo le schede Corteo nuziale, Foto e Storia e dettagli. Invita qualcuno, poi inviagli il codice di invito. Si unisce da Accesso coppie, poi Unisciti con un codice di invito.
+977|I tuoi annunci
+978|Offri più di un servizio? Aggiungi un annuncio separato per ciascuno, ad esempio fotografia e video. Ogni annuncio viene verificato a parte e ha il suo piano.
+979|+ Aggiungi un altro annuncio
+980|Annuncio senza titolo
+981|Elimina questo annuncio
+982|Eliminare questo annuncio?
+983|La bozza verrà eliminata per sempre. Gli altri tuoi annunci restano invariati.
+984|Tienilo
+985|Nuovo annuncio creato. Scegli il servizio principale, aggiungi pacchetti e foto, poi invialo per l'approvazione
+986|Annuncio eliminato
+987|Gli annunci aggiuntivi non sono ancora attivi. Contatta AfroVows.

@@ -975,5 +975,16 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.it={
 "Colours and outfits, what to bring, who to call on the day, contributions…": "Colori e abiti, cosa portare, chi chiamare il giorno, contributi…",
 "e.g. Church rehearsal": "es. Prove in chiesa",
 "What to wear or bring, who's leading it…": "Cosa indossare o portare, chi lo guida…",
-"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.": "Tutti qui possono aprire questo planner e aiutare con budget, ospiti, fornitori e attività, tranne groomsmen e damigelle, che vedono solo le schede Corteo nuziale, Foto e Storia e dettagli. Invita qualcuno, poi inviagli il codice di invito. Si unisce da Accesso coppie, poi Unisciti con un codice di invito."
+"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.": "Tutti qui possono aprire questo planner e aiutare con budget, ospiti, fornitori e attività, tranne groomsmen e damigelle, che vedono solo le schede Corteo nuziale, Foto e Storia e dettagli. Invita qualcuno, poi inviagli il codice di invito. Si unisce da Accesso coppie, poi Unisciti con un codice di invito.",
+"Your listings": "I tuoi annunci",
+"Offer more than one service? Add a separate listing for each one, for example photography and videography. Each listing is checked on its own and has its own plan.": "Offri più di un servizio? Aggiungi un annuncio separato per ciascuno, ad esempio fotografia e video. Ogni annuncio viene verificato a parte e ha il suo piano.",
+"+ Add another listing": "+ Aggiungi un altro annuncio",
+"Untitled listing": "Annuncio senza titolo",
+"Delete this listing": "Elimina questo annuncio",
+"Delete this listing?": "Eliminare questo annuncio?",
+"This removes the draft for good. Your other listings stay as they are.": "La bozza verrà eliminata per sempre. Gli altri tuoi annunci restano invariati.",
+"Keep it": "Tienilo",
+"New listing started. Pick its main service, add its packages and photos, then submit it for approval": "Nuovo annuncio creato. Scegli il servizio principale, aggiungi pacchetti e foto, poi invialo per l'approvazione",
+"Listing deleted": "Annuncio eliminato",
+"Extra listings aren't switched on yet. Please contact AfroVows.": "Gli annunci aggiuntivi non sono ancora attivi. Contatta AfroVows."
 };

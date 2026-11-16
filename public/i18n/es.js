@@ -975,5 +975,16 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.es={
 "Colours and outfits, what to bring, who to call on the day, contributions…": "Colores y atuendos, qué llevar, a quién llamar el día, aportaciones…",
 "e.g. Church rehearsal": "p. ej. Ensayo en la iglesia",
 "What to wear or bring, who's leading it…": "Qué ponerse o llevar, quién lo dirige…",
-"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.": "Todos aquí pueden abrir este planificador y ayudar con el presupuesto, los invitados, los proveedores y las tareas, excepto los padrinos y las damas de honor, que solo ven las pestañas Cortejo nupcial, Fotos e Historia y detalles. Invita a alguien y envíale su código de invitación. Se une desde Parejas: entrar, y luego Unirse con un código de invitación."
+"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.": "Todos aquí pueden abrir este planificador y ayudar con el presupuesto, los invitados, los proveedores y las tareas, excepto los padrinos y las damas de honor, que solo ven las pestañas Cortejo nupcial, Fotos e Historia y detalles. Invita a alguien y envíale su código de invitación. Se une desde Parejas: entrar, y luego Unirse con un código de invitación.",
+"Your listings": "Tus anuncios",
+"Offer more than one service? Add a separate listing for each one, for example photography and videography. Each listing is checked on its own and has its own plan.": "¿Ofreces más de un servicio? Añade un anuncio distinto para cada uno, por ejemplo fotografía y vídeo. Cada anuncio se revisa por separado y tiene su propio plan.",
+"+ Add another listing": "+ Añadir otro anuncio",
+"Untitled listing": "Anuncio sin título",
+"Delete this listing": "Eliminar este anuncio",
+"Delete this listing?": "¿Eliminar este anuncio?",
+"This removes the draft for good. Your other listings stay as they are.": "Este borrador se eliminará para siempre. Tus otros anuncios no cambian.",
+"Keep it": "Conservarlo",
+"New listing started. Pick its main service, add its packages and photos, then submit it for approval": "Nuevo anuncio creado. Elige su servicio principal, añade sus paquetes y fotos y envíalo para aprobación",
+"Listing deleted": "Anuncio eliminado",
+"Extra listings aren't switched on yet. Please contact AfroVows.": "Los anuncios adicionales aún no están activados. Contacta con AfroVows."
 };
