@@ -71,6 +71,8 @@ body{overflow-x:clip}
 .hero-photo p{font-size:clamp(15px,1.6vw,19px);line-height:1.6;max-width:72ch;text-shadow:0 1px 8px rgba(0,0,0,.5)}
 .btn.hero-btn{background:#4B5E57;border-color:#4B5E57;color:#fff;font-weight:500;font-size:17px;padding:12px 22px;border-radius:4px}
 .btn.hero-btn:hover{background:#3d4e48;border-color:#fff}
+.btn.hero-btn.hero-ghost{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.85)}
+.btn.hero-btn.hero-ghost:hover{background:rgba(255,255,255,.18)}
 .tile{--t0:#0D6847;--t1:#B9780C;--t2:#A93A2C;--t3:#2E3F37;aspect-ratio:16/9;display:grid;place-items:center;color:#fff;position:relative;overflow:hidden;max-width:100%;background:var(--t0)}
 .tile.t1{background:var(--t1)}.tile.t2{background:var(--t2)}.tile.t3{background:var(--t3)}
 .tile::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.07) 0 10px,transparent 10px 20px)}
@@ -615,7 +617,7 @@ function vHome(){
   <section class="hero-photo bleed"${CONTENT["img.hero"]?` style="background-image:linear-gradient(rgba(12,16,14,.42),rgba(12,16,14,.58)),url(${CONTENT["img.hero"]})"`:""}><div class="hero-in">
     <h1>${T("home.hero.title","Your dream wedding in Ghana starts here")}</h1>
     <p>${T("home.hero.text","Welcome to AfroVows, your ultimate partner in crafting unforgettable weddings in Ghana. Discover stunning venues, talented photographers, and the best wedding vendors to bring your vision to life. Let us help you plan, manage, and celebrate your special day with ease and joy.")}</p>
-    <div><a class="btn hero-btn" href="${r==="couple"?"#planner":"#signin"}" ${r==="couple"?"":'data-act="authtab" data-id="signup"'}>${T("home.hero.btn","Start planning your wedding")}</a></div>
+    <div class="row" style="gap:10px;justify-content:center"><a class="btn hero-btn" href="${r==="couple"?"#planner":"#signin"}" ${r==="couple"?"":'data-act="authtab" data-id="signup"'}>${T("home.hero.btn","Start planning your wedding")}</a><a class="btn hero-btn hero-ghost" href="#guest">${T("home.hero.guest","Guest with a wedding code?")}</a></div>
   </div></section>
   <section class="zones">
     <div class="zone"><span class="tagline" style="color:var(--gold)">${T("home.zone1.tag","Free for everyone \u00b7 no account needed")}</span><h2>${T("home.zone1.title","Vendor directory")}</h2>
