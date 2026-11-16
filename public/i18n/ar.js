@@ -1105,5 +1105,10 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.ar={
 "Cover photo removed": "تمت إزالة صورة الغلاف",
 "Cover photo added. Guests see it at the top of your wedding page": "تمت إضافة صورة الغلاف. يراها الضيوف أعلى صفحة زفافك",
 "Only photos whose title or tags include every word you searched. Openly licensed photos from Openverse and Wikimedia Commons. Tap a photo to see its source and photographer.": "فقط الصور التي يتضمن عنوانها أو وسومها كل الكلمات التي بحثت عنها. صور بترخيص مفتوح من Openverse وويكيميديا كومنز. اضغط على صورة لرؤية مصدرها ومصوّرها.",
-"Loading preview…": "جارٍ تحميل المعاينة…"
+"Loading preview…": "جارٍ تحميل المعاينة…",
+"Edit note": "تعديل الملاحظة",
+"Edit link": "تعديل الرابط",
+"Edit photo": "تعديل الصورة",
+"Board item updated": "تم تحديث عنصر اللوحة",
+"Edit this item": "تعديل هذا العنصر"
 };

@@ -1105,5 +1105,10 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.es={
 "Cover photo removed": "Foto de portada eliminada",
 "Cover photo added. Guests see it at the top of your wedding page": "Foto de portada añadida. Los invitados la ven arriba en tu página de boda",
 "Only photos whose title or tags include every word you searched. Openly licensed photos from Openverse and Wikimedia Commons. Tap a photo to see its source and photographer.": "Solo fotos cuyo título o etiquetas incluyen todas las palabras buscadas. Fotos con licencia abierta de Openverse y Wikimedia Commons. Toca una foto para ver su fuente y su fotógrafo.",
-"Loading preview…": "Cargando vista previa…"
+"Loading preview…": "Cargando vista previa…",
+"Edit note": "Editar nota",
+"Edit link": "Editar enlace",
+"Edit photo": "Editar foto",
+"Board item updated": "Elemento del tablero actualizado",
+"Edit this item": "Editar este elemento"
 };

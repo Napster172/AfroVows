@@ -1106,3 +1106,8 @@
 1105|Foto de portada añadida. Los invitados la ven arriba en tu página de boda
 1106|Solo fotos cuyo título o etiquetas incluyen todas las palabras buscadas. Fotos con licencia abierta de Openverse y Wikimedia Commons. Toca una foto para ver su fuente y su fotógrafo.
 1107|Cargando vista previa…
+1108|Editar nota
+1109|Editar enlace
+1110|Editar foto
+1111|Elemento del tablero actualizado
+1112|Editar este elemento
