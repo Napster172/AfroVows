@@ -986,5 +986,12 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.de={
 "Keep it": "Behalten",
 "New listing started. Pick its main service, add its packages and photos, then submit it for approval": "Neuer Eintrag angelegt. Wählen Sie die Hauptleistung, fügen Sie Pakete und Fotos hinzu und reichen Sie ihn zur Prüfung ein",
 "Listing deleted": "Eintrag gelöscht",
-"Extra listings aren't switched on yet. Please contact AfroVows.": "Weitere Einträge sind noch nicht freigeschaltet. Bitte kontaktieren Sie AfroVows."
+"Extra listings aren't switched on yet. Please contact AfroVows.": "Weitere Einträge sind noch nicht freigeschaltet. Bitte kontaktieren Sie AfroVows.",
+"Join link:": "Beitrittslink:",
+"Code copied": "Code kopiert",
+"Copy join link": "Link kopieren",
+"Join link copied": "Link kopiert",
+"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their join link. It opens the join page with their invite code filled in, so they only add their name, email and a password.": "Alle hier können diesen Planer öffnen und beim Budget, bei Gästen, Dienstleistern und Aufgaben helfen – außer Groomsmen und Brautjungfern, die nur die Tabs Brautgefolge, Fotos sowie Geschichte & Details sehen. Lade jemanden ein und schicke ihm den Beitrittslink. Er öffnet die Beitrittsseite mit bereits eingetragenem Einladungscode, sodass nur noch Name, E-Mail und ein Passwort fehlen.",
+"Your invite code is filled in. Add your name, email and a password to join.": "Dein Einladungscode ist bereits eingetragen. Gib Namen, E-Mail und ein Passwort ein, um beizutreten.",
+"You're already signed in on this device. Sign out first, then open the invite link again.": "Du bist auf diesem Gerät bereits angemeldet. Melde dich zuerst ab und öffne den Einladungslink dann erneut."
 };

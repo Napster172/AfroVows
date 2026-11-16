@@ -986,5 +986,12 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.it={
 "Keep it": "Tienilo",
 "New listing started. Pick its main service, add its packages and photos, then submit it for approval": "Nuovo annuncio creato. Scegli il servizio principale, aggiungi pacchetti e foto, poi invialo per l'approvazione",
 "Listing deleted": "Annuncio eliminato",
-"Extra listings aren't switched on yet. Please contact AfroVows.": "Gli annunci aggiuntivi non sono ancora attivi. Contatta AfroVows."
+"Extra listings aren't switched on yet. Please contact AfroVows.": "Gli annunci aggiuntivi non sono ancora attivi. Contatta AfroVows.",
+"Join link:": "Link di invito:",
+"Code copied": "Codice copiato",
+"Copy join link": "Copia link",
+"Join link copied": "Link copiato",
+"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their join link. It opens the join page with their invite code filled in, so they only add their name, email and a password.": "Tutti qui possono aprire questo planner e aiutare con budget, ospiti, fornitori e attività, tranne groomsmen e damigelle, che vedono solo le schede Corteo nuziale, Foto e Storia e dettagli. Invita qualcuno, poi inviagli il link di invito. Apre la pagina di adesione con il codice già inserito, così deve solo aggiungere nome, email e una password.",
+"Your invite code is filled in. Add your name, email and a password to join.": "Il tuo codice di invito è già inserito. Aggiungi nome, email e una password per unirti.",
+"You're already signed in on this device. Sign out first, then open the invite link again.": "Hai già effettuato l'accesso su questo dispositivo. Esci, poi riapri il link di invito."
 };

@@ -986,3 +986,10 @@
 985|Nouvelle annonce créée. Choisissez son service principal, ajoutez ses forfaits et ses photos, puis soumettez-la pour validation
 986|Annonce supprimée
 987|Les annonces supplémentaires ne sont pas encore activées. Veuillez contacter AfroVows.
+988|Lien d'invitation :
+989|Code copié
+990|Copier le lien
+991|Lien copié
+992|Tout le monde ici peut ouvrir ce planificateur et aider pour le budget, les invités, les prestataires et les tâches, sauf les garçons et demoiselles d'honneur, qui ne voient que les onglets Cortège nuptial, Photos et Histoire & détails. Invitez quelqu'un, puis envoyez-lui son lien d'invitation. Il ouvre la page d'inscription avec son code déjà rempli : il n'a plus qu'à ajouter son nom, son e-mail et un mot de passe.
+993|Votre code d'invitation est déjà rempli. Ajoutez votre nom, votre e-mail et un mot de passe pour rejoindre.
+994|Vous êtes déjà connecté sur cet appareil. Déconnectez-vous, puis rouvrez le lien d'invitation.

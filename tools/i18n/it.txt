@@ -986,3 +986,10 @@
 985|Nuovo annuncio creato. Scegli il servizio principale, aggiungi pacchetti e foto, poi invialo per l'approvazione
 986|Annuncio eliminato
 987|Gli annunci aggiuntivi non sono ancora attivi. Contatta AfroVows.
+988|Link di invito:
+989|Codice copiato
+990|Copia link
+991|Link copiato
+992|Tutti qui possono aprire questo planner e aiutare con budget, ospiti, fornitori e attività, tranne groomsmen e damigelle, che vedono solo le schede Corteo nuziale, Foto e Storia e dettagli. Invita qualcuno, poi inviagli il link di invito. Apre la pagina di adesione con il codice già inserito, così deve solo aggiungere nome, email e una password.
+993|Il tuo codice di invito è già inserito. Aggiungi nome, email e una password per unirti.
+994|Hai già effettuato l'accesso su questo dispositivo. Esci, poi riapri il link di invito.

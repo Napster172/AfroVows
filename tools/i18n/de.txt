@@ -986,3 +986,10 @@
 985|Neuer Eintrag angelegt. Wählen Sie die Hauptleistung, fügen Sie Pakete und Fotos hinzu und reichen Sie ihn zur Prüfung ein
 986|Eintrag gelöscht
 987|Weitere Einträge sind noch nicht freigeschaltet. Bitte kontaktieren Sie AfroVows.
+988|Beitrittslink:
+989|Code kopiert
+990|Link kopieren
+991|Link kopiert
+992|Alle hier können diesen Planer öffnen und beim Budget, bei Gästen, Dienstleistern und Aufgaben helfen – außer Groomsmen und Brautjungfern, die nur die Tabs Brautgefolge, Fotos sowie Geschichte & Details sehen. Lade jemanden ein und schicke ihm den Beitrittslink. Er öffnet die Beitrittsseite mit bereits eingetragenem Einladungscode, sodass nur noch Name, E-Mail und ein Passwort fehlen.
+993|Dein Einladungscode ist bereits eingetragen. Gib Namen, E-Mail und ein Passwort ein, um beizutreten.
+994|Du bist auf diesem Gerät bereits angemeldet. Melde dich zuerst ab und öffne den Einladungslink dann erneut.

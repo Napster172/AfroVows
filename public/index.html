@@ -609,6 +609,8 @@ document.addEventListener("focusout",e=>{const el=e.target.closest&&e.target.clo
 function route(){const h=location.hash.slice(1);
   if(h.startsWith("guest=")){const c=decodeURIComponent(h.slice(6));history.replaceState(null,"","#guest");ui.guestOf=null;route();
     const i=$("#gc-code"),f=document.querySelector('[data-form="code"]');if(i&&f){i.value=c;f.requestSubmit()}return}
+  if(h.startsWith("join=")){ui.jcode=decodeURIComponent(h.slice(5)).trim().toUpperCase();ui.authTab="join";history.replaceState(null,"","#signin");
+    if(role())toast("You're already signed in on this device. Sign out first, then open the invite link again.");route();if(!role())$("#au-jname")?.focus();return}
   ui.tip=h.startsWith("tips/")?h.slice(5):null;let r=ui.tip?"tips":ROUTES.includes(h)?h:"home";
   const ro=role();
   if(HOSTED&&(r==="vendors"||r==="home")&&Date.now()-(DBX.pubAt||0)>60000){DBX.pubAt=Date.now();Promise.all([DBX.sb.from("public_listings").select("*"),DBX.sb.from("reviews").select("*")]).then(([{data:pub},{data:revs}])=>{
@@ -780,13 +782,15 @@ function todoDash(groups){
     <div class="card stack" style="gap:10px"><h3>Progress by person</h3>${ppl.map(x=>bar(...x)).join("")||'<p class="small muted">No to-dos yet.</p>'}</div>
    </div>`;
 }
+const joinLink=c=>location.origin.replace(/^null$/,"")+location.pathname+"#join="+encodeURIComponent(c);
+const joinText=t=>`Hi ${t.name}! You're invited to help plan our wedding on AfroVows${BP_ROLES.includes(t.role)?" as our "+t.role.toLowerCase():""}. Tap this link, then add your name, email and a password to join: ${joinLink(t.code)}`;
 function pTeam(){
   const lead=isCoupleLead();
   return `<div class="stack">
-   <p class="muted">Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. ${lead?"Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.":"Only the bride and groom can invite or remove people."}</p>
+   <p class="muted">Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. ${lead?"Invite someone, then send them their join link. It opens the join page with their invite code filled in, so they only add their name, email and a password.":"Only the bride and groom can invite or remove people."}</p>
    <div class="grid g2">${(S.team||[]).map(t=>`<div class="card stack" style="gap:6px"><div class="split"><h3>${esc(t.name)}</h3><span class="pill ${t.status==="joined"?"p-yes":"p-pend"}">${t.status==="joined"?"Joined":"Invite sent"}</span></div>
      <p class="small muted">${esc(t.role)}${t.owner?" · created this wedding":""}${t.email&&t.email!==DEMO?" · "+esc(t.email):""}${t.email===me?" · <b>you</b>":""}</p>
-     ${t.status==="invited"?`<p class="small">Invite code: <span class="code">${esc(t.code)}</span></p>${lead?`<div class="row">${t.phone?`<a class="btn sm wa" target="_blank" rel="noopener" href="https://wa.me/${waNum(t.phone)}?text=${encodeURIComponent(`Hi ${t.name}! Join our wedding planning on AfroVows. Go to Couples sign in, choose "Join with an invite code" and enter ${t.code}`)}">Send on WhatsApp</a>`:""}<button class="btn sm" data-act="copy" data-id="${esc(t.code)}">Copy code</button></div>`:""}`:""}
+     ${t.status==="invited"?`<p class="small">Invite code: <span class="code">${esc(t.code)}</span></p>${lead?`<p class="small">Join link: <a href="${esc(joinLink(t.code))}" style="word-break:break-all">${esc(joinLink(t.code))}</a></p><div class="row"><a class="btn sm wa" target="_blank" rel="noopener" href="https://wa.me/${t.phone?waNum(t.phone):""}?text=${encodeURIComponent(joinText(t))}">Send on WhatsApp</a><button class="btn sm" data-act="copy" data-id="${esc(joinLink(t.code))}" data-msg="Join link copied">Copy join link</button><button class="btn sm ghost" data-act="copy" data-id="${esc(t.code)}" data-msg="Code copied">Copy code</button></div>`:""}`:""}
      ${lead&&!t.owner&&t.email!==me?`<div><button class="btn sm ghost danger" data-act="delmember" data-id="${t.id}">${t.status==="joined"?"Remove access":"Cancel invite"}</button></div>`:""}</div>`).join("")}</div>
    ${lead?`<form class="card stack" style="gap:10px" data-form="invite"><h3>Invite someone</h3><div class="grid g3">
      <label class="f">Name<input name="name" id="iv-name" required></label>
@@ -1069,7 +1073,7 @@ function vAuth(){
    <form class="card stack" style="gap:12px" data-form="${up?"signup":ui.authTab==="join"?"join":"signin"}">
      ${up?`<div class="grid g2"><label class="f">Your first name<input name="p1" id="au-p1" required autocomplete="given-name"></label><label class="f">I am the<select name="me_role" id="au-role"><option>Bride</option><option>Groom</option></select></label></div>
        <label class="f">Your partner's first name<input name="p2" id="au-p2" required></label>`:""}
-     ${ui.authTab==="join"?`<p class="small muted">Got an invite code from a couple? Create your account here to plan with them.</p><div class="grid g2"><label class="f">Your first name<input name="name" id="au-jname" required autocomplete="given-name"></label><label class="f">Invite code<input name="code" id="au-jcode" required placeholder="AV-XXXX00" style="text-transform:uppercase"></label></div>`:""}
+     ${ui.authTab==="join"?`<p class="small muted">${ui.jcode?"Your invite code is filled in. Add your name, email and a password to join.":"Got an invite code from a couple? Create your account here to plan with them."}</p><div class="grid g2"><label class="f">Your first name<input name="name" id="au-jname" required autocomplete="given-name"></label><label class="f">Invite code<input name="code" id="au-jcode" required value="${esc(ui.jcode||"")}" placeholder="AV-XXXX00" style="text-transform:uppercase"></label></div>`:""}
      <label class="f">Email<input type="email" name="email" id="au-email" required autocomplete="email"></label>
      <label class="f">Password<input type="password" name="pw" id="au-pw" required minlength="8" autocomplete="${up||ui.authTab==="join"?"new-password":"current-password"}">${up||ui.authTab==="join"?'<span class="small muted">At least 8 characters</span>':""}</label>
      <p class="small" id="au-err" style="color:var(--red)" hidden></p>
@@ -1490,7 +1494,7 @@ document.addEventListener("click",async e=>{
     case"addstory":collectDetails(true);S.wedding.story.push({id:uid(),year:"",title:"",text:""});save();rerender();break;
     case"delstory":collectDetails(true);S.wedding.story=S.wedding.story.filter(s=>s.id!==id);save();rerender();break;
     case"jump":e.preventDefault();document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"});break;
-    case"copy":try{await navigator.clipboard.writeText(id);toast("Number copied")}catch(_){toast("Select the number to copy it")}break;
+    case"copy":try{await navigator.clipboard.writeText(id);toast(t.dataset.msg||"Number copied")}catch(_){toast("Select the number to copy it")}break;
   }
 });
 /* Phones fire "change" while the date wheel is still open; redrawing then would close it and lock in today's date. Redraw once the field loses focus. */

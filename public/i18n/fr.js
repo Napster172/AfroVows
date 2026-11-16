@@ -986,5 +986,12 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.fr={
 "Keep it": "La garder",
 "New listing started. Pick its main service, add its packages and photos, then submit it for approval": "Nouvelle annonce créée. Choisissez son service principal, ajoutez ses forfaits et ses photos, puis soumettez-la pour validation",
 "Listing deleted": "Annonce supprimée",
-"Extra listings aren't switched on yet. Please contact AfroVows.": "Les annonces supplémentaires ne sont pas encore activées. Veuillez contacter AfroVows."
+"Extra listings aren't switched on yet. Please contact AfroVows.": "Les annonces supplémentaires ne sont pas encore activées. Veuillez contacter AfroVows.",
+"Join link:": "Lien d'invitation :",
+"Code copied": "Code copié",
+"Copy join link": "Copier le lien",
+"Join link copied": "Lien copié",
+"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their join link. It opens the join page with their invite code filled in, so they only add their name, email and a password.": "Tout le monde ici peut ouvrir ce planificateur et aider pour le budget, les invités, les prestataires et les tâches, sauf les garçons et demoiselles d'honneur, qui ne voient que les onglets Cortège nuptial, Photos et Histoire & détails. Invitez quelqu'un, puis envoyez-lui son lien d'invitation. Il ouvre la page d'inscription avec son code déjà rempli : il n'a plus qu'à ajouter son nom, son e-mail et un mot de passe.",
+"Your invite code is filled in. Add your name, email and a password to join.": "Votre code d'invitation est déjà rempli. Ajoutez votre nom, votre e-mail et un mot de passe pour rejoindre.",
+"You're already signed in on this device. Sign out first, then open the invite link again.": "Vous êtes déjà connecté sur cet appareil. Déconnectez-vous, puis rouvrez le lien d'invitation."
 };

@@ -986,5 +986,12 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.ar={
 "Keep it": "الاحتفاظ به",
 "New listing started. Pick its main service, add its packages and photos, then submit it for approval": "تم إنشاء إعلان جديد. اختر خدمته الرئيسية وأضف باقاته وصوره، ثم أرسله للموافقة",
 "Listing deleted": "تم حذف الإعلان",
-"Extra listings aren't switched on yet. Please contact AfroVows.": "الإعلانات الإضافية غير مفعّلة بعد. يُرجى التواصل مع AfroVows."
+"Extra listings aren't switched on yet. Please contact AfroVows.": "الإعلانات الإضافية غير مفعّلة بعد. يُرجى التواصل مع AfroVows.",
+"Join link:": "رابط الانضمام:",
+"Code copied": "تم نسخ الرمز",
+"Copy join link": "نسخ رابط الانضمام",
+"Join link copied": "تم نسخ الرابط",
+"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their join link. It opens the join page with their invite code filled in, so they only add their name, email and a password.": "يمكن لكل من هنا فتح هذا المخطط والمساعدة في الميزانية والضيوف والمزودين والمهام، باستثناء وصفاء العريس ووصيفات العروس الذين يرون فقط تبويبات موكب الزفاف والصور والقصة والتفاصيل. ادعُ شخصًا ثم أرسل له رابط الانضمام. يفتح الرابط صفحة الانضمام مع رمز الدعوة معبّأً، فيكفيه إضافة اسمه وبريده الإلكتروني وكلمة مرور.",
+"Your invite code is filled in. Add your name, email and a password to join.": "تم إدخال رمز الدعوة. أضف اسمك وبريدك الإلكتروني وكلمة مرور للانضمام.",
+"You're already signed in on this device. Sign out first, then open the invite link again.": "أنت مسجّل الدخول بالفعل على هذا الجهاز. سجّل الخروج أولًا ثم افتح رابط الدعوة مجددًا."
 };

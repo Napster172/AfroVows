@@ -986,3 +986,10 @@
 985|Nuevo anuncio creado. Elige su servicio principal, añade sus paquetes y fotos y envíalo para aprobación
 986|Anuncio eliminado
 987|Los anuncios adicionales aún no están activados. Contacta con AfroVows.
+988|Enlace para unirse:
+989|Código copiado
+990|Copiar enlace
+991|Enlace copiado
+992|Todos aquí pueden abrir este planificador y ayudar con el presupuesto, los invitados, los proveedores y las tareas, excepto los padrinos y las damas de honor, que solo ven las pestañas Cortejo nupcial, Fotos e Historia y detalles. Invita a alguien y envíale su enlace para unirse. Abre la página con su código de invitación ya rellenado, así que solo añade su nombre, correo y una contraseña.
+993|Tu código de invitación ya está rellenado. Añade tu nombre, correo y una contraseña para unirte.
+994|Ya has iniciado sesión en este dispositivo. Cierra sesión y vuelve a abrir el enlace de invitación.
