@@ -1104,3 +1104,4 @@
 1103|Mostrata in cima al planner e alla pagina del matrimonio, sopra i vostri nomi.
 1104|Foto di copertina rimossa
 1105|Foto di copertina aggiunta. Gli ospiti la vedono in cima alla pagina del matrimonio
+1106|Solo foto il cui titolo o tag contengono tutte le parole cercate. Foto con licenza aperta da Openverse e Wikimedia Commons. Tocca una foto per vedere fonte e fotografo.
