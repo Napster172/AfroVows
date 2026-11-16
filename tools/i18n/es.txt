@@ -1014,3 +1014,12 @@
 1013|{0} personas esperan tu aprobación.
 1014|Revisar en la pestaña Equipo
 1015|Solo los novios pueden cambiar la historia y los detalles de la boda. Aquí puedes verlos.
+1016|✓ Hecho
+1017|Marcar como hecho
+1018|Aún no hecho
+1019|Marcado como hecho el {0}
+1020|Marcado como hecho
+1021|Devuelto a los planes abiertos
+1022|Planes pasados sin marcar como hechos ({0})
+1023|Completados ({0})
+1024|No hay nada próximo por ahora.

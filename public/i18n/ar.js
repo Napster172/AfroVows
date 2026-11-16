@@ -1013,5 +1013,14 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.ar={
 "{0} person is waiting for you to approve them.": "{0} شخص بانتظار موافقتك.",
 "{0} people are waiting for you to approve them.": "{0} أشخاص بانتظار موافقتك.",
 "Review on the Team tab": "راجع في تبويب الفريق",
-"Only the bride and groom can change the story and wedding details. You can view them here.": "العروسان فقط يمكنهما تغيير القصة وتفاصيل الزفاف. يمكنك الاطلاع عليها هنا."
+"Only the bride and groom can change the story and wedding details. You can view them here.": "العروسان فقط يمكنهما تغيير القصة وتفاصيل الزفاف. يمكنك الاطلاع عليها هنا.",
+"✓ Done": "✓ تم",
+"Mark as done": "تحديد كمكتمل",
+"Not done yet": "لم يكتمل بعد",
+"Marked as done on {0}": "تم تحديده كمكتمل في {0}",
+"Marked as done": "تم التحديد كمكتمل",
+"Moved back to open plans": "أُعيد إلى الخطط المفتوحة",
+"Past plans not marked as done ({0})": "خطط سابقة لم تُحدَّد كمكتملة ({0})",
+"Completed ({0})": "المكتملة ({0})",
+"Nothing coming up right now.": "لا شيء قادم حاليًا."
 };

@@ -1013,5 +1013,14 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.de={
 "{0} person is waiting for you to approve them.": "{0} Person wartet auf deine Bestätigung.",
 "{0} people are waiting for you to approve them.": "{0} Personen warten auf deine Bestätigung.",
 "Review on the Team tab": "Im Tab Team ansehen",
-"Only the bride and groom can change the story and wedding details. You can view them here.": "Nur Braut und Bräutigam können die Geschichte und die Hochzeitsdetails ändern. Hier kannst du sie ansehen."
+"Only the bride and groom can change the story and wedding details. You can view them here.": "Nur Braut und Bräutigam können die Geschichte und die Hochzeitsdetails ändern. Hier kannst du sie ansehen.",
+"✓ Done": "✓ Erledigt",
+"Mark as done": "Als erledigt markieren",
+"Not done yet": "Noch nicht erledigt",
+"Marked as done on {0}": "Am {0} als erledigt markiert",
+"Marked as done": "Als erledigt markiert",
+"Moved back to open plans": "Zurück zu den offenen Plänen",
+"Past plans not marked as done ({0})": "Vergangene Pläne, nicht als erledigt markiert ({0})",
+"Completed ({0})": "Erledigt ({0})",
+"Nothing coming up right now.": "Gerade steht nichts an."
 };

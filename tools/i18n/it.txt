@@ -1014,3 +1014,12 @@
 1013|{0} persone attendono la tua approvazione.
 1014|Vedi nella scheda Team
 1015|Solo gli sposi possono modificare la storia e i dettagli del matrimonio. Qui puoi vederli.
+1016|✓ Fatto
+1017|Segna come fatto
+1018|Non ancora fatto
+1019|Segnato come fatto il {0}
+1020|Segnato come fatto
+1021|Rimesso tra i piani aperti
+1022|Piani passati non segnati come fatti ({0})
+1023|Completati ({0})
+1024|Nessun impegno in arrivo per ora.
