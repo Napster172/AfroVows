@@ -466,11 +466,23 @@ window.__avNewWedding=(p1,p2,r,email)=>{const w=blank(p1,p2);const r1=r==="Groom
   w.team=[{id:uid(),name:p1,role:r1,email,status:"joined",owner:true},{id:uid(),name:p2,role:r2,email:"",status:"invited",code:inviteCode()}];w.taskGroups=[];return w};
 window.__avMakeCode=(a,b)=>((a+b).toUpperCase().replace(/[^A-Z]/g,"").slice(0,10)||"WEDDING")+Math.floor(10+Math.random()*90);
 window.__avLive=id=>owner===id?S:null;window.__avContent=()=>CONTENT;
-const TROLES=["Bride","Groom","Planner","Family","Friend"];
+const TROLES=["Bride","Groom","Best man","Groomsman","Maid of honour","Bridesmaid","Planner","Family","Friend"];
+/* Bridal party roles. Groomsmen's side and bridesmaids' side decide which plans are theirs. */
+const BP_MEN=["Best man","Groomsman"],BP_WOMEN=["Maid of honour","Bridesmaid"],BP_ROLES=BP_MEN.concat(BP_WOMEN);
+const BP_WHO={all:"Whole bridal party",men:"Groomsmen",women:"Bridesmaids"};
+const seesParty=()=>isCoupleLead()||BP_ROLES.includes((meMember()||{}).role);
+/* Groomsmen and bridesmaids only get these planner tabs. */
+const BP_TABS=["party","photos","details"],partyOnly=()=>!isCoupleLead()&&BP_ROLES.includes((meMember()||{}).role);
 const inviteCode=()=>"AV-"+Math.random().toString(36).slice(2,6).toUpperCase()+Math.floor(10+Math.random()*90);
 function ensureTeam(email){if(S.team)return;const w=S.wedding,demo=email===DEMO;
   S.team=[{id:uid(),name:w.p1,role:"Bride",email,status:"joined",owner:true},{id:uid(),name:w.p2,role:"Groom",email:"",status:"invited",code:demo?"AV-KOFI42":inviteCode()}];
-  if(demo)S.team.push({id:uid(),name:"Auntie Grace",role:"Family",email:"",status:"invited",code:"AV-GRACE7"})}
+  if(demo){S.team.push({id:uid(),name:"Auntie Grace",role:"Family",email:"",status:"invited",code:"AV-GRACE7"},{id:uid(),name:"Kwabena",role:"Groomsman",email:"",status:"invited",code:"AV-KWAB55"},{id:uid(),name:"Esi",role:"Bridesmaid",email:"",status:"invited",code:"AV-ESI88"});
+    const day=n=>new Date(Date.now()+n*864e5).toISOString().slice(0,10);
+    S.party={note:"Colours: gold and emerald green. Groomsmen in white kaftans with kente stoles, bridesmaids in emerald.\nCall Kwabena (best man's helper) for anything on the day.",plans:[
+      {id:uid(),title:"Bridesmaids' dress fitting",date:day(10),time:"14:00",place:"Adjoa's Designs, Osu",who:"women",notes:"Bring the shoes you'll wear."},
+      {id:uid(),title:"Groomsmen's kaftan fitting",date:day(12),time:"16:00",place:"Kofi's tailor, Kaneshie",who:"men",notes:""},
+      {id:uid(),title:"Dance practice",date:day(18),time:"17:30",place:"Bride's family house, East Legon",who:"all",notes:"We'll learn the entrance dance. Wear trainers."},
+      {id:uid(),title:"Church rehearsal",date:day(30),time:"10:00",place:"The wedding church",who:"all",notes:"Whole bridal party, with the officiating minister."}]}}}
 const weddingKey=()=>(acct(me)||{}).weddingOf||me;
 const meMember=()=>(S&&S.team||[]).find(t=>t.email===me);
 const partnerName=r=>{const t=(S.team||[]).find(x=>x.role===r);return t?t.name:(r==="Bride"?S.wedding.p1:S.wedding.p2)};
@@ -683,14 +695,15 @@ function vHome(){
 
 
 /* ---------- Planner ---------- */
-const PTABS=[["overview","Overview"],["budget","Budget"],["myvendors","My vendors"],["todo","To-do"],["guests","Guests & RSVP"],["team","Team"],["photos","Photos"],["details","Story & details"]];
+const PTABS=[["overview","Overview"],["budget","Budget"],["myvendors","My vendors"],["todo","To-do"],["guests","Guests & RSVP"],["party","Bridal party"],["team","Team"],["photos","Photos"],["details","Story & details"]];
 function vPlanner(){
-  const w=S.wedding;
+  const w=S.wedding,lim=partyOnly();if(ui.ptab==="party"&&!seesParty())ui.ptab="overview";if(lim&&!BP_TABS.includes(ui.ptab))ui.ptab="party";
+  const tabs=PTABS.filter(t=>(t[0]!=="party"||seesParty())&&(!lim||BP_TABS.includes(t[0])));
   return `<div class="stack">
    <div class="split"><div><span class="eyebrow"><span class="lock" aria-hidden="true"></span>Private planner · only your wedding team can see this</span><h1 style="font-size:clamp(26px,5vw,36px)">${esc(coupleNames())}</h1>
      <p class="small muted">Wedding code for your guests: <span class="code">${esc(myCode())}</span>${meMember()?` · Signed in as <b>${esc(meMember().name)}</b> (${esc(meMember().role)})`:""}</p></div><a class="btn" href="#wedding">Preview guest page</a></div>
-   <div class="chips" role="tablist">${PTABS.map(t=>`<button class="chip ${ui.ptab===t[0]?"on":""}" role="tab" aria-selected="${ui.ptab===t[0]}" data-act="ptab" data-id="${t[0]}">${t[1]}</button>`).join("")}</div>
-   <div>${({overview:pOverview,budget:pBudget,guests:pGuests,todo:pTodo,team:pTeam,myvendors:pMyVendors,photos:pPhotos,details:pDetails})[ui.ptab]()}</div></div>`;
+   <div class="chips" role="tablist">${tabs.map(t=>`<button class="chip ${ui.ptab===t[0]?"on":""}" role="tab" aria-selected="${ui.ptab===t[0]}" data-act="ptab" data-id="${t[0]}">${t[1]}</button>`).join("")}</div>
+   <div>${({overview:pOverview,budget:pBudget,guests:pGuests,todo:pTodo,team:pTeam,party:pParty,myvendors:pMyVendors,photos:pPhotos,details:pDetails})[ui.ptab]()}</div></div>`;
 }
 function budgetTotals(){const it=S.budget.items;return{est:it.reduce((a,b)=>a+(+b.est||0),0),actual:it.reduce((a,b)=>a+(+b.actual||0),0),paid:it.reduce((a,b)=>a+(+b.paid||0),0)}}
 function rsvpStats(ev){const gs=S.guests.filter(g=>(g.events||"").split(",").includes(ev));const s={invited:gs.length,yes:0,no:0,pend:0,heads:0};
@@ -764,7 +777,7 @@ function todoDash(groups){
 function pTeam(){
   const lead=isCoupleLead();
   return `<div class="stack">
-   <p class="muted">Everyone here can open this planner and help with the budget, guests, vendors and to-dos. ${lead?"Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.":"Only the bride and groom can invite or remove people."}</p>
+   <p class="muted">Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. ${lead?"Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.":"Only the bride and groom can invite or remove people."}</p>
    <div class="grid g2">${(S.team||[]).map(t=>`<div class="card stack" style="gap:6px"><div class="split"><h3>${esc(t.name)}</h3><span class="pill ${t.status==="joined"?"p-yes":"p-pend"}">${t.status==="joined"?"Joined":"Invite sent"}</span></div>
      <p class="small muted">${esc(t.role)}${t.owner?" · created this wedding":""}${t.email&&t.email!==DEMO?" · "+esc(t.email):""}${t.email===me?" · <b>you</b>":""}</p>
      ${t.status==="invited"?`<p class="small">Invite code: <span class="code">${esc(t.code)}</span></p>${lead?`<div class="row">${t.phone?`<a class="btn sm wa" target="_blank" rel="noopener" href="https://wa.me/${waNum(t.phone)}?text=${encodeURIComponent(`Hi ${t.name}! Join our wedding planning on AfroVows. Go to Couples sign in, choose "Join with an invite code" and enter ${t.code}`)}">Send on WhatsApp</a>`:""}<button class="btn sm" data-act="copy" data-id="${esc(t.code)}">Copy code</button></div>`:""}`:""}
@@ -776,6 +789,37 @@ function pTeam(){
      <div><button class="btn pri">Create invite</button></div></form>`:""}
   </div>`;
 }
+function partyPlans(){return (S.party&&S.party.plans)||[]}
+function pParty(){
+  const lead=isCoupleLead(),mine=(meMember()||{}).role,side=BP_MEN.includes(mine)?"men":BP_WOMEN.includes(mine)?"women":null;
+  const f=ui.pfilter||(side||"all"),members=(S.team||[]).filter(t=>BP_ROLES.includes(t.role));
+  const shown=partyPlans().filter(x=>f==="all"||x.who==="all"||x.who===f).slice().sort((a,b)=>(a.date||"9")<(b.date||"9")?-1:(a.date||"9")>(b.date||"9")?1:(a.time||"").localeCompare(b.time||""));
+  const up=shown.filter(x=>daysTo(x.date)==null||daysTo(x.date)>=0),past=shown.filter(x=>daysTo(x.date)!=null&&daysTo(x.date)<0);
+  const card=x=>{const d=daysTo(x.date);return `<div class="card stack" style="gap:6px"><div class="split"><h3>${esc(x.title)}</h3><span class="pill ${x.who==="men"?"p-neutral":x.who==="women"?"p-feat":"p-yes"}">${esc(BP_WHO[x.who]||BP_WHO.all)}</span></div>
+    <p class="small"><b>${x.date?esc(longDate(x.date)):"Date to be confirmed"}${x.time?" · "+esc(x.time):""}</b>${d!=null&&d>=0?` <span class="pill p-neutral num">${d===0?"Today":d===1?"Tomorrow":d+" days to go"}</span>`:""}</p>
+    ${x.place?`<p class="small muted">${esc(x.place)}</p>`:""}${x.notes?`<p class="small" style="white-space:pre-line">${esc(x.notes)}</p>`:""}
+    ${lead?`<div class="row"><button class="btn sm ghost" data-act="editpp" data-id="${x.id}">Edit</button></div>`:""}</div>`};
+  return `<div class="stack">
+   <p class="muted">${lead?"Plans for your groomsmen and bridesmaids: rehearsals, fittings, dance practice and anything else. Only you and the people you invite as best man, groomsman, maid of honour or bridesmaid can see this tab.":"Plans from the couple for the bridal party. Check back for changes."}</p>
+   <div class="card stack" style="gap:8px"><div class="split"><h3>The bridal party</h3><span class="small muted num">${members.length} ${members.length===1?"person":"people"}</span></div>
+     ${members.length?`<div class="row" style="gap:6px">${members.map(t=>`<span class="pill ${t.status==="joined"?"p-yes":"p-pend"}">${esc(t.name)} · ${esc(t.role)}${t.status==="joined"?"":" (invited)"}</span>`).join("")}</div>`:`<p class="small muted">No one yet.${lead?" Invite your groomsmen and bridesmaids from the Team tab and choose their role.":""}</p>`}
+     ${lead&&members.length?`<div><button class="btn sm" data-act="ptab" data-id="team">Invite more from Team</button></div>`:""}</div>
+   <div class="card stack" style="gap:8px"><h3>Notes for the bridal party</h3>
+     ${lead?`<form class="stack" style="gap:8px" data-form="partynote"><textarea name="note" id="pp-note" rows="3" placeholder="Colours and outfits, what to bring, who to call on the day, contributions…">${esc((S.party||{}).note||"")}</textarea><div><button class="btn sm">Save notes</button></div></form>`
+       :`<p class="small" style="white-space:pre-line">${(S.party||{}).note?esc(S.party.note):"<span class='muted'>No notes yet.</span>"}</p>`}</div>
+   <div class="split"><div class="chips">${Object.entries(BP_WHO).map(([k,l])=>`<button class="chip ${f===k?"on":""}" data-act="pfilter" data-id="${k}">${k==="all"?"Everything":l}</button>`).join("")}</div>${lead?`<button class="btn pri" data-act="editpp">Add a plan</button>`:""}</div>
+   ${up.length?`<div class="grid g2">${up.map(card).join("")}</div>`:`<div class="empty">No plans yet.${lead?" Add the rehearsal, fittings or a get-together.":""}</div>`}
+   ${past.length?`<details><summary class="small muted">Past plans (${past.length})</summary><div class="grid g2" style="margin-top:10px">${past.map(card).join("")}</div></details>`:""}</div>`;
+}
+function partyModal(id){const x=partyPlans().find(p=>p.id===id)||{who:"all"};
+  modal(`<div class="split"><h2>${id?"Edit plan":"Add a plan"}</h2><button class="btn sm ghost" data-act="close" aria-label="Close">×</button></div>
+   <form class="stack" style="gap:12px" data-form="partyplan" data-id="${id||""}">
+    <label class="f">What<input name="title" id="pp-title" required value="${esc(x.title||"")}" placeholder="e.g. Church rehearsal"></label>
+    <div class="grid g2"><label class="f">Date<input type="date" name="date" id="pp-date" value="${esc(x.date||"")}"></label><label class="f">Time<input type="time" name="time" id="pp-time" value="${esc(x.time||"")}"></label></div>
+    <label class="f">Where<input name="place" id="pp-place" value="${esc(x.place||"")}" placeholder="e.g. Christ the King Church, Accra"></label>
+    <label class="f">Who it's for<select name="who" id="pp-who">${Object.entries(BP_WHO).map(([k,l])=>`<option value="${k}" ${x.who===k?"selected":""}>${l}</option>`).join("")}</select></label>
+    <label class="f">Details<textarea name="notes" id="pp-notes" rows="3" placeholder="What to wear or bring, who's leading it…">${esc(x.notes||"")}</textarea></label>
+    <div class="row" style="justify-content:space-between"><button class="btn pri">Save</button>${id?`<button type="button" class="btn sm ghost danger" data-act="delpp" data-id="${id}">Delete this plan</button>`:""}</div></form>`)}
 function pBudget(){
   const t=budgetTotals(),items=S.budget.items,pct=Math.min(100,t.est/(S.budget.total||1)*100),over=t.est>S.budget.total;
   const ord=BORDER(),cats=[...new Set(items.map(bcat))].sort((a,b)=>(ord.indexOf(a)+1||99)-(ord.indexOf(b)+1||99));
@@ -1403,6 +1447,9 @@ document.addEventListener("click",async e=>{
     case"leaveguest":ui.guestOf=null;S=null;owner=null;mode="none";rerender();break;
     case"delsp":{collectDetails(true);const s=S.wedding.story.find(x=>x.id===id);if(s){s.photos=(s.photos||[]).filter(p=>p.id!==t.dataset.pid);save();rerender()}break}
     case"editb":budgetModal(id);break;
+    case"editpp":if(isCoupleLead())partyModal(id);break;
+    case"pfilter":ui.pfilter=id;rerender();break;
+    case"delpp":{if(!isCoupleLead())break;S.party=S.party||{};S.party.plans=partyPlans().filter(x=>x.id!==id);save();closeModal();rerender();toast("Plan deleted");break}
     case"delb":S.budget.items=S.budget.items.filter(i=>i.id!==id);save();closeModal();rerender();toast("Item deleted");break;
     case"editg":guestModal(id);break;
     case"delg":S.guests=S.guests.filter(g=>g.id!==id);save();closeModal();rerender();toast("Guest removed");break;
@@ -1531,6 +1578,9 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
       const rec={id:uid(),by:me,name,rating:+d.rating||5,text:d.text.trim(),at:Date.now(),hired};
       const i=list.findIndex(x=>x.by===me);if(i>=0)list[i]=rec;else list.push(rec);r[id]=list;setReviews(r);toast("Thanks! Your review is posted");rerender();vendorModal(id);break}
     case"taskgroup":{S.taskGroups=S.taskGroups||[];S.taskGroups.push({id:"g"+uid(),label:d.label.trim()});save();rerender();toast("Group created");break}
+    case"partyplan":{if(!isCoupleLead())break;S.party=S.party||{};const pl=partyPlans().slice(),rec={title:d.title.trim(),date:d.date,time:d.time,place:d.place.trim(),who:d.who,notes:d.notes.trim()};
+      const i=pl.findIndex(x=>x.id===f.dataset.id);if(i>=0)pl[i]={...pl[i],...rec};else pl.push({id:uid(),...rec});S.party.plans=pl;save();closeModal();rerender();toast("Plan saved");break}
+    case"partynote":{if(!isCoupleLead())break;S.party=S.party||{};S.party.note=d.note.trim();save();rerender();toast("Notes saved");break}
     case"invite":{if(!isCoupleLead())break;S.team.push({id:uid(),name:d.name.trim(),role:d.role,phone:d.phone.trim(),email:"",status:"invited",code:inviteCode()});save();rerender();toast("Invite created. Send them the code");break}
     case"about":{if(role()!=="admin")break;const A=collectAbout();A.team=A.team.filter(t=>t.name.trim()||t.role.trim());setAbout(A);ui.aboutEdit=false;rerender();window.scrollTo(0,0);toast("About us page updated");break}
     case"doc":{const i=docItem(id);const file=$("#dc-file").files[0];if(!i||!file)break;

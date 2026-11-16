@@ -938,3 +938,40 @@
 937|(la grande image en haut de votre fiche ; téléversez-en une ou touchez « Mettre en couverture » sur une photo de réalisation)
 938|Photo de couverture modifiée. Soumettez-la pour validation
 939|ex. {0}
+940|Témoin du marié
+941|Garçon d'honneur
+942|Témoin de la mariée
+943|Cortège nuptial
+944|Tout le cortège
+945|Garçons d'honneur
+946|Demoiselles d'honneur
+947|Ajouter un plan
+948|Modifier le plan
+949|Le cortège nuptial
+950|{0} personnes
+951|{0} personne
+952|Notes pour le cortège
+953|Enregistrer les notes
+954|Notes enregistrées
+955|Plan enregistré
+956|Plan supprimé
+957|Supprimer ce plan
+958|Quoi
+959|Heure
+960|Où
+961|Pour qui
+962|Détails
+963|Plans passés ({0})
+964|Aucun plan pour l'instant.
+965|Aucun plan pour l'instant. Ajoutez la répétition, les essayages ou une rencontre.
+966|Inviter d'autres personnes depuis Équipe
+967|Les plans pour vos garçons et demoiselles d'honneur : répétitions, essayages, entraînement de danse et le reste. Seuls vous et les personnes invitées comme témoin, garçon d'honneur ou demoiselle d'honneur voient cet onglet.
+968|Les plans du couple pour le cortège. Revenez voir s'il y a des changements.
+969|Personne pour l'instant.
+970|Personne pour l'instant. Invitez vos garçons et demoiselles d'honneur depuis l'onglet Équipe et choisissez leur rôle.
+971|Aucune note pour l'instant.
+972|Demain
+973|Couleurs et tenues, quoi apporter, qui appeler le jour J, contributions…
+974|ex. Répétition à l'église
+975|Quoi porter ou apporter, qui s'en charge…
+976|Tout le monde ici peut ouvrir ce planificateur et aider pour le budget, les invités, les prestataires et les tâches, sauf les garçons et demoiselles d'honneur, qui ne voient que les onglets Cortège nuptial, Photos et Histoire & détails. Invitez quelqu'un, puis envoyez-lui son code d'invitation. Il rejoint depuis Connexion couples, puis Rejoindre avec un code d'invitation.

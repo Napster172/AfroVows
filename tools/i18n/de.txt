@@ -938,3 +938,40 @@
 937|(das große Bild oben in deinem Eintrag; lade eins hoch oder tippe bei einem Arbeitsfoto auf "Als Titelbild")
 938|Titelbild geändert. Reiche es zur Freigabe ein
 939|z. B. {0}
+940|Trauzeuge
+941|Groomsman
+942|Erste Brautjungfer
+943|Brautgefolge
+944|Gesamtes Brautgefolge
+945|Groomsmen
+946|Brautjungfern
+947|Plan hinzufügen
+948|Plan bearbeiten
+949|Das Brautgefolge
+950|{0} Personen
+951|{0} Person
+952|Notizen für das Brautgefolge
+953|Notizen speichern
+954|Notizen gespeichert
+955|Plan gespeichert
+956|Plan gelöscht
+957|Diesen Plan löschen
+958|Was
+959|Uhrzeit
+960|Wo
+961|Für wen
+962|Details
+963|Vergangene Pläne ({0})
+964|Noch keine Pläne.
+965|Noch keine Pläne. Füge die Probe, Anproben oder ein Treffen hinzu.
+966|Weitere über Team einladen
+967|Pläne für eure Groomsmen und Brautjungfern: Proben, Anproben, Tanzübungen und mehr. Nur ihr und die Personen, die ihr als Trauzeuge, Groomsman, erste Brautjungfer oder Brautjungfer einladet, sehen diesen Tab.
+968|Pläne des Brautpaars für das Brautgefolge. Schau wieder vorbei, falls sich etwas ändert.
+969|Noch niemand.
+970|Noch niemand. Lade eure Groomsmen und Brautjungfern im Tab Team ein und wähle ihre Rolle.
+971|Noch keine Notizen.
+972|Morgen
+973|Farben und Outfits, was mitzubringen ist, wen man am Tag anruft, Beiträge…
+974|z. B. Probe in der Kirche
+975|Was anziehen oder mitbringen, wer leitet…
+976|Alle hier können diesen Planer öffnen und beim Budget, bei Gästen, Dienstleistern und Aufgaben helfen – außer Groomsmen und Brautjungfern, die nur die Tabs Brautgefolge, Fotos sowie Geschichte & Details sehen. Lade jemanden ein und schicke ihm den Einladungscode. Beitreten geht über die Paar-Anmeldung und dann „Mit Einladungscode beitreten“.

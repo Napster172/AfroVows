@@ -938,3 +938,40 @@
 937|(l'immagine grande in cima al tuo annuncio; caricane una o tocca "Usa come copertina" su una foto dei lavori)
 938|Foto di copertina cambiata. Inviala per l'approvazione
 939|es. {0}
+940|Testimone dello sposo
+941|Groomsman
+942|Damigella d'onore principale
+943|Corteo nuziale
+944|Tutto il corteo
+945|Groomsmen
+946|Damigelle
+947|Aggiungi un piano
+948|Modifica piano
+949|Il corteo nuziale
+950|{0} persone
+951|{0} persona
+952|Note per il corteo
+953|Salva note
+954|Note salvate
+955|Piano salvato
+956|Piano eliminato
+957|Elimina questo piano
+958|Cosa
+959|Ora
+960|Dove
+961|Per chi
+962|Dettagli
+963|Piani passati ({0})
+964|Ancora nessun piano.
+965|Ancora nessun piano. Aggiungi le prove, le prove abito o un incontro.
+966|Invita altri da Team
+967|Piani per i vostri groomsmen e damigelle: prove, prove abito, prove di ballo e altro. Solo voi e le persone invitate come testimone, groomsman, damigella principale o damigella possono vedere questa scheda.
+968|Piani della coppia per il corteo. Ricontrolla per eventuali cambiamenti.
+969|Ancora nessuno.
+970|Ancora nessuno. Invita groomsmen e damigelle dalla scheda Team e scegli il loro ruolo.
+971|Ancora nessuna nota.
+972|Domani
+973|Colori e abiti, cosa portare, chi chiamare il giorno, contributi…
+974|es. Prove in chiesa
+975|Cosa indossare o portare, chi lo guida…
+976|Tutti qui possono aprire questo planner e aiutare con budget, ospiti, fornitori e attività, tranne groomsmen e damigelle, che vedono solo le schede Corteo nuziale, Foto e Storia e dettagli. Invita qualcuno, poi inviagli il codice di invito. Si unisce da Accesso coppie, poi Unisciti con un codice di invito.
