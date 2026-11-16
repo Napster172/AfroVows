@@ -905,3 +905,36 @@
 904|Anrufen
 905|Dies ist ein Beispieleintrag ohne echte Nummer. Echte Anbieter zeigen hier WhatsApp und Anrufen.
 906|Per E-Mail antworten
+907|Ideen & Tipps
+908|Ratgeber für ghanaische Paare
+909|Alle Ratgeber ansehen
+910|Hochzeitsratgeber für ghanaische Paare
+911|Praktische Hilfe für die Verlobung, die weiße Hochzeit und die Zeit danach: Papierkram, Budget, Traditionen und mehr.
+912|Alle Ratgeber
+913|← Alle Ideen & Tipps
+914|Weitere Ratgeber
+915|{0} Min. Lesezeit
+916|Nach der Hochzeit
+917|Recht & Formalitäten
+918|Traditionen
+919|Planung
+920|Dienstleister
+921|Gäste
+922|Diese Ratgeber sind allgemeine Informationen für eure Planung. Regeln, Gebühren und Formulare können sich ändern – fragt bei der zuständigen Stelle nach.
+923|Kapazität
+924|Kapazität:
+925|{0} bis {1} Gäste
+926|Bis zu {0} Gäste
+927|Ab {0} Gästen
+928|Kleinste Gästezahl
+929|Größte Gästezahl
+930|Kapazität der Location. Lass das erste Feld leer, wenn es kein Minimum gibt.
+931|Anzahl der Gäste
+932|Beliebige Gästezahl
+933|Etwa {0} Gäste
+934|{0} oder mehr Gäste
+935|Als Titelbild
+936|Titelbild
+937|(das große Bild oben in deinem Eintrag; lade eins hoch oder tippe bei einem Arbeitsfoto auf "Als Titelbild")
+938|Titelbild geändert. Reiche es zur Freigabe ein
+939|z. B. {0}
