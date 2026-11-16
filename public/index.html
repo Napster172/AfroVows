@@ -327,7 +327,10 @@ async function dbBoot(){
 }
 async function dbAfter(){const p=DBX.profile,sb=DBX.sb;if(!p||p.role!=="couple")return;const meta=DBX.user.user_metadata||{};
   if(!p.wedding_id){
-    if(meta.invite){const {data:wid}=await sb.rpc("join_wedding",{invite:meta.invite,display_name:meta.name||""});if(wid)p.wedding_id=wid;else DBX.meta.badInvite=true}
+    if(meta.invite){let {data:pj}=await sb.rpc("my_join_request");
+      if(!pj&&!meta.asked){const {data:r}=await sb.rpc("request_join",{invite:meta.invite,first_name:meta.first||meta.name||"",last_name:meta.last||""});
+        await sb.auth.updateUser({data:{asked:true}});if(r==="requested")({data:pj}=await sb.rpc("my_join_request"))}
+      DBX.pending=pj||{declined:true}}
     if(!p.wedding_id&&(meta.p1||!meta.invite)){const w=window.__avNewWedding(meta.p1||meta.name||"Partner",meta.p2||"Partner",meta.me_role||"Bride",p.email);
       for(let i=0;i<5&&!p.wedding_id;i++){const code=window.__avMakeCode(meta.p1||meta.name||"",meta.p2||"");
         const {data,error}=await sb.from("weddings").insert({code,data:w}).select("id").single();if(!error)p.wedding_id=data.id;else if(error.code!=="23505")throw error}}}
@@ -479,10 +482,15 @@ const BP_WHO={all:"Whole bridal party",men:"Groomsmen",women:"Bridesmaids"};
 const seesParty=()=>isCoupleLead()||BP_ROLES.includes((meMember()||{}).role);
 /* Groomsmen and bridesmaids only get these planner tabs. */
 const BP_TABS=["party","photos","details"],partyOnly=()=>!isCoupleLead()&&BP_ROLES.includes((meMember()||{}).role);
+/* Joining needs the invite's first and last name, and the bride or groom approves every new joiner. */
+const normName=x=>String(x||"").toLowerCase().replace(/\./g,"").replace(/\s+/g," ").trim();
+function nameMatches(t,first,last){const f=normName(first),l=normName(last);if(!f)return false;
+  if(t.first)return f===normName(t.first)&&(!normName(t.last)||l===normName(t.last));
+  const n=normName(t.name);return n===normName(first+" "+last)||n===f}
 const inviteCode=()=>"AV-"+Math.random().toString(36).slice(2,6).toUpperCase()+Math.floor(10+Math.random()*90);
 function ensureTeam(email){if(S.team)return;const w=S.wedding,demo=email===DEMO;
   S.team=[{id:uid(),name:w.p1,role:"Bride",email,status:"joined",owner:true},{id:uid(),name:w.p2,role:"Groom",email:"",status:"invited",code:demo?"AV-KOFI42":inviteCode()}];
-  if(demo){S.team.push({id:uid(),name:"Auntie Grace",role:"Family",email:"",status:"invited",code:"AV-GRACE7"},{id:uid(),name:"Kwabena",role:"Groomsman",email:"",status:"invited",code:"AV-KWAB55"},{id:uid(),name:"Esi",role:"Bridesmaid",email:"",status:"invited",code:"AV-ESI88"});
+  if(demo){S.team.push({id:uid(),name:"Auntie Grace",first:"Grace",last:"Owusu",role:"Family",email:"",status:"invited",code:"AV-GRACE7"},{id:uid(),name:"Kwabena Asante",first:"Kwabena",last:"Asante",role:"Groomsman",email:"",status:"invited",code:"AV-KWAB55"},{id:uid(),name:"Esi Boateng",first:"Esi",last:"Boateng",role:"Bridesmaid",email:"",status:"invited",code:"AV-ESI88"});
     const day=n=>new Date(Date.now()+n*864e5).toISOString().slice(0,10);
     S.party={note:"Colours: gold and emerald green. Groomsmen in white kaftans with kente stoles, bridesmaids in emerald.\nCall Kwabena (best man's helper) for anything on the day.",plans:[
       {id:uid(),title:"Bridesmaids' dress fitting",date:day(10),time:"14:00",place:"Adjoa's Designs, Osu",who:"women",notes:"Bring the shoes you'll wear."},
@@ -493,6 +501,27 @@ const weddingKey=()=>(acct(me)||{}).weddingOf||me;
 const meMember=()=>(S&&S.team||[]).find(t=>t.email===me);
 const partnerName=r=>{const t=(S.team||[]).find(x=>x.role===r);return t?t.name:(r==="Bride"?S.wedding.p1:S.wedding.p2)};
 const isCoupleLead=()=>{const m=meMember();return !!m&&(m.owner||m.role==="Bride"||m.role==="Groom")};
+const NAME_MISMATCH="That name doesn't match this invite. Use your first and last name exactly as the couple wrote them, or ask them to check the invite.";
+/* Preview mode: find the invite, check the name, and mark it as asking to join. Returns "ok", "name" or "invalid". */
+function localRequest(code,first,last,email){code=String(code||"").trim().toUpperCase();
+  for(const a of accounts()){if(a.role||a.weddingOf||a.pendingOf)continue;const w=loadWedding(a.email),t=w&&(w.team||[]).find(t=>t.code===code&&t.status==="invited");if(!t)continue;
+    if(!nameMatches(t,first,last))return "name";
+    Object.assign(t,{status:"requested",email,code:"",asked:(first.trim()+" "+last.trim()).trim(),askedAt:Date.now()});store.set("afrovows.w."+a.email,JSON.stringify(w));ui.reqHost=a.email;return "ok"}
+  return "invalid"}
+/* Someone who asked to join but isn't approved yet: {p1,p2,role} while waiting, {declined:true} if turned down, else null. */
+function pendingJoin(){if(role()!=="couple")return null;
+  if(HOSTED)return DBX.pending||null;
+  const a=acct(me);if(!a||!a.pendingOf)return null;const w=loadWedding(a.pendingOf),t=w&&(w.team||[]).find(t=>t.email===me);
+  if(t&&t.status==="joined"){const all=accounts(),x=all.find(x=>x.email===me);x.weddingOf=a.pendingOf;delete x.pendingOf;setAccounts(all);return null}
+  return t&&t.status==="requested"?{p1:w.wedding.p1,p2:w.wedding.p2,role:t.role}:{declined:true}}
+function vPending(p){
+  return `<div class="auth stack"><div><span class="eyebrow"><span class="lock" aria-hidden="true"></span>${T("auth.eyebrow","Couples area")}</span>
+   <h1 style="font-size:clamp(26px,5vw,34px)">${p.declined?"Your request wasn't approved":"Waiting for approval"}</h1></div>
+   ${p.declined?`<div class="card stack" style="gap:8px"><p>The couple didn't approve this request. If they've sent you a new invite, enter it below.</p></div>
+     <form class="card stack" style="gap:12px" data-form="rejoin"><div class="grid g2"><label class="f">First name<input name="first" id="rj-first" required autocomplete="given-name"></label><label class="f">Last name<input name="last" id="rj-last" required autocomplete="family-name"></label></div>
+     <label class="f">Invite code<input name="code" id="rj-code" required placeholder="AV-XXXX00" style="text-transform:uppercase"></label><p class="small" id="rj-err" style="color:var(--red)" hidden></p><button class="btn pri" style="justify-content:center">Ask to join</button></form>`
+    :`<div class="card stack" style="gap:8px"><p>You've asked to join <b>${esc(p.p1)} &amp; ${esc(p.p2)}</b>'s wedding planning${p.role?` as ${esc(p.role.toLowerCase())}`:""}.</p><p class="muted">The bride or groom will check it's really you and approve you. Once they do, refresh this page or sign in again to open the planner.</p><div><button class="btn" data-act="refreshpending">Check again</button></div></div>`}
+   <p class="small muted">Signed in as ${esc(me)}. <a href="#home" data-act="signout">Sign out</a></p></div>`}
 function useCouple(){const key=weddingKey();if(mode==="couple"&&owner===key&&S)return;owner=key;S=loadWedding(key)||blank("Partner","Partner");mode="couple";
   if(!S.team){ensureTeam(key);save()}
   S.taskGroups=S.taskGroups||[];
@@ -620,6 +649,8 @@ function route(){const h=location.hash.slice(1);
     if(before!==JSON.stringify(DBX.pub)+mem["afrovows.reviews"]&&!document.querySelector(".modal")&&document.activeElement?.tagName!=="INPUT"&&["#vendors","#home","","#"].includes(location.hash))rerender()})}
   if((r==="planner"||r==="wedding")&&ro!=="couple"){if(ro)r=roleHome();else{ui.after=r;r="signin"}}
   if(r==="signin"&&ro)r=roleHome();
+  const pend=(r==="planner"||r==="wedding")&&pendingJoin();
+  if(pend){renderChrome(r);$("#app").innerHTML=vPending(pend);return}
   if(r==="planner"||r==="wedding")useCouple();
   if(r==="guest"&&ui.guestOf)useGuest(ui.guestOf);
   renderChrome(r);
@@ -707,9 +738,11 @@ const PTABS=[["overview","Overview"],["budget","Budget"],["myvendors","My vendor
 function vPlanner(){
   const w=S.wedding,lim=partyOnly();if(ui.ptab==="party"&&!seesParty())ui.ptab="overview";if(lim&&!BP_TABS.includes(ui.ptab))ui.ptab="party";
   const tabs=PTABS.filter(t=>(t[0]!=="party"||seesParty())&&(!lim||BP_TABS.includes(t[0])));
+  const asks=isCoupleLead()?(S.team||[]).filter(t=>t.status==="requested").length:0;
   return `<div class="stack">
    <div class="split"><div><span class="eyebrow"><span class="lock" aria-hidden="true"></span>Private planner · only your wedding team can see this</span><h1 style="font-size:clamp(26px,5vw,36px)">${esc(coupleNames())}</h1>
      <p class="small muted">Wedding code for your guests: <span class="code">${esc(myCode())}</span>${meMember()?` · Signed in as <b>${esc(meMember().name)}</b> (${esc(meMember().role)})`:""}</p></div><a class="btn" href="#wedding">Preview guest page</a></div>
+   ${asks&&ui.ptab!=="team"?`<div class="card row small" style="justify-content:space-between;background:var(--gold-soft);padding:10px 14px"><span>${asks===1?"1 person is waiting for you to approve them.":asks+" people are waiting for you to approve them."}</span><button class="btn sm pri" data-act="ptab" data-id="team">Review on the Team tab</button></div>`:""}
    <div class="chips" role="tablist">${tabs.map(t=>`<button class="chip ${ui.ptab===t[0]?"on":""}" role="tab" aria-selected="${ui.ptab===t[0]}" data-act="ptab" data-id="${t[0]}">${t[1]}</button>`).join("")}</div>
    <div>${({overview:pOverview,budget:pBudget,guests:pGuests,todo:pTodo,team:pTeam,party:pParty,myvendors:pMyVendors,photos:pPhotos,details:pDetails})[ui.ptab]()}</div></div>`;
 }
@@ -787,13 +820,16 @@ const joinText=t=>`Hi ${t.name}! You're invited to help plan our wedding on Afro
 function pTeam(){
   const lead=isCoupleLead();
   return `<div class="stack">
-   <p class="muted">Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. ${lead?"Invite someone, then send them their join link. It opens the join page with their invite code filled in, so they only add their name, email and a password.":"Only the bride and groom can invite or remove people."}</p>
-   <div class="grid g2">${(S.team||[]).map(t=>`<div class="card stack" style="gap:6px"><div class="split"><h3>${esc(t.name)}</h3><span class="pill ${t.status==="joined"?"p-yes":"p-pend"}">${t.status==="joined"?"Joined":"Invite sent"}</span></div>
+   <p class="muted">Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. ${lead?"Invite someone, then send them their join link. They type the first and last name you entered, and you approve them before they can see anything.":"Only the bride and groom can invite or remove people."}</p>
+   <div class="grid g2">${(S.team||[]).map(t=>`<div class="card stack" style="gap:6px"><div class="split"><h3>${esc(t.name)}</h3><span class="pill ${t.status==="joined"?"p-yes":t.status==="requested"?"p-no":"p-pend"}">${t.status==="joined"?"Joined":t.status==="requested"?"Waiting for your approval":"Invite sent"}</span></div>
      <p class="small muted">${esc(t.role)}${t.owner?" · created this wedding":""}${t.email&&t.email!==DEMO?" · "+esc(t.email):""}${t.email===me?" · <b>you</b>":""}</p>
      ${t.status==="invited"?`<p class="small">Invite code: <span class="code">${esc(t.code)}</span></p>${lead?`<p class="small">Join link: <a href="${esc(joinLink(t.code))}" style="word-break:break-all">${esc(joinLink(t.code))}</a></p><div class="row"><a class="btn sm wa" target="_blank" rel="noopener" href="https://wa.me/${t.phone?waNum(t.phone):""}?text=${encodeURIComponent(joinText(t))}">Send on WhatsApp</a><button class="btn sm" data-act="copy" data-id="${esc(joinLink(t.code))}" data-msg="Join link copied">Copy join link</button><button class="btn sm ghost" data-act="copy" data-id="${esc(t.code)}" data-msg="Code copied">Copy code</button></div>`:""}`:""}
-     ${lead&&!t.owner&&t.email!==me?`<div><button class="btn sm ghost danger" data-act="delmember" data-id="${t.id}">${t.status==="joined"?"Remove access":"Cancel invite"}</button></div>`:""}</div>`).join("")}</div>
-   ${lead?`<form class="card stack" style="gap:10px" data-form="invite"><h3>Invite someone</h3><div class="grid g3">
-     <label class="f">Name<input name="name" id="iv-name" required></label>
+     ${t.status==="requested"?`<div class="card small stack" style="gap:6px;background:var(--gold-soft);padding:10px"><span>Asked to join as <b>${esc(t.asked||t.name)}</b> with ${esc(t.email)}${t.askedAt?` on ${fmtDay(t.askedAt)}`:""}.</span><span class="muted">Only approve if you know this is really ${esc(t.name)}. Not sure? Check with them on WhatsApp first.</span>
+       ${lead?`<div class="row"><button class="btn sm pri" data-act="approvejoin" data-id="${t.id}">Approve</button><button class="btn sm ghost danger" data-act="declinejoin" data-id="${t.id}">Decline</button></div>`:""}</div>`:""}
+     ${lead&&!t.owner&&t.email!==me&&t.status!=="requested"?`<div><button class="btn sm ghost danger" data-act="delmember" data-id="${t.id}">${t.status==="joined"?"Remove access":"Cancel invite"}</button></div>`:""}</div>`).join("")}</div>
+   ${lead?`<form class="card stack" style="gap:10px" data-form="invite"><h3>Invite someone</h3><p class="small muted">Use the name on their Ghana Card or as they'd normally write it. They must type the same first and last name to join.</p><div class="grid g2">
+     <label class="f">First name<input name="first" id="iv-name" required></label>
+     <label class="f">Last name<input name="last" id="iv-last" required></label>
      <label class="f">Their role<select name="role" id="iv-role">${TROLES.filter(r=>!(r==="Bride"||r==="Groom")||!(S.team||[]).some(t=>t.role===r)).map(r=>`<option>${r}</option>`).join("")}</select></label>
      <label class="f">WhatsApp number (optional)<input name="phone" id="iv-phone" inputmode="tel"></label></div>
      <div><button class="btn pri">Create invite</button></div></form>`:""}
@@ -1073,11 +1109,11 @@ function vAuth(){
    <form class="card stack" style="gap:12px" data-form="${up?"signup":ui.authTab==="join"?"join":"signin"}">
      ${up?`<div class="grid g2"><label class="f">Your first name<input name="p1" id="au-p1" required autocomplete="given-name"></label><label class="f">I am the<select name="me_role" id="au-role"><option>Bride</option><option>Groom</option></select></label></div>
        <label class="f">Your partner's first name<input name="p2" id="au-p2" required></label>`:""}
-     ${ui.authTab==="join"?`<p class="small muted">${ui.jcode?"Your invite code is filled in. Add your name, email and a password to join.":"Got an invite code from a couple? Create your account here to plan with them."}</p><div class="grid g2"><label class="f">Your first name<input name="name" id="au-jname" required autocomplete="given-name"></label><label class="f">Invite code<input name="code" id="au-jcode" required value="${esc(ui.jcode||"")}" placeholder="AV-XXXX00" style="text-transform:uppercase"></label></div>`:""}
+     ${ui.authTab==="join"?`<p class="small muted">${ui.jcode?"Your invite code is filled in. Add your first and last name exactly as the couple wrote them, then your email and a password.":"Got an invite code from a couple? Use your first and last name exactly as the couple wrote them. The bride or groom approves you before you can see their planner."}</p><div class="grid g2"><label class="f">First name<input name="first" id="au-jname" required autocomplete="given-name"></label><label class="f">Last name<input name="last" id="au-jlast" required autocomplete="family-name"></label><label class="f">Invite code<input name="code" id="au-jcode" required value="${esc(ui.jcode||"")}" placeholder="AV-XXXX00" style="text-transform:uppercase"></label></div>`:""}
      <label class="f">Email<input type="email" name="email" id="au-email" required autocomplete="email"></label>
      <label class="f">Password<input type="password" name="pw" id="au-pw" required minlength="8" autocomplete="${up||ui.authTab==="join"?"new-password":"current-password"}">${up||ui.authTab==="join"?'<span class="small muted">At least 8 characters</span>':""}</label>
      <p class="small" id="au-err" style="color:var(--red)" hidden></p>
-     <button class="btn pri" style="justify-content:center">${up?"Create account":ui.authTab==="join"?"Join the wedding":"Sign in"}</button></form>
+     <button class="btn pri" style="justify-content:center">${up?"Create account":ui.authTab==="join"?"Ask to join":"Sign in"}</button></form>
    <div class="card stack" style="gap:8px"><h3>${T("auth.demo.title","Just looking?")}</h3><p class="small muted">${T("auth.demo.text","Explore a made-up couple, Ama & Kofi, to see every feature without signing up.")}</p><div><button class="btn" data-act="demo">Explore the sample couple</button></div></div>
   </div>`;
 }
@@ -1427,6 +1463,10 @@ document.addEventListener("click",async e=>{
     case"msgdel":setMessages(messages().filter(v=>v.id!==id));toast("Message deleted");rerender();break;
     case"twho":ui.twho=id;rerender();break;
     case"delgroup":S.taskGroups=(S.taskGroups||[]).filter(g=>g.id!==id);save();rerender();toast("Group deleted");break;
+    case"approvejoin":{if(!isCoupleLead())break;const t=S.team.find(x=>x.id===id);if(!t||t.status!=="requested")break;t.status="joined";delete t.askedAt;save();rerender();toast(`${t.name} can now open your planner`);break}
+    case"declinejoin":{if(!isCoupleLead())break;const t=S.team.find(x=>x.id===id);if(!t||t.status!=="requested")break;
+      Object.assign(t,{status:"invited",email:"",code:inviteCode()});delete t.asked;delete t.askedAt;delete t.uid;save();rerender();toast("Request declined. Their old link no longer works. If it was really them, send the new join link");break}
+    case"refreshpending":if(HOSTED){dbReload("planner","")}else rerender();break;
     case"delmember":{if(!isCoupleLead())break;const t=S.team.find(x=>x.id===id);S.team=S.team.filter(x=>x.id!==id);
       if(t&&t.email){const a=accounts().filter(x=>x.email!==t.email);setAccounts(a)}save();rerender();toast(t&&t.status==="joined"?"Access removed":"Invite cancelled");break}
     case"deltask":S.tasks=S.tasks.filter(x=>x.id!==id);save();rerender();toast("To-do deleted");break;
@@ -1548,11 +1588,12 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
       if(k==="signup"||k==="join"||k==="vsignup"){let meta;
         if(k==="signup")meta={role:"couple",p1:d.p1.trim(),p2:d.p2.trim(),me_role:d.me_role};
         else if(k==="vsignup")meta={role:"vendor",biz:d.biz.trim()};
-        else{const code=d.code.trim().toUpperCase();const {data:ok}=await DBX.sb.rpc("invite_valid",{invite:code});if(!ok)return fail("That invite code isn't valid or has already been used. Ask the couple for a new one.");meta={role:"couple",invite:code,name:d.name.trim()}}
+        else{const code=d.code.trim().toUpperCase(),first=d.first.trim(),last=d.last.trim();const {data:ok,error:ce}=await DBX.sb.rpc("invite_check",{invite:code,first_name:first,last_name:last});if(ce)return fail("We couldn't check that invite just now. Try again in a moment.");
+          if(ok==="name")return fail(NAME_MISMATCH);if(ok!=="ok")return fail("That invite code isn't valid or has already been used. Ask the couple for a new one.");meta={role:"couple",invite:code,name:first,first,last}}
         const {data,error}=await DBX.sb.auth.signUp({email,password:d.pw,options:{data:meta,emailRedirectTo:location.origin+location.pathname}});
         if(error)return fail(/registered|exists/i.test(error.message)?"There's already an account with this email. Sign in instead.":error.message);
         if(!data.session){f.innerHTML=`<h3>Check your email</h3><p class="muted">We sent a confirmation link to <b>${esc(email)}</b>. Open it to finish creating your account, then sign in.</p>`;return}
-        return dbReload(k==="vsignup"?"vendor-area":"planner",k==="vsignup"?"Vendor account created. Now add your listing.":k==="join"?"Welcome! You've joined the wedding planning":"Welcome to AfroVows!")}
+        return dbReload(k==="vsignup"?"vendor-area":"planner",k==="vsignup"?"Vendor account created. Now add your listing.":k==="join"?"Request sent. The couple will approve you soon":"Welcome to AfroVows!")}
       const {data,error}=await DBX.sb.auth.signInWithPassword({email,password:d.pw});
       if(error)return fail(/confirm/i.test(error.message)?"Please confirm your email first. Check your inbox for the link.":"That email and password don't match. Check them and try again.");
       const {data:p}=await DBX.sb.from("profiles").select("role").eq("id",data.user.id).single();const r=p&&p.role;
@@ -1567,11 +1608,9 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
       owner=email;S=blank(p1,p2);S.team=[{id:uid(),name:p1,role:r1,email,status:"joined",owner:true},{id:uid(),name:p2,role:r2,email:"",status:"invited",code:inviteCode()}];S.taskGroups=[];save();signIn(email);toast(`Welcome to AfroVows, ${p1} & ${p2}!`);ui.ptab="details";location.hash=ui.after||"planner";ui.after=null})();
       if(k==="join")(async()=>{const err=$("#au-err"),email=d.email.trim().toLowerCase(),code=d.code.trim().toUpperCase();
       if(acct(email)){err.textContent="There's already an account with this email. Sign in instead.";err.hidden=false;return}
-      let host=null,w=null;for(const a of accounts()){if(a.role||a.weddingOf)continue;const x=loadWedding(a.email);if(x&&(x.team||[]).some(t=>t.code===code&&t.status==="invited")){host=a.email;w=x;break}}
-      if(!host){err.textContent="That invite code isn't valid or has already been used. Ask the couple for a new one.";err.hidden=false;return}
-      const t=w.team.find(t=>t.code===code);t.status="joined";t.email=email;t.name=d.name.trim()||t.name;t.code="";
-      const salt=uid()+uid(),hash=await hashPw(d.pw,salt),a=accounts();a.push({email,salt,hash,weddingOf:host});setAccounts(a);
-      store.set("afrovows.w."+host,JSON.stringify(w));signIn(email);toast(`Welcome! You're now planning ${w.wedding.p1} & ${w.wedding.p2}'s wedding`);location.hash="planner";rerender()})();
+      const r=localRequest(code,d.first,d.last,email);if(r!=="ok"){err.textContent=r==="name"?NAME_MISMATCH:"That invite code isn't valid or has already been used. Ask the couple for a new one.";err.hidden=false;return}
+      const salt=uid()+uid(),hash=await hashPw(d.pw,salt),a=accounts();a.push({email,salt,hash,pendingOf:ui.reqHost});setAccounts(a);
+      signIn(email);toast("Request sent. The couple will approve you soon");location.hash="planner";rerender()})();
       if(k==="signin")(async()=>{const err=$("#au-err"),email=d.email.trim().toLowerCase(),a=acct(email);
       if(!a||a.demo||await hashPw(d.pw,a.salt)!==a.hash){err.textContent="That email and password don't match. Check them and try again.";err.hidden=false;return}
       if((a.role||"couple")!=="couple"){err.textContent=a.role==="vendor"?"This is a vendor account. Sign in from the For vendors page.":"Use the site owner sign-in for this account.";err.hidden=false;return}
@@ -1605,7 +1644,12 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
     case"partyplan":{if(!isCoupleLead())break;S.party=S.party||{};const pl=partyPlans().slice(),rec={title:d.title.trim(),date:d.date,time:d.time,place:d.place.trim(),who:d.who,notes:d.notes.trim()};
       const i=pl.findIndex(x=>x.id===f.dataset.id);if(i>=0)pl[i]={...pl[i],...rec};else pl.push({id:uid(),...rec});S.party.plans=pl;save();closeModal();rerender();toast("Plan saved");break}
     case"partynote":{if(!isCoupleLead())break;S.party=S.party||{};S.party.note=d.note.trim();save();rerender();toast("Notes saved");break}
-    case"invite":{if(!isCoupleLead())break;S.team.push({id:uid(),name:d.name.trim(),role:d.role,phone:d.phone.trim(),email:"",status:"invited",code:inviteCode()});save();rerender();toast("Invite created. Send them the code");break}
+    case"rejoin":{const err=$("#rj-err"),bad=m=>{err.textContent=m;err.hidden=false};
+      if(HOSTED){(async()=>{const {data:r,error}=await DBX.sb.rpc("request_join",{invite:d.code.trim().toUpperCase(),first_name:d.first.trim(),last_name:d.last.trim()});
+        if(error)return bad("We couldn't send that just now. Try again in a moment.");if(r==="requested")return dbReload("planner","Request sent. The couple will approve you soon");bad(r==="name"?NAME_MISMATCH:"That invite code isn't valid or has already been used. Ask the couple for a new one.")})();break}
+      const r=localRequest(d.code,d.first,d.last,me);if(r!=="ok"){bad(r==="name"?NAME_MISMATCH:"That invite code isn't valid or has already been used. Ask the couple for a new one.");break}
+      const all=accounts(),x=all.find(x=>x.email===me);x.pendingOf=ui.reqHost;setAccounts(all);toast("Request sent. The couple will approve you soon");rerender();break}
+    case"invite":{if(!isCoupleLead())break;S.team.push({id:uid(),first:d.first.trim(),last:d.last.trim(),name:(d.first.trim()+" "+d.last.trim()).trim(),role:d.role,phone:d.phone.trim(),email:"",status:"invited",code:inviteCode()});save();rerender();toast("Invite created. Send them the code");break}
     case"about":{if(role()!=="admin")break;const A=collectAbout();A.team=A.team.filter(t=>t.name.trim()||t.role.trim());setAbout(A);ui.aboutEdit=false;rerender();window.scrollTo(0,0);toast("About us page updated");break}
     case"doc":{const i=docItem(id);const file=$("#dc-file").files[0];if(!i||!file)break;
       const isPdf=file.type==="application/pdf"||/\.pdf$/i.test(file.name);if(!isPdf&&!file.type.startsWith("image/")){toast("Attach a photo or a PDF");break}
@@ -1630,6 +1674,5 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
 if(HOSTED){try{await dbAfter()}catch(e){console.error(e);$("#app").innerHTML='<div class="empty">We couldn\'t open your wedding just now. Check your connection and refresh the page.</div>';return}}
 route();
 try{const m=sessionStorage.getItem("afrovows.toast");if(m){sessionStorage.removeItem("afrovows.toast");toast(m)}}catch(e){}
-if(HOSTED&&DBX.meta.badInvite)toast("That invite code wasn't valid any more. Ask the couple for a new one.");
 })();
 </script>

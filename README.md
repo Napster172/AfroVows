@@ -15,7 +15,7 @@ Wedding planning website for couples in Ghana: a free public vendor directory, a
 ### Who can see what
 
 - **Public:** approved vendor listings (only their public version), reviews, About us, site text.
-- **Couples:** only their own wedding, and only the bride, groom and people they invite with an invite code. Removing someone from the Team tab removes their access.
+- **Couples:** only their own wedding, and only the bride, groom and people they invite. An invited person must type the first and last name on their invite, and the bride or groom approves them before they get any access. Only the bride or groom can change the team list. Removing someone from the Team tab removes their access.
 - **Guests:** the wedding page via the wedding code, without signing in. They can find their own invitation by exact name or WhatsApp number, RSVP and add photos. They never see the guest list, budget or planner.
 - **Vendors:** their own listings (one or more, one per service). They can't approve themselves or give themselves a paid plan. The business registration number is never public.
 - **Site owner (admin):** listings, paid plans, contact messages and site text.

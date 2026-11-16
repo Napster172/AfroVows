@@ -990,6 +990,26 @@
 989|Code copié
 990|Copier le lien
 991|Lien copié
-992|Tout le monde ici peut ouvrir ce planificateur et aider pour le budget, les invités, les prestataires et les tâches, sauf les garçons et demoiselles d'honneur, qui ne voient que les onglets Cortège nuptial, Photos et Histoire & détails. Invitez quelqu'un, puis envoyez-lui son lien d'invitation. Il ouvre la page d'inscription avec son code déjà rempli : il n'a plus qu'à ajouter son nom, son e-mail et un mot de passe.
+992|Tout le monde ici peut ouvrir ce planificateur et aider pour le budget, les invités, les prestataires et les tâches, sauf les garçons et demoiselles d'honneur, qui ne voient que les onglets Cortège nuptial, Photos et Histoire & détails. Invitez quelqu'un, puis envoyez-lui son lien d'invitation. Il saisit le prénom et le nom que vous avez indiqués, et vous l'approuvez avant qu'il puisse voir quoi que ce soit.
 993|Votre code d'invitation est déjà rempli. Ajoutez votre nom, votre e-mail et un mot de passe pour rejoindre.
 994|Vous êtes déjà connecté sur cet appareil. Déconnectez-vous, puis rouvrez le lien d'invitation.
+995|Prénom
+996|Nom
+997|Demander à rejoindre
+998|Approuver
+999|Refuser
+1000|Vérifier à nouveau
+1001|En attente d'approbation
+1002|Votre demande n'a pas été approuvée
+1003|En attente de votre approbation
+1004|Votre code d'invitation est déjà rempli. Saisissez votre prénom et votre nom exactement comme le couple les a écrits, puis votre e-mail et un mot de passe.
+1005|Vous avez reçu un code d'invitation d'un couple ? Saisissez votre prénom et votre nom exactement comme le couple les a écrits. Les mariés vous approuvent avant que vous puissiez voir leur planificateur.
+1006|Ce nom ne correspond pas à cette invitation. Saisissez votre prénom et votre nom exactement comme le couple les a écrits, ou demandez-leur de vérifier l'invitation.
+1007|Demande envoyée. Le couple vous approuvera bientôt
+1008|Le couple n'a pas approuvé cette demande. S'il vous a envoyé une nouvelle invitation, saisissez-la ci-dessous.
+1009|Les mariés vérifieront qu'il s'agit bien de vous et vous approuveront. Ensuite, actualisez cette page ou reconnectez-vous pour ouvrir le planificateur.
+1010|Demande refusée. L'ancien lien ne fonctionne plus. Si c'était bien cette personne, envoyez-lui le nouveau lien d'invitation
+1011|Utilisez le nom figurant sur sa Ghana Card ou tel qu'il l'écrit habituellement. Il doit saisir le même prénom et le même nom pour rejoindre.
+1012|{0} personne attend votre approbation.
+1013|{0} personnes attendent votre approbation.
+1014|Voir dans l'onglet Équipe

@@ -990,6 +990,26 @@
 989|Codice copiato
 990|Copia link
 991|Link copiato
-992|Tutti qui possono aprire questo planner e aiutare con budget, ospiti, fornitori e attività, tranne groomsmen e damigelle, che vedono solo le schede Corteo nuziale, Foto e Storia e dettagli. Invita qualcuno, poi inviagli il link di invito. Apre la pagina di adesione con il codice già inserito, così deve solo aggiungere nome, email e una password.
+992|Tutti qui possono aprire questo planner e aiutare con budget, ospiti, fornitori e attività, tranne groomsmen e damigelle, che vedono solo le schede Corteo nuziale, Foto e Storia e dettagli. Invita qualcuno, poi inviagli il link di invito. Inserisce il nome e il cognome che hai scritto, e tu lo approvi prima che possa vedere qualcosa.
 993|Il tuo codice di invito è già inserito. Aggiungi nome, email e una password per unirti.
 994|Hai già effettuato l'accesso su questo dispositivo. Esci, poi riapri il link di invito.
+995|Nome
+996|Cognome
+997|Chiedi di unirti
+998|Approva
+999|Rifiuta
+1000|Controlla di nuovo
+1001|In attesa di approvazione
+1002|La tua richiesta non è stata approvata
+1003|In attesa della tua approvazione
+1004|Il tuo codice di invito è già inserito. Scrivi nome e cognome esattamente come li ha scritti la coppia, poi la tua email e una password.
+1005|Hai un codice di invito da una coppia? Scrivi nome e cognome esattamente come li ha scritti la coppia. Gli sposi ti approvano prima che tu possa vedere il loro planner.
+1006|Questo nome non corrisponde all'invito. Scrivi nome e cognome esattamente come li ha scritti la coppia, oppure chiedi loro di controllare l'invito.
+1007|Richiesta inviata. La coppia ti approverà a breve
+1008|La coppia non ha approvato questa richiesta. Se ti hanno inviato un nuovo invito, inseriscilo qui sotto.
+1009|Gli sposi verificheranno che sei davvero tu e ti approveranno. Dopo, aggiorna questa pagina o accedi di nuovo per aprire il planner.
+1010|Richiesta rifiutata. Il vecchio link non funziona più. Se era davvero quella persona, inviale il nuovo link di invito
+1011|Usa il nome della sua Ghana Card o come lo scrive di solito. Deve inserire lo stesso nome e cognome per unirsi.
+1012|{0} persona attende la tua approvazione.
+1013|{0} persone attendono la tua approvazione.
+1014|Vedi nella scheda Team
