@@ -938,3 +938,39 @@
 937|(la imagen grande en la parte superior de tu anuncio; sube una o toca "Usar de portada" en una foto de trabajo)
 938|Foto de portada cambiada. Envíala para su aprobación
 939|p. ej. {0}
+940|Padrino principal
+941|Padrino
+942|Dama de honor principal
+943|Cortejo nupcial
+944|Todo el cortejo
+945|Padrinos
+946|Damas de honor
+947|Añadir un plan
+948|Editar plan
+949|El cortejo nupcial
+950|{0} personas
+951|{0} persona
+952|Notas para el cortejo
+953|Guardar notas
+954|Notas guardadas
+955|Plan guardado
+956|Plan eliminado
+957|Eliminar este plan
+958|Qué
+959|Hora
+960|Dónde
+961|Para quién es
+962|Detalles
+963|Planes pasados ({0})
+964|Aún no hay planes.
+965|Aún no hay planes. Añade el ensayo, las pruebas de vestuario o una reunión.
+966|Invitar a más desde Equipo
+967|Planes para tus padrinos y damas de honor: ensayos, pruebas de vestuario, práctica de baile y más. Solo tú y las personas que invites como padrino principal, padrino, dama de honor principal o dama de honor pueden ver esta pestaña.
+968|Planes de la pareja para el cortejo nupcial. Vuelve a mirar por si hay cambios.
+969|Aún no hay nadie.
+970|Aún no hay nadie. Invita a tus padrinos y damas de honor desde la pestaña Equipo y elige su función.
+971|Aún no hay notas.
+972|Mañana
+973|Colores y atuendos, qué llevar, a quién llamar el día, aportaciones…
+974|p. ej. Ensayo en la iglesia
+975|Qué ponerse o llevar, quién lo dirige…
