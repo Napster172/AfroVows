@@ -904,5 +904,6 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.ar={
 "Enlarge cover photo": "تكبير صورة الغلاف",
 "Enlarge work photo {0}": "تكبير صورة العمل {0}",
 "Call": "اتصال",
-"This is a sample listing, so it has no real number. Real vendors show WhatsApp and Call here.": "هذا إعلان تجريبي، لذا لا يوجد رقم حقيقي. يعرض المزودون الحقيقيون هنا واتساب واتصال."
+"This is a sample listing, so it has no real number. Real vendors show WhatsApp and Call here.": "هذا إعلان تجريبي، لذا لا يوجد رقم حقيقي. يعرض المزودون الحقيقيون هنا واتساب واتصال.",
+"Reply by email": "الرد عبر البريد الإلكتروني"
 };
