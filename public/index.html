@@ -1257,6 +1257,10 @@ function adminDetails(l){
 function replyMail(m){const when=new Date(m.at).toLocaleString("en-GB",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
   const body=`Hello ${m.name},\n\nThank you for contacting AfroVows.\n\n\n\nKind regards,\nThe AfroVows team\n\n---\nOn ${when} you wrote:\n${m.msg.split("\n").map(l=>"> "+l).join("\n")}`;
   return "mailto:"+encodeURIComponent(m.email).replace(/%40/g,"@")+"?subject="+encodeURIComponent("Re: Your message to AfroVows")+"&body="+encodeURIComponent(body)}
+/* A yearly plan is paid as 10 months for 12, so its monthly value is the amount paid spread over 12 months. */
+function planTermOf(l){return l.planTerm||(l.planUntil&&l.planUntil-Date.now()>62*864e5?"year":"month")}
+function planPaidOf(l){return l.planPaid||planPrice(planOf(l))*(planTermOf(l)==="year"?10:1)}
+function planMonthly(l){return planPaidOf(l)/(planTermOf(l)==="year"?12:1)}
 function vAdmin(){
   const all=listings(),tab=ui.atab||"pending";
   const groups={pending:all.filter(l=>l.status==="pending"),approved:all.filter(l=>l.status==="approved"),rejected:all.filter(l=>l.status==="rejected"||l.status==="removed")};
@@ -1268,12 +1272,12 @@ function vAdmin(){
       <p class="small muted"><span style="user-select:all">${esc(m.email)}</span>${m.phone?` · <span style="user-select:all">${esc(m.phone)}</span>`:""}</p><p>${esc(m.msg)}</p>
       <div class="row">${m.email?`<a class="btn sm pri" data-act="msgreply" data-id="${m.id}" href="${replyMail(m)}">Reply by email</a>`:""}${m.phone?`<a class="btn sm wa" target="_blank" rel="noopener" data-act="msgreply" data-id="${m.id}" href="https://wa.me/${waNum(m.phone)}?text=${encodeURIComponent(`Hello ${m.name}, thank you for contacting AfroVows. `)}">Reply on WhatsApp</a>`:""}${m.read?"":`<button class="btn sm" data-act="msgread" data-id="${m.id}">Mark as read</button>`}<button class="btn sm danger" data-act="msgdel" data-id="${m.id}">Delete</button></div></div>`).join(""):`<div class="empty">No messages yet. Messages sent from the Contact us form on the home page land here.</div>`}</div>`;
   if(tab==="plans"){const reqs=all.filter(l=>l.planReq),paid=all.filter(l=>planOf(l)!=="basic");
-    const mrr=paid.reduce((a,l)=>a+planPrice(planOf(l)),0);
+    const mrr=Math.round(paid.reduce((a,l)=>a+planMonthly(l),0));
     return `<div class="stack"><div><span class="eyebrow"><span class="lock" aria-hidden="true"></span>Site owner · only you can see this</span><h1 style="font-size:clamp(26px,5vw,36px)">Paid plans</h1></div>${chips}
      <div class="grid g3"><div class="card"><span class="small muted">Paying vendors</span><div class="price num">${paid.length}</div></div><div class="card"><span class="small muted">Monthly value</span><div class="price num">${fmt(mrr)}</div></div><div class="card"><span class="small muted">Waiting for payment check</span><div class="price num">${reqs.length}</div></div></div>
      <h2>Requests to confirm</h2>${reqs.length?reqs.map(l=>{const r=l.planReq,amt=planPrice(r.plan)*(r.term==="year"?10:1);return `<div class="card row" style="justify-content:space-between"><div><b>${esc(l.name||l.owner)}</b> <span class="small muted">${esc(l.owner)}</span><div class="small">${esc(planName(r.plan))} · ${r.term==="year"?"12 months":"1 month"} · expect <b class="num">${fmt(amt)}</b> · MoMo ID <span class="num" style="user-select:all">${esc(r.ref)}</span> · ${fmtDay(r.at)}</div></div>
        <div class="row"><button class="btn sm pri" data-act="planact" data-id="${l.id}">Payment received, activate</button><button class="btn sm danger" data-act="plandecline" data-id="${l.id}">Decline</button></div></div>`}).join(""):`<div class="empty">No plan requests waiting.</div>`}
-     <h2>Active paid plans</h2>${paid.length?paid.map(l=>`<div class="card row" style="justify-content:space-between"><div><b>${esc(l.name)}</b> ${planBadges(planOf(l))}<div class="small muted">Until ${fmtDay(l.planUntil)}</div></div><button class="btn sm danger" data-act="planend" data-id="${l.id}">End plan</button></div>`).join(""):`<div class="empty">No vendors on a paid plan yet.</div>`}
+     <h2>Active paid plans</h2>${paid.length?paid.map(l=>`<div class="card row" style="justify-content:space-between"><div><b>${esc(l.name)}</b> ${planBadges(planOf(l))}<div class="small muted">${planTermOf(l)==="year"?`Yearly, paid <span class="num">${fmt(planPaidOf(l))}</span> (<span class="num">${fmt(Math.round(planMonthly(l)))}</span> a month)`:`Monthly, <span class="num">${fmt(planPaidOf(l))}</span>`} · until ${fmtDay(l.planUntil)}</div></div><button class="btn sm danger" data-act="planend" data-id="${l.id}">End plan</button></div>`).join(""):`<div class="empty">No vendors on a paid plan yet.</div>`}
      <p class="small muted">Prices, plan names and the MoMo number can be changed with Edit site on the For vendors page.</p></div>`}
   const list=groups[tab];
   return `<div class="stack">
@@ -1342,9 +1346,9 @@ document.addEventListener("click",async e=>{
     case"choosePlan":planModal(id);break;
     case"plancancel":{const l=listings(),x=l.find(v=>v.owner===me);if(x){x.planReq=null;setListings(l);toast("Plan request cancelled");rerender()}break}
     case"planact":case"plandecline":case"planend":{const l=listings(),x=l.find(v=>v.id===id);if(!x)break;
-      if(a==="planact"&&x.planReq){const mo=x.planReq.term==="year"?12:1;const base=x.plan===x.planReq.plan&&x.planUntil>Date.now()?x.planUntil:Date.now();x.plan=x.planReq.plan;x.planUntil=new Date(base).setMonth(new Date(base).getMonth()+mo);x.planReq=null;toast("Plan activated until "+fmtDay(x.planUntil))}
+      if(a==="planact"&&x.planReq){const mo=x.planReq.term==="year"?12:1;const base=x.plan===x.planReq.plan&&x.planUntil>Date.now()?x.planUntil:Date.now();x.plan=x.planReq.plan;x.planUntil=new Date(base).setMonth(new Date(base).getMonth()+mo);x.planTerm=x.planReq.term==="year"?"year":"month";x.planPaid=planPrice(x.plan)*(mo===12?10:1);x.planReq=null;toast("Plan activated until "+fmtDay(x.planUntil))}
       else if(a==="plandecline"){x.planReq=null;toast("Request declined")}
-      else{x.plan="basic";x.planUntil=null;toast("Plan ended. Listing is back on Basic")}
+      else{x.plan="basic";x.planUntil=null;delete x.planTerm;delete x.planPaid;toast("Plan ended. Listing is back on Basic")}
       setListings(l);rerender();break}
     case"delrev":{const r=allReviews();r[id]=(r[id]||[]).filter(x=>x.id!==t.dataset.rid);setReviews(r);toast("Review removed");rerender();vendorModal(id);break}
     case"delgal":{const [l,x]=draftFromForm();x.gallery=(x.gallery||[]).filter(g=>g.id!==id);setListings(l);rerender();break}
