@@ -1045,7 +1045,13 @@ function linkPreview(x){const u=safeUrl(x.url);if(!u)return "";const em=linkEmbe
   if(!x.pv){PVQ.add(x.id);return `<div class="vpv small muted">Loading preview…</div>`}
   if(x.pv.none)return "";
   return `<a class="vpv" href="${esc(u)}" target="_blank" rel="noopener nofollow">${x.pv.img?`<img src="${esc(x.pv.img)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:""}${x.pv.title?`<b class="small">${esc(x.pv.title)}</b>`:""}${x.pv.desc?`<span class="small muted">${esc(x.pv.desc)}</span>`:""}</a>`}
-function vitem(x){const who=x.by?`<span class="small muted">Added by ${esc(x.by)}</span>`:"";
+function veditForm(x){const t=x.type,lab=t==="note"?"Your note":t==="link"?"What you like about it (optional)":"Caption (optional)";
+  return `<form class="card vitem stack" style="gap:8px" data-form="vedit" data-id="${x.id}"><b>Edit ${t==="note"?"note":t==="link"?"link":"photo"}</b>${vcatSel("ve-cat",x.cat||"Other")}
+    ${t==="link"?`<label class="f">Link<input name="url" id="ve-url" required autocapitalize="off" spellcheck="false" inputmode="url" value="${esc(x.url||"")}"></label>`:""}
+    <label class="f">${lab}${t==="note"?`<textarea name="text" id="ve-text" required>${esc(x.text||"")}</textarea>`:`<input name="text" id="ve-text" value="${esc(x.text||"")}">`}</label>
+    <div class="row"><button class="btn pri sm">Save</button><button type="button" class="btn sm" data-act="vedit" data-id="">Cancel</button></div></form>`}
+function vitem(x){if(ui.vedit===x.id)return veditForm(x);
+  const who=`<div class="row" style="justify-content:space-between;gap:6px">${x.by?`<span class="small muted">Added by ${esc(x.by)}</span>`:"<span></span>"}<button type="button" class="btn sm ghost" data-act="vedit" data-id="${x.id}" aria-label="Edit this item">Edit</button></div>`;
   const del=`<button type="button" class="btn sm ghost x" data-act="delvision" data-id="${x.id}" aria-label="Remove from board">×</button>`,pill=`<span class="pill p-neutral" style="align-self:flex-start">${esc(x.cat||"Other")}</span>`;
   if(x.type==="note")return `<div class="card vitem note">${del}${pill}<p style="white-space:pre-line;margin:0;padding-right:24px">${esc(x.text)}</p>${who}</div>`;
   if(x.type==="link"){const u=safeUrl(x.url);return `<div class="card vitem">${del}${pill}<b>${esc(linkSite(x.url))}</b>${linkPreview(x)}${x.text?`<p class="small" style="margin:0">${esc(x.text)}</p>`:""}${u?`<a class="btn sm" href="${esc(u)}" target="_blank" rel="noopener nofollow" style="align-self:flex-start">Open ${esc(linkSite(x.url))}</a>`:""}${who}</div>`}
@@ -1073,25 +1079,37 @@ function visionExplore(){const x=ui.vx||{},q=x.q||"";
    ${x.status==="loading"?`<p class="muted">Finding ideas…</p>`:x.status==="error"?`<div class="empty">We couldn't load ideas just now. Check your connection, or try the links below.</div>`
      :x.items?(x.items.length?`<div class="vxgrid">${x.items.map((r,i)=>{const saved=visionItems().some(v=>v.type==="web"&&v.src===r.thumb);return `<figure><a href="${esc(r.url)}" target="_blank" rel="noopener nofollow"><img src="${esc(r.thumb)}" alt="${esc(r.title||"Idea")}" loading="lazy" referrerpolicy="no-referrer"></a>
        <button class="btn sm ${saved?"":"pri"}" data-act="vxsave" data-id="${i}" ${saved?"disabled":""}>${saved?"Saved":"Save to board"}</button>${r.credit?`<span class="small muted" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.credit)}</span>`:""}</figure>`}).join("")}</div>
-       <p class="small muted">Only photos whose title or tags include every word you searched. Openly licensed photos from Openverse and Wikimedia Commons. Tap a photo to see its source and photographer.</p>`:`<div class="empty">No photos match every word in “${esc(q)}”. Try fewer or simpler words, for example “kente decor”.</div>`):""}
+       <p class="small muted">Only good-sized photos whose title names what you searched, best matches first. Openly licensed photos from Openverse and Wikimedia Commons. Tap a photo to see its source and photographer.</p>`:`<div class="empty">No photos match every word in “${esc(q)}”. Try fewer or simpler words, for example “kente decor”.</div>`):""}
    <div class="card stack" style="gap:8px"><h3>Look further</h3><p class="small muted">Find something you love on Instagram, Pinterest or TikTok? Copy its link and add it to My board as a social media link.</p>
     <div class="row">${[["Pinterest","https://www.pinterest.com/search/pins/?q="],["Instagram","https://www.instagram.com/explore/search/keyword/?q="],["TikTok","https://www.tiktok.com/search?q="],["Google Images","https://www.google.com/search?tbm=isch&q="]].map(([n,u])=>`<a class="btn sm" target="_blank" rel="noopener" href="${u+encodeURIComponent(q||"ghana wedding inspiration")}">${n}</a>`).join("")}</div></div>`}
-/* Explore: ask Openverse (3 pages) and Wikimedia Commons (titles containing every word), then keep only
-   pictures whose title or tags contain every word searched, so unrelated photos don't show up. */
-const STOPW=new Set(["a","an","the","and","or","of","for","with","in","on","at","to","by","my","our","ideas","idea","eg"]);
-const qWords=q=>[...new Set(String(q).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").split(/[^a-z0-9]+/).filter(w=>w.length>1&&!STOPW.has(w)))];
+/* Explore: ask Openverse (photographs, medium/large only) and Wikimedia Commons (titles containing every word,
+   at least 1000px wide). Machine-guessed tags are ignored. A photo must have every searched word in its title or its
+   photographer's own tags, and at least one in the title. Best matches (all words in the title) and bigger photos come first. With 12 or more best matches, only those show. */
+const STOPW=new Set(["a","an","the","and","or","of","for","with","in","on","at","to","by","my","our","ideas","idea","eg","inspiration","style","styles"]);
+const qWords=q=>[...new Set(String(q).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").split(/[^a-z0-9]+/).filter(w=>w.length>1&&!STOPW.has(w)))];
 const stem=w=>w.length>4?w.replace(/(ies)$/,"y").replace(/(es|s)$/,""):w;
-const matchesAll=(text,words)=>{const t=String(text).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");return words.every(w=>t.includes(stem(w)))};
+const normT=t=>" "+String(t||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ")+" ";
+/* whole-word match, so "cake" doesn't match "pancake" and "veil" doesn't match "reveille" */
+const hasWord=(t,w)=>new RegExp(" "+stem(w).replace(/[^a-z0-9]/g,"")+"[a-z]{0,3} ").test(t);
+const matchesAll=(text,words)=>{const t=normT(text);return words.every(w=>hasWord(t,w))};
+const BADT=/\b(logo|map|flag|coat of arms|diagram|chart|icon|stamp|poster|screenshot|document|text|letter|newspaper|book page|scan)\b/i;
+function exploreScore(title,tags,words,w,h){const T=normT(title),G=normT(tags);if(!words.length)return 1;
+  const inT=words.filter(x=>hasWord(T,x)).length;if(!inT||BADT.test(title))return 0;if(!words.every(x=>hasWord(T,x)||hasWord(G,x)))return 0;
+  if(w&&h&&Math.max(w,h)<800)return 0;return inT*10+(inT===words.length?100:0)+Math.min(10,Math.round(Math.max(w||0,h||0)/400))}
 async function exploreIdeas(q){ui.vx={q,status:"loading"};rerender();
   const words=qWords(q),strip=h=>String(h||"").replace(/<[^>]*>/g,"").trim().slice(0,80);let ok=false;
-  const ov=Promise.all([1,2,3].map(pg=>fetch("https://api.openverse.org/v1/images/?page_size=20&mature=false&page="+pg+"&q="+encodeURIComponent(q)).then(r=>r.ok?r.json():{results:[]}).catch(()=>({results:[]}))))
+  const ov=Promise.all([1,2,3,4].map(pg=>fetch("https://api.openverse.org/v1/images/?page_size=20&mature=false&category=photograph&size=medium,large&page="+pg+"&q="+encodeURIComponent(words.join(" ")||q)).then(r=>r.ok?r.json():{results:[]}).catch(()=>({results:[]}))))
     .then(js=>{const out=[];for(const j of js){if(j.results&&j.results.length)ok=true;for(const x of j.results||[]){if(!x.thumbnail||!x.foreign_landing_url)continue;
-      const text=(x.title||"")+" "+(x.tags||[]).map(t=>t.name||"").join(" ");if(words.length&&!matchesAll(text,words))continue;out.push({thumb:x.thumbnail,url:x.foreign_landing_url,title:x.title||"",credit:x.creator||"",src:"Openverse"})}}return out});
-  const wm=fetch("https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=40&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=400&gsrsearch="+encodeURIComponent((words.length?words.map(w=>"intitle:"+w).join(" "):q)+" filetype:bitmap"))
-    .then(r=>r.ok?r.json():{}).then(j=>{if((j.query||{}).pages)ok=true;return Object.values((j.query||{}).pages||{}).sort((a,b)=>(a.index||0)-(b.index||0)).map(p=>{const ii=(p.imageinfo||[])[0]||{};
-      return {thumb:ii.thumburl,url:ii.descriptionurl,title:(p.title||"").replace(/^File:|\.\w+$/g,"").replace(/[_-]+/g," "),credit:strip(((ii.extmetadata||{}).Artist||{}).value),src:"Wikimedia Commons"}}).filter(x=>x.thumb&&x.url&&(!words.length||matchesAll(x.title,words)))}).catch(()=>[]);
+      const tags=(x.tags||[]).filter(t=>t&&t.accuracy==null).map(t=>t.name||"").join(" "),score=exploreScore(x.title,tags,words,+x.width,+x.height);
+      if(score)out.push({thumb:x.thumbnail,url:x.foreign_landing_url,title:x.title||"",credit:x.creator||"",src:"Openverse",score})}}return out});
+  const wm=fetch("https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url|size|extmetadata&iiurlwidth=640&gsrsearch="+encodeURIComponent((words.length?words.map(w=>"intitle:"+w).join(" "):q)+" filetype:bitmap filew:>999"))
+    .then(r=>r.ok?r.json():{}).then(j=>{if((j.query||{}).pages)ok=true;return Object.values((j.query||{}).pages||{}).sort((a,b)=>(a.index||0)-(b.index||0)).map(p=>{const ii=(p.imageinfo||[])[0]||{},title=(p.title||"").replace(/^File:|\.\w+$/g,"").replace(/[_-]+/g," ");
+      return {thumb:ii.thumburl,url:ii.descriptionurl,title,credit:strip(((ii.extmetadata||{}).Artist||{}).value),src:"Wikimedia Commons",score:exploreScore(title,"",words,ii.width,ii.height)}}).filter(x=>x.thumb&&x.url&&x.score)}).catch(()=>[]);
   const [a,b]=await Promise.all([ov,wm]),seen=new Set(),items=[];
-  for(let i=0;i<Math.max(a.length,b.length);i++)for(const x of [a[i],b[i]])if(x&&!seen.has(x.thumb)){seen.add(x.thumb);items.push(x)}
+  for(let i=0;i<Math.max(a.length,b.length);i++)for(const x of [a[i],b[i]])if(x&&!seen.has(x.thumb)&&!seen.has(x.url)){seen.add(x.thumb);seen.add(x.url);items.push(x)}
+  items.forEach((x,i)=>x.i=i);items.sort((x,y)=>y.score-x.score||x.i-y.i);
+  /* when there are plenty of photos with every word in the title, show only those */
+  if(words.length>1&&items.filter(x=>x.score>=100).length>=12)items.splice(0,items.length,...items.filter(x=>x.score>=100));
   if(ui.vx&&ui.vx.q===q){ui.vx=ok||items.length?{q,status:"done",items:items.slice(0,40)}:{q,status:"error"};rerender()}}
 function favBlock(){const all=allVendors(),f=(S.favs||[]).map(id=>all.find(v=>v.id===id)).filter(Boolean);
   return `<div class="card stack" style="gap:10px"><div class="split"><h3>♥ Favourites</h3><a class="btn sm" href="#vendors">Browse vendors</a></div>
@@ -1644,6 +1662,7 @@ document.addEventListener("click",async e=>{
     case"vsub":ui.vsub=id;rerender();break;
     case"vadd":ui.vadd=id;rerender();break;
     case"vfilter":ui.vfilter=id;rerender();break;
+    case"vedit":ui.vedit=id||null;rerender();break;
     case"delvision":S.vision.items=visionItems().filter(x=>x.id!==id);save();rerender();toast("Removed from your board");break;
     case"vtopic":ui.vlastcat=t.dataset.cat||ui.vlastcat;exploreIdeas(id);break;
     case"vxsave":{const r=((ui.vx||{}).items||[])[+id];if(!r)break;const cat=($("#vx-cat")||{}).value||"Other";ui.vlastcat=cat;
@@ -1773,6 +1792,10 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
     case"vnote":{const cat=d.cat||"Other";ui.vlastcat=cat;visionItems().unshift({id:uid(),type:"note",text:d.text.trim(),cat,by:(meMember()||{}).name||"",at:Date.now()});save();rerender();toast("Note added to your board");break}
     case"vlink":{let u=d.url.trim();if(!/^https?:\/\//i.test(u))u="https://"+u;u=u.replace(/^http:/i,"https:");const cat=d.cat||"Other";ui.vlastcat=cat;
       visionItems().unshift({id:uid(),type:"link",url:u,text:(d.text||"").trim(),cat,by:(meMember()||{}).name||"",at:Date.now()});save();rerender();toast("Link added to your board");break}
+    case"vedit":{const x=visionItems().find(v=>v.id===id);ui.vedit=null;if(!x){rerender();break}
+      x.cat=d.cat||x.cat||"Other";x.text=(d.text||"").trim();
+      if(x.type==="link"&&d.url){let u=d.url.trim();if(!/^https?:\/\//i.test(u))u="https://"+u;u=u.replace(/^http:/i,"https:");if(u!==x.url){x.url=u;delete x.pv}}
+      x.editedAt=Date.now();save();rerender();toast("Board item updated");break}
     case"vexplore":exploreIdeas(d.q.trim());break;
     case"rejoin":{const err=$("#rj-err"),bad=m=>{err.textContent=m;err.hidden=false};
       if(HOSTED){(async()=>{const {data:r,error}=await DBX.sb.rpc("request_join",{invite:d.code.trim().toUpperCase(),first_name:d.first.trim(),last_name:d.last.trim()});

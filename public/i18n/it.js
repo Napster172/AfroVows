@@ -1105,5 +1105,11 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.it={
 "Cover photo removed": "Foto di copertina rimossa",
 "Cover photo added. Guests see it at the top of your wedding page": "Foto di copertina aggiunta. Gli ospiti la vedono in cima alla pagina del matrimonio",
 "Only photos whose title or tags include every word you searched. Openly licensed photos from Openverse and Wikimedia Commons. Tap a photo to see its source and photographer.": "Solo foto il cui titolo o tag contengono tutte le parole cercate. Foto con licenza aperta da Openverse e Wikimedia Commons. Tocca una foto per vedere fonte e fotografo.",
-"Loading preview…": "Caricamento anteprima…"
+"Loading preview…": "Caricamento anteprima…",
+"Edit note": "Modifica nota",
+"Edit link": "Modifica link",
+"Edit photo": "Modifica foto",
+"Board item updated": "Elemento della bacheca aggiornato",
+"Edit this item": "Modifica questo elemento",
+"Only good-sized photos whose title names what you searched, best matches first. Openly licensed photos from Openverse and Wikimedia Commons. Tap a photo to see its source and photographer.": "Solo foto di buone dimensioni il cui titolo indica ciò che hai cercato, prima le migliori. Foto con licenza libera da Openverse e Wikimedia Commons. Tocca una foto per vederne la fonte e il fotografo."
 };

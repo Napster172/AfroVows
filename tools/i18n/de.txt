@@ -1106,3 +1106,9 @@
 1105|Titelbild hinzugefügt. Gäste sehen es oben auf deiner Hochzeitsseite
 1106|Nur Fotos, deren Titel oder Schlagwörter alle gesuchten Wörter enthalten. Frei lizenzierte Fotos von Openverse und Wikimedia Commons. Tippe auf ein Foto, um Quelle und Fotograf zu sehen.
 1107|Vorschau wird geladen…
+1108|Notiz bearbeiten
+1109|Link bearbeiten
+1110|Foto bearbeiten
+1111|Element der Pinnwand aktualisiert
+1112|Dieses Element bearbeiten
+1113|Nur Fotos in guter Größe, deren Titel deine Suche nennt, beste Treffer zuerst. Frei lizenzierte Fotos von Openverse und Wikimedia Commons. Tippe auf ein Foto, um Quelle und Fotograf zu sehen.
