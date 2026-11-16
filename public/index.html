@@ -140,6 +140,17 @@ textarea{min-height:90px;resize:vertical}
 button.zoom{padding:0;border:0;background:none;cursor:zoom-in;display:block;width:100%}
 button.zoom img{display:block}
 .photos button.zoom{aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--sunk)}
+.tipgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.tipcard{display:flex;flex-direction:column;gap:8px;color:var(--ink);text-decoration:none;transition:border-color .15s}
+.tipcard:hover{border-color:var(--gold)}
+.tipcard h3{font-size:18px}
+article.tip{max-width:720px}
+article.tip h2{font-size:22px;margin-top:10px}
+article.tip ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+article.tip p.lead{font-size:18px}
+.covertag,.mkcover{position:absolute;left:6px;bottom:6px;font-size:12px;padding:3px 8px;border-radius:999px;border:0}
+.covertag{background:var(--gold);color:#1a1a1a;font-weight:700}
+.mkcover{background:rgba(0,0,0,.65);color:#fff;cursor:pointer}
 .pkrow{display:grid;grid-template-columns:2fr 1.2fr 1fr auto;gap:8px;align-items:end}
 .pkrow+.pkrow{border-top:1px dashed var(--line);padding-top:10px}
 @media (max-width:560px){.pkrow{grid-template-columns:1fr 1fr auto}.pkrow label:first-child{grid-column:1/-1}}
@@ -226,6 +237,7 @@ footer{border-top:1px solid var(--line);padding-block:20px;color:var(--muted);fo
 <div id="editbar" hidden></div>
 
 <script src="i18n.js"></script>
+<script src="tips.js"></script>
 <script src="config.js"></script>
 <script>if(window.AFROVOWS_SB)document.write('<script src="vendor/supabase.js"><\/script>')</script>
 <script>
@@ -350,7 +362,8 @@ const BLEGACY={"Engagement":"engagement","Venue":"venues","Food & drinks":"cater
 const BORDER=()=>["engagement",...CATS.map(c=>c[0]),"gifts","other"];
 const bcat=i=>BLEGACY[i.cat]||i.cat||"other";
 const bcatName=id=>BEXTRA[id]||(CATS.some(c=>c[0]===id)?catName(id):id);
-const V=(id,name,cat,city,region,blurb,pk,phone,events)=>({id,name,cat,city,region,blurb,packages:pk.map(([n,p,u])=>({name:n,price:p,unit:u||""})),phone,events,sample:true});
+const V=(id,name,cat,city,region,blurb,pk,phone,events)=>({id,name,cat,city,region,blurb,packages:pk.map(([n,p,u])=>({name:n,price:p,unit:u||""})),phone,events,sample:true,...(SAMPLE_CAP[id]||{})});
+const SAMPLE_CAP={v19:{capMin:"100",capMax:"400"},v20:{capMin:"30",capMax:"150"}};
 const SAMPLE_VENDORS=[
  V("v1","Adwoa & Co. Events","planners","Accra","Greater Accra","Full planning for engagement and white wedding, including family liaison for the engagement list.",[["Day-of coordination",8000],["Partial planning",18000],["Full planning (both ceremonies)",35000]],"+233 00 000 0101","both"),
  V("v2","Garden City Weddings","planners","Kumasi","Ashanti","Ashanti-based planners who know the Manhyia-area venues and chiefs' protocol.",[["Engagement only",7000],["Full planning",28000]],"+233 00 000 0102","both"),
@@ -526,7 +539,7 @@ if(!store.get(RKEY+".seeded")){const r=allReviews(),d=864e5,n=Date.now();
 const starsTxt=n=>"★".repeat(Math.round(n))+"☆".repeat(5-Math.round(n));
 function ratingLine(id){const rs=reviewsFor(id);if(!rs.length)return '<span class="small muted">No reviews yet</span>';const avg=rs.reduce((a,b)=>a+b.rating,0)/rs.length;
   return `<span class="stars" aria-label="${avg.toFixed(1)} out of 5">${starsTxt(avg)}</span> <span class="small"><b class="num">${avg.toFixed(1)}</b> <span class="muted">(${rs.length} review${rs.length>1?"s":""})</span></span>`}
-const ui={ptab:"overview",gfilter:"all",gsearch:"",vcat:"all",vregion:"all",vsearch:"",vevent:"all",after:null,authTab:"signin",guestOf:null,vAuthTab:"signup",atab:"pending"};
+const ui={ptab:"overview",gfilter:"all",gsearch:"",vcat:"all",vregion:"all",vsearch:"",vevent:"all",vcap:"all",after:null,authTab:"signin",guestOf:null,vAuthTab:"signup",atab:"pending"};
 try{const t=store.get("afrovows.ptab");if(t)ui.ptab=t}catch(e){}
 const myCode=()=>(acct(owner)||{}).code||"";
 
@@ -547,10 +560,10 @@ function waLink(g){return `https://wa.me/${waNum(g.phone)}?text=${encodeURICompo
 function pill(s){return s==="yes"?'<span class="pill p-yes">Coming</span>':s==="no"?'<span class="pill p-no">Can\'t come</span>':'<span class="pill p-pend">No reply yet</span>'}
 
 /* ---------- Routing ---------- */
-const ROUTES=["home","vendors","about","guest","signin","planner","wedding","vendor-area","admin"];
+const ROUTES=["home","vendors","tips","about","guest","signin","planner","wedding","vendor-area","admin"];
 function renderChrome(r){
   const ro=role(),pending=listings().filter(l=>l.status==="pending").length;
-  const pub=[["home","Home"],["vendors","Vendor directory"]].concat(ro==="vendor"?[]:[["vendor-area","For vendors"]],[["about","About us"]]);
+  const pub=[["home","Home"],["vendors","Vendor directory"],["tips","Ideas & tips"]].concat(ro==="vendor"?[]:[["vendor-area","For vendors"]],[["about","About us"]]);
   const link=(k,l)=>`<a href="#${k}" class="${r===k?"on":""}">${l}</a>`,guest=link("guest","I'm a guest"),out=`<a href="#home" data-act="signout">Sign out</a>`;
   $("#nav").innerHTML=pub.map(([k,l])=>link(k,l)).join("")+`<span class="sep" aria-hidden="true"></span>`+
     (ro==="vendor"?`<a href="#vendor-area" class="couple ${r==="vendor-area"?"on":""}"><span class="lock" aria-hidden="true"></span>My listing</a>${guest}${out}`
@@ -577,7 +590,8 @@ document.addEventListener("focusout",e=>{const el=e.target.closest&&e.target.clo
   saveContent();if(k.startsWith("cat."))applyCats();toast("Saved")});
 function route(){const h=location.hash.slice(1);
   if(h.startsWith("guest=")){const c=decodeURIComponent(h.slice(6));history.replaceState(null,"","#guest");ui.guestOf=null;route();
-    const i=$("#gc-code"),f=document.querySelector('[data-form="code"]');if(i&&f){i.value=c;f.requestSubmit()}return}let r=ROUTES.includes(h)?h:"home";
+    const i=$("#gc-code"),f=document.querySelector('[data-form="code"]');if(i&&f){i.value=c;f.requestSubmit()}return}
+  ui.tip=h.startsWith("tips/")?h.slice(5):null;let r=ui.tip?"tips":ROUTES.includes(h)?h:"home";
   const ro=role();
   if(HOSTED&&(r==="vendors"||r==="home")&&Date.now()-(DBX.pubAt||0)>60000){DBX.pubAt=Date.now();Promise.all([DBX.sb.from("public_listings").select("*"),DBX.sb.from("reviews").select("*")]).then(([{data:pub},{data:revs}])=>{
     const before=JSON.stringify(DBX.pub)+mem["afrovows.reviews"];if(pub)DBX.pub=pub.map(r=>({...r.live,id:r.id,sample:false,_plan:r.plan,_until:r.plan_until?Date.parse(r.plan_until):null}));
@@ -590,12 +604,30 @@ function route(){const h=location.hash.slice(1);
   if(r==="guest"&&ui.guestOf)useGuest(ui.guestOf);
   renderChrome(r);
   const app=$("#app");app.classList.remove("fade");void app.offsetWidth;app.classList.add("fade");
-  app.innerHTML=({home:vHome,planner:vPlanner,wedding:()=>vWedding(false),vendors:vVendors,about:vAbout,signin:vAuth,guest:vGuest,"vendor-area":()=>ro==="vendor"?vVendorDash():vVendorAuth(),admin:()=>ro==="admin"?vAdmin():vAdminAuth()})[r]();
+  app.innerHTML=({home:vHome,planner:vPlanner,wedding:()=>vWedding(false),vendors:vVendors,tips:vTips,about:vAbout,signin:vAuth,guest:vGuest,"vendor-area":()=>ro==="vendor"?vVendorDash():vVendorAuth(),admin:()=>ro==="admin"?vAdmin():vAdminAuth()})[r]();
   bindUploads();
   editBar(r);
 }
 window.addEventListener("hashchange",()=>{route();window.scrollTo(0,0)});
 function rerender(){const y=window.scrollY;route();window.scrollTo(0,y)}
+
+/* ---------- Ideas & tips ---------- */
+const TIPS=()=>window.AV_TIPS||[];
+function tipCard(t){return `<a class="card tipcard" href="#tips/${t.id}"><span class="eyebrow">${esc(t.cat)}</span><h3>${esc(t.title)}</h3><p class="small muted">${esc(t.intro)}</p><span class="small muted" style="margin-top:auto">${t.mins} min read</span></a>`}
+function tipBody(lines){let out="",ul=false;for(const l of lines){if(l.startsWith("- ")){if(!ul){out+="<ul>";ul=true}out+=`<li>${esc(l.slice(2))}</li>`;continue}
+  if(ul){out+="</ul>";ul=false}out+=l.startsWith("## ")?`<h2>${esc(l.slice(3))}</h2>`:`<p>${esc(l)}</p>`}return out+(ul?"</ul>":"")}
+function tipsStrip(){const t=TIPS();if(!t.length)return"";const pick=["name-change","engagement-list","book-vendors"].map(id=>t.find(x=>x.id===id)).filter(Boolean);
+  return `<section class="stack" style="gap:14px"><div class="split"><div><span class="eyebrow">${T("home.tips.eyebrow","Ideas & tips")}</span><h2>${T("home.tips.title","Guides for Ghanaian couples")}</h2></div><a class="btn sm" href="#tips">See all guides</a></div>
+   <div class="tipgrid">${pick.map(tipCard).join("")}</div></section>`}
+function vTips(){const all=TIPS(),t=ui.tip&&all.find(x=>x.id===ui.tip);
+  if(t){const more=all.filter(x=>x.id!==t.id&&x.cat===t.cat).concat(all.filter(x=>x.id!==t.id&&x.cat!==t.cat)).slice(0,3);
+    return `<div class="stack" style="gap:24px"><article class="tip stack" style="gap:12px"><a class="small" href="#tips">← All ideas & tips</a><span class="eyebrow">${esc(t.cat)} · ${t.mins} min read</span><h1 style="font-size:clamp(26px,5vw,38px)">${esc(t.title)}</h1><p class="lead">${esc(t.intro)}</p>${tipBody(t.body)}</article>
+     <section class="stack" style="gap:12px"><h2>More guides</h2><div class="tipgrid">${more.map(tipCard).join("")}</div></section></div>`}
+  const cats=[...new Set(all.map(x=>x.cat))],cur=ui.tcat&&cats.includes(ui.tcat)?ui.tcat:"all",list=cur==="all"?all:all.filter(x=>x.cat===cur);
+  return `<div class="stack"><div><span class="eyebrow">${T("tips.eyebrow","Ideas & tips")}</span><h1 style="font-size:clamp(26px,5vw,36px)">${T("tips.title","Wedding guides for Ghanaian couples")}</h1><p class="muted">${T("tips.text","Practical help for the engagement, the white wedding and life after: paperwork, budgets, traditions and more.")}</p></div>
+   <div class="chips"><button class="chip ${cur==="all"?"on":""}" data-act="tcat" data-id="all">All guides</button>${cats.map(c=>`<button class="chip ${cur===c?"on":""}" data-act="tcat" data-id="${esc(c)}">${esc(c)}</button>`).join("")}</div>
+   <div class="tipgrid">${list.map(tipCard).join("")}</div>
+   <p class="small muted">These guides are general information to help you plan. Rules, fees and forms can change, so check with the office concerned.</p></div>`}
 
 /* ---------- Home ---------- */
 function featuredStrip(){const f=allVendors().filter(v=>planOf(v)==="featured");if(!f.length)return"";
@@ -628,6 +660,7 @@ function vHome(){
       <div class="row" style="margin-top:auto">${r==="couple"?`<a class="btn" href="#planner">Go to my wedding</a>`:`<a class="btn" href="#signin" data-act="authtab" data-id="signup">Sign up</a><a class="btn" href="#signin" data-act="authtab" data-id="signin" style="background:transparent;color:inherit;border-color:currentColor">Sign in</a>`}</div></div>
   </section>
   ${featuredStrip()}
+  ${tipsStrip()}
   <section class="stack" style="gap:14px"><div class="split"><h2>${T("home.cats.title","Vendors by service")}</h2><a class="btn sm" href="#vendors">Browse all</a></div>
     <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">${CATS.map(c=>`<button class="catcard" data-act="gocat" data-id="${c[0]}">${catTile(c[0])}<span><b>${T("cat."+c[0],CATDEF[c[0]])}</b><span class="muted small num">${allVendors().filter(v=>v.cat===c[0]).length} listed</span></span></button>`).join("")}</div>
     <div class="card row" style="justify-content:space-between"><div><h3>${T("home.vcta.title","Are you a wedding vendor?")}</h3><p class="small muted">${T("home.vcta.text","Create a free vendor account and submit your services and fees. Listings go live once AfroVows approves them. Upgrade to Verified or Featured to stand out.")}</p></div><div class="row"><a class="btn" href="#vendor-area" data-act="gopricing">See pricing</a><a class="btn pri" href="#vendor-area">List your business</a></div></div></section>
@@ -1027,7 +1060,7 @@ const thumb=v=>v.photo?`<div class="tile"><img src="${v.photo}" alt="${esc(v.nam
 const REGIONS=["Greater Accra","Ashanti","Central","Eastern","Western","Western North","Volta","Oti","Northern","Savannah","North East","Upper East","Upper West","Bono","Bono East","Ahafo"];
 function vendorCard(v,actions){const pl=planOf(v);
   return `<article class="card vcard${pl==="featured"?" feat":""}" style="padding:0;overflow:hidden">${thumb(v)}<div class="vcard" style="padding:0 16px 16px;flex:1">
-   <div><div class="split"><h3>${esc(v.name)}</h3><span class="row" style="gap:4px;justify-content:flex-end">${v.sample?'<span class="pill p-neutral">Sample</span>':""}${planBadges(pl)}</span></div><p class="small muted">${esc(catName(v.cat))} · ${esc(v.city)}, ${esc(v.region)} · ${v.events==="eng"?"Engagement":v.events==="wed"?"White wedding":"Both ceremonies"}</p>${v.unverified?"":`<div>${ratingLine(v.id)}</div>`}</div>
+   <div><div class="split"><h3>${esc(v.name)}</h3><span class="row" style="gap:4px;justify-content:flex-end">${v.sample?'<span class="pill p-neutral">Sample</span>':""}${planBadges(pl)}</span></div><p class="small muted">${esc(catName(v.cat))} · ${esc(v.city)}, ${esc(v.region)} · ${v.events==="eng"?"Engagement":v.events==="wed"?"White wedding":"Both ceremonies"}</p>${capText(v)?`<p class="small"><b>Capacity:</b> ${capText(v)}</p>`:""}${v.unverified?"":`<div>${ratingLine(v.id)}</div>`}</div>
    <p class="small">${esc(v.blurb)}</p>
    <div>${(v.packages||[]).map(p=>`<div class="pk"><span>${esc(p.name)}</span><span class="num">${p.price?fmt(p.price):"Ask for a quote"}${p.unit?` <span class="muted small">${esc(p.unit)}</span>`:""}</span></div>`).join("")}</div>
    <p class="small">Call or WhatsApp: <span class="num" style="user-select:all">${esc(v.phone)}</span>${v.contact?` · ${esc(v.contact)}`:""}</p>
@@ -1036,7 +1069,7 @@ function vendorCard(v,actions){const pl=planOf(v);
 }
 function vVendors(){
   const vs=allVendors();const regions=[...new Set(vs.map(v=>v.region))].sort();
-  let list=vs.filter(v=>(ui.vcat==="all"||v.cat===ui.vcat)&&(ui.vregion==="all"||v.region===ui.vregion)&&(ui.vevent==="all"||v.events==="both"||v.events===ui.vevent));
+  let list=vs.filter(v=>(ui.vcat==="all"||v.cat===ui.vcat)&&(ui.vregion==="all"||v.region===ui.vregion)&&(ui.vevent==="all"||v.events==="both"||v.events===ui.vevent)&&fitsCap(v,ui.vcat==="venues"?ui.vcap:"all"));
   if(ui.vsearch){const q=ui.vsearch.toLowerCase();list=list.filter(v=>(v.name+v.blurb+v.city+catName(v.cat)).toLowerCase().includes(q))}
   list=list.map((v,i)=>[v,i]).sort((a,b)=>PLAN_RANK[planOf(a[0])]-PLAN_RANK[planOf(b[0])]||a[1]-b[1]).map(x=>x[0]);
   const groups=CATS.filter(c=>list.some(v=>v.cat===c[0]));
@@ -1044,7 +1077,8 @@ function vVendors(){
    <div class="split"><div><span class="eyebrow">${T("vendors.eyebrow","Vendor directory \u00b7 free to browse, no account needed")}</span><h1 style="font-size:clamp(26px,5vw,36px)">${T("vendors.title","Find wedding vendors in Ghana")}</h1></div><a class="btn" href="#vendor-area">List your business</a></div>
    <div class="row"><input id="vsearch" data-act="vsearch" placeholder="Search vendors, towns or services" value="${esc(ui.vsearch)}" style="flex:2 1 220px">
      <select id="vregion" data-act="vregion" style="flex:1 1 150px"><option value="all">All regions</option>${regions.map(r=>`<option ${r===ui.vregion?"selected":""}>${esc(r)}</option>`).join("")}</select>
-     <select id="vevent" data-act="vevent" style="flex:1 1 150px">${[["all","Any ceremony"],["eng","Traditional engagement"],["wed","White wedding"]].map(([v,l])=>`<option value="${v}" ${v===ui.vevent?"selected":""}>${l}</option>`).join("")}</select></div>
+     <select id="vevent" data-act="vevent" style="flex:1 1 150px">${[["all","Any ceremony"],["eng","Traditional engagement"],["wed","White wedding"]].map(([v,l])=>`<option value="${v}" ${v===ui.vevent?"selected":""}>${l}</option>`).join("")}</select>
+     ${ui.vcat==="venues"?`<select id="vcap" data-act="vcap" aria-label="Number of guests" style="flex:1 1 170px">${CAPS.map(([v,l])=>`<option value="${v}" ${v===ui.vcap?"selected":""}>${l}</option>`).join("")}</select>`:""}</div>
    <div class="chips"><button class="chip ${ui.vcat==="all"?"on":""}" data-act="vcat" data-id="all">All services</button>${CATS.map(c=>`<button class="chip ${ui.vcat===c[0]?"on":""}" data-act="vcat" data-id="${c[0]}">${c[1]}</button>`).join("")}</div>
    ${groups.length?groups.map(c=>`<section class="stack" style="gap:10px"><h2>${c[1]} <span class="muted small num">${list.filter(v=>v.cat===c[0]).length}</span></h2><div class="vgrid">
      ${list.filter(v=>v.cat===c[0]).map(v=>vendorCard(v,`<button class="btn sm" data-act="vdetail" data-id="${v.id}">Details & reviews</button><button class="btn sm pri" data-act="addfromdir" data-id="${v.id}">${role()==="couple"?"Add to my vendors":"Save to my wedding"}</button>${v.sample||planOf(v)==="basic"?"":`<a class="btn sm wa" target="_blank" rel="noopener" data-act="wastat" data-id="${v.id}" href="https://wa.me/${waNum(v.phone)}">WhatsApp</a>`}`)).join("")}</div></section>`).join(""):`<div class="empty">No vendors match. Try another region or service.</div>`}
@@ -1057,7 +1091,7 @@ function vendorModal(id){
   modal(`<div class="split"><div><span class="eyebrow">${esc(catName(v.cat))}</span><h2>${esc(v.name)}</h2><div>${ratingLine(id)}</div></div><button class="btn sm ghost" data-act="close" aria-label="Close">×</button></div>
    ${v.photo?`<img src="${v.photo}" alt="" style="width:100%;max-height:220px;object-fit:cover;border-radius:8px">`:catTile(v.cat)}
    <p>${esc(v.blurb)}</p>
-   <dl class="kv"><dt>Based in</dt><dd>${esc(v.city)}, ${esc(v.region)}</dd>${v.areas?`<dt>Travels to</dt><dd>${esc(v.areas)}</dd>`:""}<dt>Ceremonies</dt><dd>${v.events==="eng"?"Traditional engagement":v.events==="wed"?"White wedding":"Engagement and white wedding"}</dd>
+   <dl class="kv"><dt>Based in</dt><dd>${esc(v.city)}, ${esc(v.region)}</dd>${v.areas?`<dt>Travels to</dt><dd>${esc(v.areas)}</dd>`:""}${capText(v)?`<dt>Capacity</dt><dd>${capText(v)}</dd>`:""}<dt>Ceremonies</dt><dd>${v.events==="eng"?"Traditional engagement":v.events==="wed"?"White wedding":"Engagement and white wedding"}</dd>
      ${v.years?`<dt>Experience</dt><dd>${esc(v.years)} years</dd>`:""}${v.contact?`<dt>Contact</dt><dd>${esc(v.contact)}</dd>`:""}<dt>Phone</dt><dd><span style="user-select:all">${esc(v.phone)}</span></dd>
      ${v.email?`<dt>Email</dt><dd><span style="user-select:all">${esc(v.email)}</span></dd>`:""}${socials(v).length?`<dt>Online</dt><dd class="stack" style="gap:2px">${socials(v).map(socialLink).join("")}</dd>`:""}${v.deposit?`<dt>Payment</dt><dd>${esc(v.deposit)}</dd>`:""}</dl>
    <div><h3 style="margin-bottom:4px">Packages and fees</h3>${(v.packages||[]).map(p=>`<div class="pk" style="display:flex;justify-content:space-between;gap:10px;font-size:14px;border-top:1px dashed var(--line);padding-top:6px"><span>${esc(p.name)}</span><b class="num">${p.price?fmt(p.price):"Ask for a quote"}${p.unit?` <span class="muted small">${esc(p.unit)}</span>`:""}</b></div>`).join("")}</div>
@@ -1100,7 +1134,11 @@ function vendorPlanCard(l){const pl=l.id?planOf(l):"basic",req=l.planReq,mo=new 
      :`<div class="grid g3"><div><span class="small muted">Views this month</span><div class="price num">${cur.views}</div></div><div><span class="small muted">WhatsApp taps this month</span><div class="price num">${cur.wa}</div></div><div><span class="small muted">All time</span><div class="num"><b>${tot.views}</b> views · <b>${tot.wa}</b> taps</div></div></div>`}
    ${l.status==="approved"||pl!=="basic"?plansHTML(pl,req&&req.plan):`<p class="small muted">You can choose a paid plan once your listing is approved.</p>`}</section>`}
 function myListing(){return listings().find(l=>l.owner===me)}
-const LFIELDS=["name","cat","events","contact","email","phone","city","region","areas","years","blurb","deposit","reg","idType","idNo"];
+const LFIELDS=["name","cat","events","contact","email","phone","city","region","areas","years","blurb","deposit","reg","idType","idNo","capMin","capMax"];
+/* Venue capacity in guests. capMin/capMax are stored as text from the form; either may be empty. */
+function capText(v){const a=+v.capMin||0,b=+v.capMax||0;if(v.cat!=="venues"||(!a&&!b))return "";return a&&b&&a!==b?`${a.toLocaleString("en-GB")} to ${b.toLocaleString("en-GB")} guests`:b?`Up to ${b.toLocaleString("en-GB")} guests`:`From ${a.toLocaleString("en-GB")} guests`}
+const CAPS=[["all","Any number of guests"],["100","About 100 guests"],["200","About 200 guests"],["300","About 300 guests"],["500","About 500 guests"],["800","800 or more guests"]];
+function fitsCap(v,want){if(want==="all"||v.cat!=="venues")return true;const n=+want,a=+v.capMin||0,b=+v.capMax||0;if(!a&&!b)return false;return (b||Infinity)>=n&&a<=n}
 const IDTYPES=["Ghana Card","Driver's licence"];
 const money=v=>+String(v||"").replace(/[^\d.]/g,"")||0;
 const groupNum=v=>{const n=money(v);return n?n.toLocaleString("en-GB",{maximumFractionDigits:2}):""};
@@ -1149,6 +1187,9 @@ function vVendorDash(){
      <label class="f">Town or city *<input name="city" id="ls-city" required value="${esc(l.city)}"></label>
      <label class="f">Region *<select name="region" id="ls-region">${REGIONS.map(r=>`<option ${r===l.region?"selected":""}>${r}</option>`).join("")}</select></label></div>
      <label class="f">Areas you travel to *<input name="areas" id="ls-areas" required value="${esc(l.areas)}" placeholder="e.g. All of Greater Accra and Eastern Region"></label>
+     <div class="grid g2" id="ls-capbox" ${l.cat==="venues"?"":"hidden"}><label class="f">Smallest number of guests<input name="capMin" id="ls-capmin" type="number" min="0" inputmode="numeric" value="${esc(l.capMin)}" placeholder="e.g. 50"></label>
+     <label class="f">Largest number of guests<input name="capMax" id="ls-capmax" type="number" min="0" inputmode="numeric" value="${esc(l.capMax)}" placeholder="e.g. 400"></label>
+     <span class="small muted" style="grid-column:1/-1">Venue capacity. Leave the first box empty if there's no minimum.</span></div>
      <label class="f">Years in business<input name="years" id="ls-years" type="number" min="0" value="${esc(l.years)}"></label>
      <label class="f">About your service *<textarea name="blurb" id="ls-blurb" required placeholder="What you offer, your style, what makes you different">${esc(l.blurb)}</textarea></label></fieldset>
      <fieldset class="fs"><legend>Contact</legend><div class="grid g2">
@@ -1160,8 +1201,8 @@ function vVendorDash(){
      <div class="stack" style="gap:6px"><span class="small muted" style="font-weight:600">Packages and fees *</span><div id="ls-pks" class="stack" style="gap:10px">${((l.packages||[]).length?l.packages:[{}]).map(pkRow).join("")}</div><div><button type="button" class="btn sm" data-act="addpkrow">+ Add another package</button></div><span class="small muted">Leave the fee empty if couples should ask for a quote.</span></div>
      <label class="f">Deposit and payment terms *<input name="deposit" id="ls-deposit" required value="${esc(l.deposit)}" placeholder="e.g. 50% deposit to book, balance 1 week before. MoMo or bank transfer"></label></fieldset>
      <fieldset class="fs"><legend>Photos</legend>
-     <div class="stack" style="gap:6px"><span class="small muted" style="font-weight:600">Cover photo</span><div class="row">${l.photo?`<img src="${l.photo}" alt="" style="width:96px;height:64px;object-fit:cover;border-radius:6px">`:""}<label class="btn sm" style="position:relative">${l.photo?"Change cover photo":"Upload cover photo"}<input type="file" accept="image/*" id="ls-photo" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label></div></div>
-     <div class="stack" style="gap:6px"><span class="small muted" style="font-weight:600">Examples of your work (up to 6)</span><div class="photos sm">${(l.gallery||[]).map(g=>`<figure><img src="${g.src}" alt=""><button type="button" class="x" data-act="delgal" data-id="${g.id}" aria-label="Remove photo">×</button></figure>`).join("")}
+     <div class="stack" style="gap:6px"><span class="small muted" style="font-weight:600">Cover photo <span style="font-weight:400">(the big picture at the top of your listing; upload one or tap "Make cover" on a work photo)</span></span><div class="row">${l.photo?`<img src="${l.photo}" alt="" style="width:96px;height:64px;object-fit:cover;border-radius:6px">`:""}<label class="btn sm" style="position:relative">${l.photo?"Change cover photo":"Upload cover photo"}<input type="file" accept="image/*" id="ls-photo" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label></div></div>
+     <div class="stack" style="gap:6px"><span class="small muted" style="font-weight:600">Examples of your work (up to 6)</span><div class="photos sm">${(l.gallery||[]).map(g=>`<figure><img src="${g.src}" alt=""><button type="button" class="x" data-act="delgal" data-id="${g.id}" aria-label="Remove photo">×</button>${g.src===l.photo?`<span class="covertag">Cover</span>`:`<button type="button" class="mkcover" data-act="mkcover" data-id="${g.id}">Make cover</button>`}</figure>`).join("")}
        ${(l.gallery||[]).length<6?`<label class="btn sm" style="position:relative;aspect-ratio:1;justify-content:center;border-style:dashed;max-width:100%">+ Add photos<input type="file" accept="image/*" multiple id="ls-gallery" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label>`:""}</div></div></fieldset>
      <fieldset class="fs"><legend>Verification</legend>
      <p class="small muted">We check who owns each business before it goes live.</p>
@@ -1243,7 +1284,7 @@ function adminDetails(l){
    <div class="stack" style="gap:6px"><b class="small">Work photos (${gal.length})</b>${gal.length?`<div class="photos sm">${gal.map((g,i)=>`<button type="button" class="zoom" data-act="zoomimg" aria-label="Enlarge work photo ${i+1}"><img src="${g.src}" alt="" loading="lazy"></button>`).join("")}</div>`:`<span class="small muted">None uploaded</span>`}</div>
    <dl class="kv">
     ${row("Business",t(l.name))}${row("Service",t(catName(l.cat)))}${row("Ceremonies",t(EVNAME[l.events]||l.events))}
-    ${row("Based in",[l.city,l.region].filter(Boolean).map(esc).join(", "))}${row("Travels to",t(l.areas))}${row("Years in business",t(l.years))}
+    ${row("Based in",[l.city,l.region].filter(Boolean).map(esc).join(", "))}${row("Travels to",t(l.areas))}${row("Capacity",capText(l))}${row("Years in business",t(l.years))}
     ${row("About",t(l.blurb).replace(/\n/g,"<br>"))}
     ${row("Contact person",t(l.contact))}${row("Phone",l.phone?`<span style="user-select:all">${esc(l.phone)}</span>${waNum(l.phone)?` · <a target="_blank" rel="noopener" href="https://wa.me/${waNum(l.phone)}">WhatsApp</a>`:""}`:"")}
     ${row("Email",l.email?`<a href="mailto:${esc(l.email)}">${esc(l.email)}</a>`:"")}${row("Account email",t(l.owner))}
@@ -1312,7 +1353,7 @@ function bindUploads(){const f=$("#ph-file");if(!f)return;f.onchange=async()=>{c
 document.addEventListener("click",async e=>{
   const t=e.target.closest("[data-act]");if(!t)return;const a=t.dataset.act,id=t.dataset.id;
   if(a==="bg"&&e.target!==t)return;
-  if(["gsearch","vsearch","vregion","vevent","task","taskdue","taskwho"].includes(a))return;
+  if(["gsearch","vsearch","vregion","vevent","vcap","task","taskdue","taskwho"].includes(a))return;
   switch(a){
     case"bg":case"close":closeModal();break;
     case"reset":if(me===DEMO&&mode==="couple"){S=seed();ensureTeam(DEMO);S.taskGroups=[];save();toast("Sample data restored");rerender()}break;
@@ -1351,6 +1392,8 @@ document.addEventListener("click",async e=>{
       else{x.plan="basic";x.planUntil=null;delete x.planTerm;delete x.planPaid;toast("Plan ended. Listing is back on Basic")}
       setListings(l);rerender();break}
     case"delrev":{const r=allReviews();r[id]=(r[id]||[]).filter(x=>x.id!==t.dataset.rid);setReviews(r);toast("Review removed");rerender();vendorModal(id);break}
+    case"tcat":ui.tcat=id;rerender();break;
+    case"mkcover":{const [l,x]=draftFromForm();const g=(x.gallery||[]).find(g=>g.id===id);if(g){x.photo=g.src;setListings(l);rerender();toast("Cover photo changed. Submit to send it for approval")}break}
     case"delgal":{const [l,x]=draftFromForm();x.gallery=(x.gallery||[]).filter(g=>g.id!==id);setListings(l);rerender();break}
     case"vauthtab":ui.vAuthTab=id;rerender();if(t.closest(".plans"))document.querySelector('[data-form="vsignup"]')?.scrollIntoView({behavior:"smooth",block:"center"});break;
     case"gopricing":e.preventDefault();if(location.hash!=="#vendor-area")location.hash="vendor-area";setTimeout(()=>document.getElementById("pricing")?.scrollIntoView({behavior:"smooth"}),80);break;
@@ -1391,6 +1434,8 @@ document.addEventListener("change",e=>{const t=e.target;const a=t.dataset.act;
   if(a==="task"){const x=S.tasks.find(x=>x.id===t.dataset.id);if(x){x.done=t.checked;save();rerender()}}
   if(a==="taskwho"){const x=S.tasks.find(x=>x.id===t.dataset.id);if(x){x.who=t.value;save();rerender();toast(t.value?`Assigned to ${partnerName(t.value)}`:"Unassigned")}}
   if(a==="taskdue"){const x=S.tasks.find(x=>x.id===t.dataset.id);if(x){x.due=t.value;save();t.dataset.dirty="1";if(document.activeElement!==t)commitDue(t)}}
+  if(t.id==="ls-cat"){const b=$("#ls-capbox");if(b)b.hidden=t.value!=="venues"}
+  if(a==="vcap"){ui.vcap=t.value;rerender()}
   if(a==="vregion"){ui.vregion=t.value;rerender()} if(a==="vevent"){ui.vevent=t.value;rerender()}
   if(t.id==="ls-photo"&&t.files[0]){(async()=>{try{const src=await shrink(t.files[0]);const [l,x]=draftFromForm();x.photo=src;setListings(l);rerender();toast("Cover photo added. Submit to send it for approval")}catch(_){toast("That file couldn't be read as a photo")}})()}
   if(t.id==="ls-gallery"&&t.files.length){(async()=>{const [l,x]=draftFromForm();x.gallery=x.gallery||[];let n=0;for(const f of t.files){if(x.gallery.length>=6)break;try{x.gallery.push({id:uid(),src:await shrink(f)});n++}catch(_){}}

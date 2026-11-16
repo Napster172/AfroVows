@@ -905,3 +905,36 @@
 904|Llamar
 905|Este es un anuncio de ejemplo, así que no tiene un número real. Los proveedores reales muestran aquí WhatsApp y Llamar.
 906|Responder por correo
+907|Ideas y consejos
+908|Guías para parejas ghanesas
+909|Ver todas las guías
+910|Guías de boda para parejas ghanesas
+911|Ayuda práctica para el compromiso, la boda blanca y la vida después: trámites, presupuestos, tradiciones y más.
+912|Todas las guías
+913|← Todas las ideas y consejos
+914|Más guías
+915|{0} min de lectura
+916|Después de la boda
+917|Trámites legales
+918|Tradiciones
+919|Planificación
+920|Proveedores
+921|Invitados
+922|Estas guías son información general para ayudarte a planificar. Las normas, tarifas y formularios pueden cambiar, así que consulta con la oficina correspondiente.
+923|Capacidad
+924|Capacidad:
+925|De {0} a {1} invitados
+926|Hasta {0} invitados
+927|Desde {0} invitados
+928|Número mínimo de invitados
+929|Número máximo de invitados
+930|Capacidad del lugar. Deja vacía la primera casilla si no hay mínimo.
+931|Número de invitados
+932|Cualquier número de invitados
+933|Unos {0} invitados
+934|{0} invitados o más
+935|Usar de portada
+936|Portada
+937|(la imagen grande en la parte superior de tu anuncio; sube una o toca "Usar de portada" en una foto de trabajo)
+938|Foto de portada cambiada. Envíala para su aprobación
+939|p. ej. {0}

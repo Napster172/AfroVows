@@ -905,3 +905,36 @@
 904|Chiama
 905|Questo è un annuncio di esempio, quindi non ha un numero reale. I fornitori reali mostrano qui WhatsApp e Chiama.
 906|Rispondi via email
+907|Idee e consigli
+908|Guide per coppie ghanesi
+909|Vedi tutte le guide
+910|Guide al matrimonio per coppie ghanesi
+911|Aiuto pratico per il fidanzamento, il matrimonio in bianco e il dopo: pratiche, budget, tradizioni e altro.
+912|Tutte le guide
+913|← Tutte le idee e i consigli
+914|Altre guide
+915|{0} min di lettura
+916|Dopo il matrimonio
+917|Pratiche legali
+918|Tradizioni
+919|Organizzazione
+920|Fornitori
+921|Ospiti
+922|Queste guide sono informazioni generali per aiutarvi a organizzare. Regole, costi e moduli possono cambiare: verificate con l'ufficio competente.
+923|Capienza
+924|Capienza:
+925|Da {0} a {1} ospiti
+926|Fino a {0} ospiti
+927|Da {0} ospiti
+928|Numero minimo di ospiti
+929|Numero massimo di ospiti
+930|Capienza della location. Lascia vuota la prima casella se non c'è un minimo.
+931|Numero di ospiti
+932|Qualsiasi numero di ospiti
+933|Circa {0} ospiti
+934|{0} ospiti o più
+935|Usa come copertina
+936|Copertina
+937|(l'immagine grande in cima al tuo annuncio; caricane una o tocca "Usa come copertina" su una foto dei lavori)
+938|Foto di copertina cambiata. Inviala per l'approvazione
+939|es. {0}

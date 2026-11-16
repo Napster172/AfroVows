@@ -905,3 +905,36 @@
 904|Appeler
 905|Ceci est une fiche d'exemple, sans vrai numéro. Les vrais prestataires affichent ici WhatsApp et Appeler.
 906|Répondre par e-mail
+907|Idées & conseils
+908|Guides pour les couples ghanéens
+909|Voir tous les guides
+910|Guides de mariage pour les couples ghanéens
+911|De l'aide pratique pour les fiançailles, le mariage en blanc et la suite : démarches, budget, traditions et plus.
+912|Tous les guides
+913|← Toutes les idées & conseils
+914|Autres guides
+915|{0} min de lecture
+916|Après le mariage
+917|Démarches légales
+918|Traditions
+919|Organisation
+920|Prestataires
+921|Invités
+922|Ces guides sont des informations générales pour vous aider à organiser. Les règles, frais et formulaires peuvent changer : renseignez-vous auprès du service concerné.
+923|Capacité
+924|Capacité :
+925|De {0} à {1} invités
+926|Jusqu'à {0} invités
+927|À partir de {0} invités
+928|Nombre minimum d'invités
+929|Nombre maximum d'invités
+930|Capacité du lieu. Laissez la première case vide s'il n'y a pas de minimum.
+931|Nombre d'invités
+932|Tout nombre d'invités
+933|Environ {0} invités
+934|{0} invités ou plus
+935|Mettre en couverture
+936|Couverture
+937|(la grande image en haut de votre fiche ; téléversez-en une ou touchez « Mettre en couverture » sur une photo de réalisation)
+938|Photo de couverture modifiée. Soumettez-la pour validation
+939|ex. {0}
