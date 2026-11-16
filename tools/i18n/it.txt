@@ -1013,3 +1013,4 @@
 1012|{0} persona attende la tua approvazione.
 1013|{0} persone attendono la tua approvazione.
 1014|Vedi nella scheda Team
+1015|Solo gli sposi possono modificare la storia e i dettagli del matrimonio. Qui puoi vederli.

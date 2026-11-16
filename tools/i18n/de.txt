@@ -1013,3 +1013,4 @@
 1012|{0} Person wartet auf deine Bestätigung.
 1013|{0} Personen warten auf deine Bestätigung.
 1014|Im Tab Team ansehen
+1015|Nur Braut und Bräutigam können die Geschichte und die Hochzeitsdetails ändern. Hier kannst du sie ansehen.
