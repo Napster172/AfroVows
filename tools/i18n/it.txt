@@ -1,0 +1,864 @@
+0|Logo di AfroVows
+1|Home
+2|Elenco fornitori
+3|Per i fornitori
+4|Chi siamo
+5|Coppie: accedi
+6|Sono un invitato
+7|AfroVows: organizzazione di matrimoni per il Ghana. Fidanzamento tradizionale e matrimonio in bianco, in cedi, condiviso su WhatsApp.
+8|Contattaci
+9|Proprietario del sito
+10|Versione di prova.
+11|Account e dettagli del matrimonio sono salvati solo in questo browser. I fornitori di esempio sono inventati.
+12|{0} su {1}
+13|Il matrimonio dei tuoi sogni in Ghana inizia qui
+14|Benvenuto su AfroVows, il tuo partner ideale per creare matrimoni indimenticabili in Ghana. Scopri location splendide, fotografi di talento e i migliori fornitori per dare vita alla tua idea. Ti aiutiamo a pianificare, gestire e festeggiare il tuo giorno speciale con facilità e gioia.
+15|Inizia a organizzare il tuo matrimonio
+16|Gratis per tutti · nessun account necessario
+17|Sfoglia wedding planner, catering, tessitori di kente, presentatori, noleggio di tendoni e altro in tutto il Ghana, divisi per servizio con contatti e prezzi.
+18|Sfoglia i fornitori
+19|Invitato con un codice matrimonio?
+20|Privato · solo coppie
+21|Il tuo organizzatore di matrimonio
+22|Accedi per gestire budget, lista invitati, risposte, fornitori, foto e la vostra storia. Nessun altro vede i tuoi dati, e gli invitati vedono la pagina del matrimonio solo quando dai loro il tuo codice.
+23|Registrati
+24|Accedi
+25|In evidenza
+26|Fornitori in evidenza
+27|Vedi tutti i fornitori
+28|Esempio
+29|★ In evidenza
+30|Verificato
+31|Decorazioni e fiori · Accra, Greater Accra · Entrambe le cerimonie
+32|Ancora nessuna recensione
+33|Allestimento del palco con dettagli in kente, fiori freschi e di seta, decorazione della navata e del ricevimento.
+34|Palco e posti per il fidanzamento
+35|GH₵ {0}
+36|Pacchetto chiesa + ricevimento
+37|Location completa premium
+38|Chiama o scrivi su WhatsApp:
+39|Dettagli e recensioni
+40|Foto e video · Accra, Greater Accra · Entrambe le cerimonie
+41|({0} recensioni)
+42|Foto in stile reportage e video dei momenti salienti nella stessa settimana.
+43|Servizio per il fidanzamento
+44|Servizio per il matrimonio in bianco
+45|Entrambi + video dei momenti salienti
+46|Location · Accra, Greater Accra · Entrambe le cerimonie
+47|Sala interna e giardino fino a {0} invitati, con generatore di riserva.
+48|Giardino (giorno)
+49|Sala + giardino
+50|Fornitori per servizio
+51|Vedi tutto
+52|Wedding planner
+53|{0} in elenco
+54|Decorazioni e fiori
+55|Catering e bevande
+56|Foto e video
+57|Presentatori
+58|DJ, band e cori
+59|Kente e tessuti
+60|Abiti da sposa e da sposo
+61|Trucco e acconciatura
+62|Torte e dolci
+63|Location
+64|Tendoni, sedie e noleggi
+65|Accoglienza e protocollo
+66|Auto e trasporti
+67|Inviti e stampa
+68|Sei un fornitore di matrimoni?
+69|Crea un account fornitore gratuito e invia i tuoi servizi e prezzi. Gli annunci vanno online quando AfroVows li approva. Passa a Verificato o In evidenza per distinguerti.
+70|Vedi i prezzi
+71|Inserisci la tua attività
+72|Tutto ciò che serve a un matrimonio ghanese
+73|Due cerimonie, un solo piano
+74|Pianifica il fidanzamento tradizionale e il matrimonio in bianco fianco a fianco, ciascuno con i suoi invitati, la sua location e le sue risposte.
+75|Budget in cedi
+76|Tieni traccia di ogni cedi, dalla lista del fidanzamento all'ultimo tendone, e annota se hai pagato con MoMo, in contanti o tramite banca.
+77|Inviti su WhatsApp
+78|Invia a ogni ospite un invito personale su WhatsApp con un tocco e guarda le risposte arrivare nel tuo registro.
+79|I tuoi fornitori in un unico posto
+80|Tieni a portata di mano prezzi concordati, acconti e saldi di ogni fornitore, così il giorno del matrimonio non dimentichi nulla.
+81|Foto degli invitati
+82|Gli invitati caricano le loro foto direttamente sulla pagina del matrimonio, senza scaricare app.
+83|Una pagina del matrimonio privata
+84|La vostra storia con le vostre foto, dettagli delle cerimonie, location, dress code e dati MoMo per i regali. Solo gli invitati con il vostro codice possono aprirla.
+85|Ci farebbe piacere sentirti
+86|Domande sull'organizzazione del matrimonio, sull'inserimento della tua attività o su come collaborare con AfroVows? Scrivici e ti risponderemo entro un giorno lavorativo.
+87|Aggiungi il tuo numero
+88|Email
+89|Aggiungi la tua email
+90|Sede
+91|Accra, Ghana
+92|Orari
+93|Dal lunedì al sabato, dalle {0} del mattino alle {1} del pomeriggio
+94|Il tuo nome
+95|Sono
+96|Una coppia che organizza il matrimonio
+97|Fornitore di matrimoni
+98|Invitato a un matrimonio
+99|Altro
+100|Numero WhatsApp (facoltativo)
+101|Messaggio
+102|Invia messaggio
+103|Cerca fornitori, città o servizi
+104|Elenco fornitori · gratuito, senza account
+105|Trova fornitori di matrimoni in Ghana
+106|Tutte le regioni
+107|Qualsiasi cerimonia
+108|Fidanzamento tradizionale
+109|Matrimonio in bianco
+110|Tutti i servizi
+111|Wedding planner · Accra, Greater Accra · Entrambe le cerimonie
+112|Organizzazione completa di fidanzamento e matrimonio in bianco, incluso il coordinamento con la famiglia per la lista del fidanzamento.
+113|Coordinamento del giorno
+114|Organizzazione parziale
+115|Organizzazione completa (entrambe le cerimonie)
+116|Salva per il mio matrimonio
+117|Wedding planner · Kumasi, Ashanti · Entrambe le cerimonie
+118|Organizzatori dell'Ashanti che conoscono le location della zona di Manhyia e il protocollo dei capi.
+119|Solo fidanzamento
+120|Organizzazione completa
+121|I prezzi sono tariffe di partenza fissate da ogni fornitore. AfroVows controlla ogni annuncio prima che vada online. Conferma sempre il preventivo finale prima di versare un acconto.
+122|Decorazioni e fiori · Kumasi, Ashanti · Fidanzamento
+123|Allestimenti per il fidanzamento tradizionale con drappeggi del tendone e disposizione dei posti per le famiglie.
+124|Allestimento del fidanzamento
+125|Decorazioni del ricevimento
+126|Catering e bevande · Accra, Greater Accra · Entrambe le cerimonie
+127|({0} recensione)
+128|Postazioni di jollof, waakye e kelewele, tilapia alla griglia e opzioni internazionali.
+129|Buffet
+130|a invitato
+131|Menù servito di {0} portate
+132|Extra stuzzichini
+133|Catering e bevande · Ho, Volta · Entrambe le cerimonie
+134|Specialità ewe e ga, più un bar completo con baristi.
+135|Bar ({0} invitati)
+136|Foto e video · Cape Coast, Central · Entrambe le cerimonie
+137|Servizi in spiaggia e nella città del castello, riprese con drone disponibili.
+138|Servizio prematrimoniale
+139|Giornata intera
+140|Presentatori · Accra, Greater Accra · Entrambe le cerimonie
+141|Presentatore bilingue (inglese e twi) che fa rispettare i tempi del programma.
+142|Presentatore del fidanzamento
+143|Presentatore del ricevimento
+144|Presentatori · Kumasi, Ashanti · Fidanzamento
+145|Okyeame (portavoce) esperto per i riti del fidanzamento tradizionale.
+146|Servizio di portavoce
+147|DJ, band e cori · Accra, Greater Accra · Entrambe le cerimonie
+148|Band dal vivo highlife, afrobeats e gospel, più DJ per il dopo festa.
+149|DJ ({0} ore)
+150|Band dal vivo ({0} set)
+151|DJ, band e cori · Tema, Greater Accra · Matrimonio in bianco
+152|Coro di chiesa per l'ingresso, la firma e l'uscita.
+153|Funzione in chiesa
+154|Kente e tessuti · Bonwire, Ashanti · Fidanzamento
+155|Kente tessuto a mano per la coppia, con colori personalizzati e nomi intessuti.
+156|Set di kente per la coppia
+157|Tessuto di famiglia (al pezzo)
+158|al pezzo
+159|Kente e tessuti · Accra, Greater Accra · Entrambe le cerimonie
+160|Ricerca di tessuti di gruppo (asoebi) e abbinamento dei colori per famiglia e amici.
+161|Tessuto di gruppo
+162|ogni {0} iarde
+163|Abiti da sposa e da sposo · Accra, Greater Accra · Entrambe le cerimonie
+164|Abiti da sposa su misura e kaba e slit per il fidanzamento.
+165|Kaba e slit
+166|Abito da sposa
+167|Noleggio abito
+168|Abiti da sposa e da sposo · Tamale, Northern · Entrambe le cerimonie
+169|Smock (fugu), completi e set per i testimoni.
+170|Smock dello sposo
+171|Testimoni (ciascuno)
+172|a persona
+173|Trucco e acconciatura · Accra, Greater Accra · Entrambe le cerimonie
+174|Trucco sposa e legatura del gele/turbante, con prova.
+175|Sposa (entrambi i giorni)
+176|Damigella
+177|Torte e dolci · Kumasi, Ashanti · Matrimonio in bianco
+178|Torte a più piani con glassa a motivi kente, più tavoli di dolci.
+179|Torta a {0} piani
+180|Tavolo dei dolci
+181|Location · Bosomtwe, Ashanti · Entrambe le cerimonie
+182|Prato sul lago per fidanzamenti e matrimoni intimi.
+183|Prato (giorno)
+184|Tendoni, sedie e noleggi · Accra, Greater Accra · Entrambe le cerimonie
+185|Tendoni, sedie, tavoli, coprisedie e impianto audio per fidanzamenti a casa.
+186|Tendone
+187|cad.
+188|Sedia con coprisedia
+189|Tavolo rotondo
+190|Accoglienza e protocollo · Accra, Greater Accra · Entrambe le cerimonie
+191|Addetti all'accoglienza formati con divise coordinate, gestione dei posti e del tavolo dei regali.
+192|Addetto all'accoglienza
+193|per addetto
+194|Auto e trasporti · Accra, Greater Accra · Entrambe le cerimonie
+195|Auto nuziale decorata e pullman per la famiglia.
+196|Auto nuziale (giorno)
+197|Pullman da {0} posti
+198|Inviti e stampa · Accra, Greater Accra · Entrambe le cerimonie
+199|Inviti stampati, programmi e biglietti digitali per WhatsApp.
+200|Grafica dell'invito digitale
+201|Invito stampato
+202|a biglietto
+203|Libretto del programma
+204|a copia
+205|Chiudi
+206|Cerimonie
+207|Fidanzamento e matrimonio in bianco
+208|Telefono
+209|Pacchetti e prezzi
+210|Recensioni delle coppie
+211|Ancora nessuna recensione. Sii la prima coppia a raccontare com'è andata.
+212|Li hai scelti?
+213|Accedi come coppia
+214|per lasciare una recensione. Le recensioni aiutano altre coppie a scegliere con fiducia.
+215|Su AfroVows
+216|Aiutiamo le coppie ghanesi a organizzare il giorno che hanno sognato
+217|Rendere l'organizzazione di un matrimonio ghanese semplice, trasparente e gioiosa, per ogni coppia e ogni budget.
+218|Conosci il fondatore
+219|Fondatore
+220|Aggiungi qui una breve presentazione: da dove vieni, il tuo percorso e cosa significano per te i matrimoni ghanesi.
+221|Perché abbiamo creato AfroVows
+222|Organizzare un matrimonio in Ghana significa organizzare due feste: il fidanzamento tradizionale e il matrimonio in bianco. Le coppie si destreggiano tra la lista del fidanzamento, fornitori trovati tramite amici di amici, prezzi che cambiano a ogni telefonata e liste di invitati sparse tra gruppi WhatsApp.
+223|Abbiamo creato AfroVows per riunire tutto in un unico posto. Chiunque può consultare gratis un elenco di fornitori verificati con prezzi chiari in cedi, e le coppie hanno strumenti privati per organizzare con il partner e la famiglia, così passano meno tempo a rincorrere dettagli e più tempo a festeggiare.
+224|I nostri valori
+225|Pensato per il Ghana
+226|Due cerimonie, prezzi in cedi, Mobile Money e WhatsApp, come si celebrano davvero i matrimoni qui.
+227|Prima di tutto la fiducia
+228|Ogni fornitore viene controllato prima di andare online, e le coppie condividono recensioni sincere.
+229|I tuoi dati restano privati
+230|I piani di una coppia sono visibili solo alle persone che invita.
+231|Il team
+232|Guida AfroVows e le sue collaborazioni.
+233|Aggiungi un nome
+234|Rapporti con i fornitori
+235|Trova e verifica ottimi fornitori in tutte le regioni del Ghana.
+236|Supporto alle coppie
+237|Aiuta le coppie a sfruttare al meglio il loro organizzatore.
+238|Contenuti e social media
+239|Condivide matrimoni reali, consigli e ispirazione.
+240|Vuoi lavorare con noi?
+241|Coppie, fornitori e partner sono sempre i benvenuti.
+242|Per i fornitori di matrimoni
+243|Inserisci la tua attività su AfroVows
+244|Raggiungi le coppie che organizzano fidanzamenti e matrimoni in bianco in tutto il Ghana. Un annuncio Base è gratuito. Passa a un piano superiore per distinguerti.
+245|Passo {0}
+246|Crea il tuo account fornitore
+247|Usa l'email della tua attività.
+248|Aggiungi i dati della tua attività
+249|Servizi, pacchetti e prezzi in cedi, zone coperte, condizioni di pagamento, contatti e foto.
+250|Lo controlliamo
+251|Il team di AfroVows controlla ogni annuncio. Vai online appena viene approvato.
+252|Accesso fornitori
+253|Crea account fornitore
+254|Nome dell'attività
+255|Email dell'attività
+256|Password
+257|Almeno {0} caratteri
+258|Crea account
+259|Piani e prezzi
+260|L'inserimento è gratuito. Paghi solo per distinguerti.
+261|Gratis per sempre
+262|Base
+263|GH₵
+264|al mese
+265|Il tuo annuncio nell'elenco
+266|Pacchetti, prezzi e numero di telefono
+267|Inizia gratis
+268|Crea fiducia
+269|Tutto ciò che c'è in Base
+270|Badge Verificato dopo il controllo della registrazione della tua attività
+271|Pulsante WhatsApp nel tuo annuncio
+272|Mostrato sopra gli annunci Base del tuo servizio
+273|Visualizzazioni mensili e clic su WhatsApp
+274|Crea un account per scegliere
+275|Fatti vedere per primo
+276|In evidenza
+277|Tutto ciò che c'è in Verificato
+278|Badge In evidenza e i primi posti del tuo servizio
+279|Vetrina sulla home page di AfroVows
+280|Le tue modifiche controllate per prime
+281|Paga un anno e ottieni {0} mesi gratis.
+282|Paga con Mobile Money ad AfroVows. Il tuo piano parte appena confermiamo il pagamento.
+283|MoMo:
+284|Aggiungi il tuo numero MoMo
+285|Area coppie
+286|Accedi al tuo matrimonio
+287|Il tuo organizzatore è privato. Solo tu, il tuo partner e le persone che inviti potete vedere budget, invitati e fornitori.
+288|Unisciti con un codice di invito
+289|Stai solo curiosando?
+290|Esplora una coppia inventata, Ama e Kofi, per vedere tutte le funzioni senza registrarti.
+291|Esplora la coppia di esempio
+292|Crea l'account del vostro matrimonio
+293|Il tuo nome
+294|Sono
+295|La sposa
+296|Lo sposo
+297|Nome del tuo partner
+298|Unisciti a un matrimonio
+299|Hai ricevuto un codice di invito da una coppia? Crea qui il tuo account per organizzare con loro.
+300|Codice di invito
+301|Unisciti al matrimonio
+302|Amministrazione AfroVows
+303|Approva gli annunci dei fornitori prima che compaiano nell'elenco.
+304|Scorciatoia di prova
+305|In questa versione di prova non c'è ancora un vero accesso per il proprietario. Apri la pagina delle approvazioni come proprietario del sito per provarla.
+306|Apri come proprietario del sito
+307|Benvenuto! Stai esplorando il matrimonio di Ama e Kofi
+308|Il mio matrimonio
+309|Esci
+310|Stai esplorando la coppia di esempio.
+311|Qui è tutto inventato. Le modifiche vengono salvate solo in questo browser.
+312|Ripristina i dati di esempio
+313|Segna come fatto
+314|Elimina attività
+315|Organizzatore privato · solo il vostro team del matrimonio può vederlo
+316|Codice del matrimonio per gli invitati:
+317|· Accesso come
+318|(Sposa)
+319|Anteprima della pagina invitati
+320|Panoramica
+321|Budget
+322|I miei fornitori
+323|Da fare
+324|Invitati e risposte
+325|Team
+326|Foto
+327|Storia e dettagli
+328|Budget impegnato
+329|GH₵ {0} concordati su GH₵ {1}
+330|Pagato finora
+331|Saldo da pagare GH₵ {0}
+332|Invitati
+333|{0} devono ancora rispondere
+334|Fornitori prenotati
+335|su {0} nella tua lista
+336|Mancano {0} giorni
+337|{0} · Casa di famiglia, Ahodwo
+338|{0} vengono
+339|{0} in attesa
+340|{0} non vengono
+341|Presenze previste (con accompagnatori):
+342|Matrimonio in bianco e ricevimento
+343|{0} · Labadi Garden Hall (esempio)
+344|In arrivo
+345|Vedi tutte le attività
+346|{0} di {1} attività completate
+347|Selezionare e prenotare un wedding planner
+348|Chi
+349|Non assegnata
+350|Ama (sposa)
+351|Kofi (sposo)
+352|Scadenza
+353|In ritardo di {0} giorni
+354|Prenotare fotografo e videomaker
+355|Prenotare il catering e organizzare una degustazione
+356|Scegliere il tessuto di famiglia e il kente, e fare gli ordini
+357|Prenotare decorazioni, tendoni e sedie
+358|Budget totale
+359|Aggiorna
+360|Previsto
+361|Budget superato di GH₵ {0}
+362|Prezzi concordati, pagamenti, fatture e ricevute sono salvati con ogni fornitore in
+363|Voce
+364|Articoli del fidanzamento
+365|Articoli della lista del fidanzamento (bevande, tessuti, gioielli)
+366|Modifica
+367|Dote e buste per la famiglia
+368|Decorazioni del palco e del ricevimento
+369|Catering ({0} invitati)
+370|Fotografo + video dei momenti salienti
+371|Presentatore e DJ
+372|Kente, abito e vestito dello sposo
+373|Location del ricevimento
+374|Tendoni e sedie per il fidanzamento
+375|Inviti digitali + programmi
+376|Totale previsto
+377|Aggiungi voce di budget
+378|es. Bevande per il fidanzamento
+379|Modifica voce di budget
+380|Categoria
+381|Regali e aseda
+382|Altro
+383|Importo previsto (GH₵)
+384|Elimina
+385|Annulla
+386|Salva
+387|Pagato GH₵ {0}, da pagare GH₵ {1}, budget GH₵ {2}
+388|Fatture e ricevute di Labadi Garden Hall
+389|Pagamenti registrati ma nessuna ricevuta allegata
+390|Fatture e ricevute di Lens of Sankofa Studios
+391|Fatture e ricevute di Mama Esi's Kitchen
+392|Fatture e ricevute di Bloom & Batakari Décor
+393|Concordato con i fornitori
+394|{0} fornitori · {1} in attesa di preventivo
+395|{0}% del concordato
+396|Saldo da pagare
+397|Ancora dovuto ai fornitori
+398|GH₵ {0} non ancora impegnati
+399|Fatture
+400|Ricevute
+401|{0} fornitori pagati senza ricevuta
+402|Fornitori rispetto al budget
+403|{0}% del budget concordato
+404|Pagato GH₵ {0} ({1}%)
+405|Concordato, non pagato GH₵ {0}
+406|Rimasto nel budget GH₵ {0}
+407|Servizio
+408|A budget
+409|Concordato
+410|Pagato
+411|Differenza
+412|In linea con il budget
+413|Acconto pagato
+414|Saldo
+415|Note
+416|Saldo dovuto {0} settimane prima
+417|Allega
+418|Nessuna ricevuta
+419|Prenotato
+420|Degustazione il {0}
+421|Contattato
+422|In attesa di preventivo
+423|Aggiungi un fornitore
+424|Sfoglia l'elenco
+425|Rimuovi questa scadenza
+426|Aggiorna fornitore
+427|Prezzo concordato (GH₵)
+428|Pagato (GH₵)
+429|Stato
+430|Pagato per intero
+431|Scadenze di pagamento
+432|Data di scadenza
+433|Importo (GH₵)
+434|Aggiungi un'altra scadenza
+435|es. acconto ora, saldo due settimane prima del matrimonio. Un pagamento risulta saldato quando il totale "Pagato" lo copre.
+436|Pagato con
+437|Non ancora pagato
+438|Contanti
+439|Bonifico bancario
+440|Carta
+441|Fatture e ricevute
+442|{0} allegati
+443|Rimuovi
+444|Aggiungi ai miei fornitori
+445|Salva prima il fornitore, poi usa Aggiorna per allegare fatture e ricevute.
+446|es. Acconto tramite MoMo
+447|Concordato GH₵ {0} · Pagato GH₵ {1}
+448|Fatture ricevute
+449|Ancora nessuno.
+450|Ricevute di pagamento
+451|Allega un documento
+452|Tipo
+453|Ricevuta di un pagamento
+454|Fattura del fornitore
+455|Data
+456|Importo (GH₵, facoltativo)
+457|Nota (facoltativa)
+458|File (foto o PDF)
+459|Aggiungi l'importo di questa ricevuta a "Pagato finora"
+460|Le foto vengono ridotte per risparmiare spazio. PDF fino a {0} MB.
+461|Aggiungi un'attività
+462|Responsabile
+463|es. Articoli del fidanzamento, Luna di miele, Requisiti della chiesa
+464|Fatto
+465|{0} di {1} attività
+466|In ritardo
+467|Scadenza superata
+468|Scadono tra {0} settimane
+469|In arrivo a breve
+470|Ancora da fare
+471|Tutte hanno una scadenza
+472|Avanzamento per fase
+473|Mancano {0} mesi
+474|{0} di {1} completate
+475|Manca {0} settimana
+476|Avanzamento per persona
+477|Conto alla rovescia dalla vostra prima cerimonia del
+478|. Imposta una scadenza e un responsabile per ogni attività.
+479|Tutto
+480|Attività di Ama
+481|Attività di Kofi
+482|Da completare entro il {0}
+483|{0} in ritardo
+484|Concordare il budget complessivo con entrambe le famiglie
+485|Fissare le date del fidanzamento e del matrimonio in bianco
+486|Farsi dare la lista del fidanzamento dalla famiglia della sposa
+487|Prenotare la chiesa o la location della cerimonia e quella del ricevimento
+488|Aggiungi
+489|Prepara la pagina del matrimonio e la vostra storia
+490|Scade tra {0} giorno
+491|Inviare gli inviti su WhatsApp con il codice del matrimonio
+492|Fare le pubblicazioni in comune o in chiesa (almeno {0} giorni prima)
+493|Prenotare il presentatore e l'okyeame (portavoce)
+494|Ordinare la torta nuziale
+495|Prove dell'abito e prova trucco
+496|Confermare il numero finale di invitati al catering
+497|Pagare i saldi rimanenti ai fornitori
+498|Preparare gli articoli della lista del fidanzamento
+499|Istruire gli addetti all'accoglienza su posti e tavolo dei regali
+500|Preparare la lista di ringraziamenti 'aseda' per i regali
+501|Crea il tuo gruppo
+502|Crea gruppo
+503|Cerca nome, telefono o gruppo
+504|{0} invitati
+505|{0} senza risposta
+506|Presenze
+507|Esporta la lista delle risposte
+508|Aggiungi invitato
+509|Tutti gli invitati
+510|Vengono
+511|Nessuna risposta
+512|Non vengono
+513|Invitato
+514|Lato
+515|Tradizionale
+516|In bianco
+517|+{0}
+518|{0} · Famiglia
+519|Ancora nessuna risposta
+520|{0} · Amici
+521|Non invitato
+522|{0} · Lavoro
+523|Non può venire
+524|{0} · Chiesa
+525|Pastore e Sig.ra Addo
+526|Entrambe
+527|Il pulsante WhatsApp apre un invito già scritto per quell'invitato. Gli invitati rispondono sulla pagina del matrimonio e la loro risposta compare qui.
+528|Famiglia, Chiesa, Lavoro
+529|Nome
+530|Numero WhatsApp
+531|Gruppo
+532|Accompagnatori ammessi
+533|Invitato al fidanzamento tradizionale
+534|Risposta
+535|Invitato al matrimonio in bianco e ricevimento
+536|Modifica invitato
+537|Rimuovi invitato
+538|Tutti qui possono aprire questo organizzatore e aiutare con budget, invitati, fornitori e attività. Invita qualcuno, poi mandagli il suo codice di invito. Si unisce da Coppie: accedi, poi Unisciti con un codice di invito.
+539|Si è unito
+540|Sposa · ha creato questo matrimonio ·
+541|tu
+542|Invito inviato
+543|Codice di invito:
+544|Copia codice
+545|Annulla invito
+546|Famiglia
+547|Invita qualcuno
+548|Il suo ruolo
+549|Organizzatore
+550|Amico
+551|Crea invito
+552|Foto degli invitati
+553|Aggiungi foto
+554|Le foto vengono ridotte prima del caricamento per inviarle velocemente con i dati mobili.
+555|Ancora nessuna foto. Gli invitati possono aggiungere le loro dalla pagina del matrimonio, oppure puoi aggiungerne qui.
+556|Anno
+557|es. Il giorno in cui ci siamo conosciuti
+558|Titolo
+559|Rimuovi momento
+560|La coppia
+561|Partner {0}
+562|Hashtag
+563|Nome dell'evento
+564|Ora di inizio
+565|Location
+566|Indirizzo o punto di riferimento
+567|Link di Google Maps
+568|Dress code e note
+569|La nostra storia
+570|Aggiungi i momenti che vi hanno portato fin qui, con le foto scattate lungo il cammino (fino a {0} per momento).
+571|+ Aggiungi foto
+572|Aggiungi un momento
+573|Regali
+574|Rete
+575|Conto bancario
+576|Numero
+577|Intestatario del conto
+578|Salva dettagli
+579|Anteprima della pagina del matrimonio
+580|es. Efua Asante o {0}
+581|Questo è ciò che vedono gli invitati dopo aver inserito il vostro codice
+582|. Non vedono mai il vostro organizzatore né la lista degli invitati.
+583|Torna all'organizzatore
+584|giorni alla festa
+585|Rispondi
+586|Condividi foto
+587|alle {0}:{1}
+588|Abbigliamento:
+589|Kente o abiti tradizionali. Colori: oro e verde.
+590|Indicazioni
+591|Chiesa e ricevimento
+592|Formale. Il ricevimento segue nella stessa location.
+593|Ci siamo conosciuti alla cerimonia del nome del bambino di un amico
+594|Kofi offrì ad Ama l'ultimo piatto di kelewele. Lei lo prese, e anche il suo numero.
+595|Il nostro primo viaggio a Cape Coast
+596|Un lungo weekend al mare che è diventato un'abitudine.
+597|La famiglia di Kofi è venuta a chiedere la mano
+598|Le due famiglie si sono incontrate a Kumasi e la data è stata fissata.
+599|Inserisci il nome o il numero WhatsApp a cui è stato inviato il tuo invito.
+600|Trova il mio invito
+601|Foto dei nostri invitati
+602|Ancora nessuna foto. Gli invitati possono aggiungere le loro dalla pagina del matrimonio.
+603|La tua presenza è il nostro regalo. Se desideri farci un dono:
+604|Copia numero
+605|Disconnesso
+606|Per gli invitati
+607|Apri un invito di matrimonio
+608|Inserisci il codice del matrimonio che la coppia ti ha inviato su WhatsApp per vedere i dettagli, rispondere e condividere foto.
+609|Codice del matrimonio
+610|Apri invito
+611|Stai solo provando? Il codice della coppia di esempio è
+612|Stai vedendo una pagina di matrimonio privata con il codice
+613|Chiudi pagina
+614|Akwaaba,
+615|! Festeggerai con noi?
+616|Matrimonio in bianco e ricevimento · {0}
+617|Accetto con gioia
+618|Purtroppo non potrò esserci
+619|Il tuo invito include {0} accompagnatore. Verrai con il tuo accompagnatore?
+620|No, solo io
+621|Sì, verrò con il mio accompagnatore
+622|Messaggio per la coppia (facoltativo)
+623|Invia la mia risposta
+624|Medaase, Efua!
+625|Non vediamo l'ora di festeggiare con te. La tua risposta è ora nel registro della coppia.
+626|Non abbiamo trovato quell'invito. Scrivi il tuo nome completo esattamente come sull'invito, oppure il tuo numero WhatsApp.
+627|Non abbiamo trovato nessun matrimonio con quel codice. Controlla il messaggio della coppia.
+628|Aperto come proprietario del sito
+629|Approvazioni ({0})
+630|Modifica sito
+631|Motivo se non approvato (inviato al fornitore)
+632|Proprietario del sito · solo tu puoi vedere questa pagina
+633|Approvazione fornitori
+634|In attesa di approvazione
+635|Online
+636|Non approvato
+637|Piani a pagamento
+638|Messaggi
+639|N. registrazione: non indicato · {0} foto di lavori
+640|Kente e tessuti · Adanwomase, Ashanti · Fidanzamento
+641|Set di kente tessuti a mano per coppie e famiglie, su ordinazione in {0} settimane.
+642|Set per la coppia
+643|Pezzo di famiglia
+644|Approva e pubblica
+645|Non approvare
+646|DJ, band e cori · Takoradi, Western · Entrambe le cerimonie
+647|Set afrobeats, highlife e gospel con audio e luci completi.
+648|Ricevimento ({0} ore)
+649|Per ora non c'è niente qui.
+650|Fornitori paganti
+651|Valore mensile
+652|Pagamento da verificare
+653|Richieste da confermare
+654|Nessuna richiesta di piano in attesa.
+655|Piani a pagamento attivi
+656|Ancora nessun fornitore con un piano a pagamento.
+657|Prezzi, nomi dei piani e numero MoMo si possono modificare con Modifica sito nella pagina Per i fornitori.
+658|Messaggi di contatto
+659|Ancora nessun messaggio. Qui arrivano i messaggi inviati dal modulo Contattaci della home page.
+660|Modifica del sito
+661|Modifica del sito in corso.
+662|Fai clic su un testo evidenziato per modificarlo. Le modifiche vengono salvate quando fai clic altrove.
+663|Cambia foto principale
+664|Fine modifica
+665|Modalità modifica attiva
+666|Modalità modifica disattivata
+667|Account fornitore creato. Ora aggiungi il tuo annuncio.
+668|Il mio annuncio
+669|es. Tutta la Greater Accra e la regione Eastern
+670|es. {0}% di acconto per prenotare, saldo {1} settimana prima. MoMo o bonifico bancario
+671|Facoltativo, ci aiuta ad approvarti più in fretta
+672|Account fornitore
+673|Non inviato
+674|Compila i tuoi dati e inviali per la verifica.
+675|Il tuo piano
+676|Passa a un piano superiore per vedere quante coppie guardano il tuo annuncio e toccano WhatsApp, e per comparire sopra gli annunci Base.
+677|Potrai scegliere un piano a pagamento quando il tuo annuncio sarà approvato.
+678|Il tuo annuncio
+679|I campi con * sono obbligatori. Più informazioni condividi, prima possiamo approvarti.
+680|Attività
+681|Nome dell'attività *
+682|Servizio principale *
+683|Cerimonie che copri *
+684|Entrambe le cerimonie
+685|Paese o città *
+686|Regione *
+687|Zone in cui ti sposti *
+688|Anni di attività
+689|Il tuo servizio *
+690|Contatti
+691|Referente *
+692|WhatsApp / telefono *
+693|Email *
+694|Instagram, Facebook o sito web
+695|Pacchetti, prezzi e pagamento
+696|Pacchetti e prezzi *
+697|Uno per riga: nome del pacchetto, prezzo in GH₵, unità (facoltativa)
+698|Acconto e condizioni di pagamento *
+699|Foto di copertina
+700|Carica foto di copertina
+701|Esempi del tuo lavoro (fino a {0})
+702|Verifica
+703|Numero di registrazione dell'attività (Registrar-General)
+704|Solo il team di AfroVows vede questo numero. Non viene mai mostrato alle coppie.
+705|Invia per l'approvazione
+706|Come lo vedranno le coppie
+707|Wedding planner · Città, Greater Accra · Entrambe le cerimonie
+708|Una breve descrizione di ciò che offri.
+709|Il tuo primo pacchetto
+710|Chiedi un preventivo
+711|Il tuo numero
+712|Inviato per l'approvazione
+713|Grazie! Il team di AfroVows controllerà il tuo annuncio. Comparirà nell'elenco una volta approvato.
+714|Salva e invia di nuovo per l'approvazione
+715|Wedding planner · {0}, Greater Accra · Entrambe le cerimonie
+716|Pagamento: {0}
+717|Hai effettuato l'accesso con un account proprietario del sito. Creando o accedendo a un account fornitore qui sotto verrai prima disconnesso.
+718|Pagina Chi siamo aggiornata
+719|Accesso rimosso
+720|Aggiungi un breve motivo così il fornitore sa cosa cambiare
+721|Aggiungi prima il tuo nome così la coppia sa chi l'ha condivisa
+722|Aggiunto a I miei fornitori
+723|Tutto saldato
+724|Approvato. Ora è online nell'elenco
+725|Allega una foto o un PDF
+726|Budget salvato
+727|Budget aggiornato
+728|Cambia foto di copertina
+729|Foto di copertina aggiunta. Inviala per l'approvazione
+730|Data da confermare
+731|Data da definire
+732|Condizioni dell'acconto, referente, tempi di consegna
+733|Dettagli salvati
+734|Documento rimosso
+735|Scadenza rimossa
+736|Scadenza impostata
+737|Ottimo coordinamento durante la giornata. Le risposte su WhatsApp potrebbero essere più rapide.
+738|Gruppo creato
+739|Gruppo eliminato
+740|Invitato rimosso
+741|Invitato salvato
+742|Gli invitati parlano ancora del jollof e della postazione di kelewele.
+743|Foto principale aggiornata
+744|Il video dei momenti salienti è arrivato in cinque giorni e ha fatto piangere i nostri genitori.
+745|Come possiamo aiutarti?
+746|Com'erano il servizio, la puntualità e il rapporto qualità-prezzo?
+747|Invito annullato
+748|Invito creato. Mandagli il codice
+749|Invita qualcuno, poi mandagli il suo codice di invito. Si unisce da Coppie: accedi, poi Unisciti con un codice di invito.
+750|Fattura ricevuta
+751|Voce eliminata
+752|Lascia una recensione
+753|Ancora da pianificare
+754|Annuncio ritirato
+755|Foto bellissime, ma sono arrivati tardi al fidanzamento.
+756|Messaggio eliminato
+757|Nessuna data
+758|Non c'è abbastanza spazio in questa versione di prova per salvare il file. Prova con uno più piccolo
+759|Niente qui per questa persona.
+760|Ancora niente qui.
+761|Niente in ritardo
+762|Numero copiato
+763|Solo gli account delle coppie possono lasciare recensioni.
+764|Solo la sposa e lo sposo possono invitare o rimuovere persone.
+765|Pagina ripristinata al testo originale
+766|Foto aggiornata
+767|Piano attivo fino al
+768|Piano terminato. L'annuncio torna al piano Base
+769|Richiesta di piano annullata
+770|Budget previsto
+771|Conferma prima la tua email. Trovi il link nella tua casella di posta.
+772|Accompagnatori presenti
+773|Accompagnatori confermati dall'invitato
+774|Lista delle risposte scaricata ({0} invitati)
+775|Ricevuta di pagamento
+776|Rimuovi accesso
+777|Rimuovi foto
+778|Richiesta rifiutata
+779|Richiesta inviata. Attiveremo il tuo piano appena il pagamento sarà confermato
+780|Recensione rimossa
+781|Dati di esempio ripristinati
+782|Recensione di esempio
+783|Salvato solo per questa visita: questo browser blocca l'archiviazione o è pieno
+784|Salvare fornitori è riservato agli account delle coppie. Esci e accedi come coppia.
+785|Seleziona il numero per copiarlo
+786|Rimandato al fornitore
+787|Accedi per salvare fornitori per il tuo matrimonio
+788|Accesso effettuato
+789|Racconta ai tuoi invitati cosa è successo
+790|Grazie per aver festeggiato con noi
+791|Grazie! La tua recensione è pubblicata
+792|Questo PDF supera {0} MB. Prova con un file più piccolo o una foto del documento
+793|Email e password non corrispondono. Controllale e riprova.
+794|Impossibile leggere il file
+795|Impossibile leggere il file come foto
+796|Questo codice di invito non è valido o è già stato usato. Chiedine uno nuovo alla coppia.
+797|Questo codice di invito non è più valido. Chiedine uno nuovo alla coppia.
+798|Questo non è un accesso da proprietario del sito.
+799|La foto è troppo grande da salvare. Prova con una più piccola
+800|Esiste già un account con questa email. Accedi invece.
+801|Hanno gestito la lista del fidanzamento con entrambe le famiglie con grande calma. Valgono ogni cedi.
+802|Questo è un account fornitore. Accedi dalla pagina Per i fornitori.
+803|Attività aggiunta
+804|Attività eliminata
+805|Ritirato da AfroVows
+806|Aggiorna la tua recensione
+807|Usa l'accesso da proprietario del sito per questo account.
+808|Fornitore salvato
+809|Vedi o allega
+810|Non vediamo l'ora di festeggiare con te.
+811|Non siamo riusciti a salvare. Controlla la connessione e riprova.
+812|Non siamo riusciti a inviare la tua risposta. Riprova
+813|Ci mancherai, e grazie per avercelo fatto sapere.
+814|Benvenuto su AfroVows!
+815|Benvenuti su AfroVows, {0} e {1}!
+816|Benvenuto! Ora stai organizzando il matrimonio di {0} e {1}
+817|Benvenuto! Ti sei unito all'organizzazione del matrimonio
+818|Cosa offri, il tuo stile, cosa ti rende diverso
+819|La tua attività
+820|Il nome della tua attività
+821|Le tue modifiche sono in attesa di approvazione. Fino ad allora le coppie vedono la versione precedente.
+822|Il tuo annuncio è online. Le coppie possono trovarti e contattarti.
+823|Il tuo annuncio è stato tolto dall'elenco. Contatta AfroVows oppure aggiornalo e invialo di nuovo.
+824|La tua presenza è il nostro regalo.
+825|{0} fornitore · {1} in attesa di preventivo
+826|{0} fornitore
+827|{0} fornitori
+828|Superato di GH₵ {0}
+829|Sotto di GH₵ {0}
+830|Ancora da pianificare GH₵ {0}
+831|Tra {0} giorni
+832|Tra {0} giorno
+833|In ritardo di {0} giorni
+834|In ritardo di {0} giorno
+835|Scade oggi
+836|Scade tra {0} giorni
+837|In ritardo di {0} giorno
+838|Prossima scadenza
+839|Pagamenti in scadenza
+840|{0} fornitore pagato senza ricevuta
+841|Ogni pagamento ha la sua ricevuta
+842|{0} fattura
+843|{0} fatture
+844|{0} ricevuta
+845|{0} ricevute
+846|{0} fattura · {1} ricevuta
+847|{0} fattura · {1} ricevute
+848|{0} fatture · {1} ricevuta
+849|{0} fatture · {1} ricevute
+850|{0} senza scadenza
+851|Piano attivo fino al {0}
+852|Oggi
+853|Il tuo invito include {0} accompagnatori. Verranno con te?
+854|Manca {0} giorno
+855|{0} settimana
+856|Mancano {0} settimane
+857|Scade tra {0} settimana
+858|{0} recensioni
+859|{0} recensione
+860|Approvazioni
+861|{0} mesi
+862|{0} non ancora impegnati
+863|Lingua
