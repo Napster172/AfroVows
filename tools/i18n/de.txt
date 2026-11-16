@@ -1023,3 +1023,84 @@
 1022|Vergangene Pläne, nicht als erledigt markiert ({0})
 1023|Erledigt ({0})
 1024|Gerade steht nichts an.
+1025|Preis ab
+1026|Bis (optional)
+1027|Lass den Preis leer, wenn Paare ein Angebot anfragen sollen. Gib einen „Bis“-Betrag ein, um eine Preisspanne anzuzeigen.
+1028|Preis in Ghana-Cedi oder der niedrigste Preis
+1029|Höchster Preis in Ghana-Cedi, für eine Preisspanne
+1030|Aus Favoriten entfernen
+1031|Zu Favoriten hinzufügen
+1032|♥ Favoriten ({0})
+1033|♥ In Favoriten gespeichert
+1034|♡ Zu Favoriten hinzufügen
+1035|♥ Favoriten
+1036|Bei meinen Dienstleistern
+1037|Tippe im Verzeichnis auf das Herz eines Dienstleisters, um ihn hier zu speichern, während du dich entscheidest.
+1038|Melde dich an, um Favoriten für deine Hochzeit zu speichern
+1039|Favoriten gibt es nur für Paarkonten.
+1040|In Favoriten gespeichert. Du findest sie unter Meine Dienstleister
+1041|Aus Favoriten entfernt
+1042|Moodboard
+1043|Sammle die Looks, die du für beide Zeremonien liebst: Notizen schreiben, Fotos hochladen, Instagram-, Pinterest- oder TikTok-Beiträge speichern oder Ideen aus dem Web entdecken. Alle, die mit dir planen, können dieses Board sehen und ergänzen.
+1044|Mein Board ({0})
+1045|Ideen entdecken
+1046|Zum Board hinzufügen
+1047|Foto
+1048|Notiz
+1049|Social-Media-Link
+1050|Bildunterschrift (optional)
+1051|z. B. Diese Stuhlschleifen sind toll
+1052|Fotos hochladen
+1053|Deine Notiz
+1054|z. B. Smaragd und Gold für die Verlobung, Weiß und Gold für die Kirche
+1055|Notiz hinzufügen
+1056|Link
+1057|Was dir daran gefällt (optional)
+1058|Link hinzufügen
+1059|Deko
+1060|Outfits
+1061|Haare & Make-up
+1062|Blumen
+1063|Torte
+1064|Deko ({0})
+1065|Location ({0})
+1066|Outfits ({0})
+1067|Haare & Make-up ({0})
+1068|Blumen ({0})
+1069|Torte ({0})
+1070|Sonstiges ({0})
+1071|Dein Board ist leer. Füge ein Foto, eine Notiz oder einen Link hinzu oder finde Ideen unter Entdecken.
+1072|Ideen suchen, z. B. Kente-Tischdeko
+1073|Suchen
+1074|Kente-Hochzeitsdeko
+1075|Empfangstische
+1076|Gartenlocations
+1077|Ballsäle
+1078|Strandhochzeiten
+1079|Brautkleider
+1080|Stil des Bräutigams
+1081|Brautfrisur
+1082|Brautsträuße
+1083|Hochzeitstorten
+1084|Ideen speichern unter
+1085|Board-Kategorie
+1086|Ideen werden gesucht…
+1087|Wir konnten gerade keine Ideen laden. Prüfe deine Verbindung oder nutze die Links unten.
+1088|Aufs Board
+1089|Gespeichert
+1090|Frei lizenzierte Fotos von Openverse. Tippe auf ein Foto, um Quelle und Fotograf zu sehen.
+1091|Frei lizenzierte Fotos von Wikimedia Commons. Tippe auf ein Foto, um Quelle und Fotograf zu sehen.
+1092|Weiter suchen
+1093|Etwas Schönes auf Instagram, Pinterest oder TikTok gefunden? Kopiere den Link und füge ihn unter Mein Board als Social-Media-Link hinzu.
+1094|Quelle
+1095|Vom Board entfernt
+1096|In deinem Moodboard gespeichert
+1097|Notiz zum Board hinzugefügt
+1098|Link zum Board hinzugefügt
+1099|{0} Foto zum Board hinzugefügt
+1100|{0} Fotos zum Board hinzugefügt
+1101|Vom Board entfernen
+1102|Inspirationsfoto
+1103|Wird oben in deinem Planer und auf deiner Hochzeitsseite über euren Namen angezeigt.
+1104|Titelbild entfernt
+1105|Titelbild hinzugefügt. Gäste sehen es oben auf deiner Hochzeitsseite
