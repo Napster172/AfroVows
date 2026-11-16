@@ -1105,3 +1105,4 @@
 1104|Photo de couverture supprimée
 1105|Photo de couverture ajoutée. Les invités la voient en haut de votre page de mariage
 1106|Seules les photos dont le titre ou les mots-clés contiennent tous les mots recherchés. Photos sous licence libre d'Openverse et Wikimedia Commons. Touchez une photo pour voir sa source et son photographe.
+1107|Chargement de l'aperçu…

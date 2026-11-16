@@ -93,6 +93,7 @@ body{overflow-x:clip}
 .favbtn{position:absolute;top:8px;right:8px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.94);color:#6b6b6b;display:grid;place-items:center;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.18)}
 .favbtn svg{width:21px;height:21px;fill:none}.favbtn.on{color:#C0392B}.favbtn.on svg{fill:currentColor}
 .vboard{columns:3 200px;column-gap:12px}.vitem{break-inside:avoid;margin:0 0 12px;display:flex;flex-direction:column;gap:6px;padding:10px;position:relative}
+.vembed{width:100%;border:0;border-radius:8px;background:var(--sunk);display:block}.vpv{display:flex;flex-direction:column;gap:4px;color:inherit;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:6px}.vpv img{aspect-ratio:1.9;object-fit:cover}
 .vitem img{width:100%;border-radius:8px;display:block;background:var(--sunk)}.vitem.note{background:var(--gold-soft)}.vitem .x{position:absolute;top:14px;right:14px;z-index:1;width:30px;height:30px;padding:0;justify-content:center;border-radius:50%;background:rgba(255,255,255,.94);box-shadow:0 1px 3px rgba(0,0,0,.2)}
 .vxgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.vxgrid figure{margin:0;display:flex;flex-direction:column;gap:4px}.vxgrid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;background:var(--sunk)}
 .coverhero{position:relative;isolation:isolate;border-radius:16px;overflow:hidden;min-height:clamp(180px,32vw,320px);background:var(--sunk) center/cover no-repeat;display:flex;align-items:flex-end;padding:18px 20px;color:#fff}
@@ -1024,10 +1025,30 @@ const VTOPICS=[["Kente wedding decor","kente wedding","Decor"],["Traditional eng
 const visionItems=()=>{S.vision=S.vision||{items:[]};return S.vision.items};
 function linkSite(u){const h=(String(u).match(/^https?:\/\/(?:www\.)?([^/]+)/i)||[])[1]||"";return /instagram/.test(h)?"Instagram":/pinterest|pin\.it/.test(h)?"Pinterest":/tiktok/.test(h)?"TikTok":/facebook|fb\./.test(h)?"Facebook":/youtu/.test(h)?"YouTube":/(^|\.)x\.com|twitter/.test(h)?"X":h||"Link"}
 const safeUrl=u=>/^https:\/\//i.test(u||"")?u:"";
+/* Link previews: social posts embed in place; other websites show their picture and title (looked up once via microlink.io and kept with the item). */
+function linkEmbed(u){let m;u=String(u||"");
+  if(m=u.match(/instagram\.com\/(?:[\w.]+\/)?(p|reel|tv)\/([\w-]+)/i))return {src:`https://www.instagram.com/${m[1].toLowerCase()}/${m[2]}/embed/captioned/`,h:560};
+  if(m=u.match(/tiktok\.com\/.*\/video\/(\d+)/i))return {src:`https://www.tiktok.com/embed/v2/${m[1]}`,h:580};
+  if(m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/))([\w-]{11})/i))return {src:`https://www.youtube-nocookie.com/embed/${m[1]}`,h:/shorts\//i.test(u)?560:0};
+  if(m=u.match(/pinterest\.[a-z.]+\/pin\/(?:[\w-]*--)?(\d+)/i))return {src:`https://assets.pinterest.com/ext/embed.html?id=${m[1]}`,h:520};
+  if(/facebook\.com\/.+\/(posts|videos|photos)\//i.test(u)||/facebook\.com\/(photo|permalink|watch)/i.test(u))return {src:`https://www.facebook.com/plugins/${/video|watch/i.test(u)?"video":"post"}.php?show_text=true&width=500&href=${encodeURIComponent(u)}`,h:520};
+  return null}
+const PVQ=new Set();
+async function loadPreviews(){const ids=[...PVQ];PVQ.clear();let changed=false;
+  for(const id of ids){const x=visionItems().find(v=>v.id===id);if(!x||x.pv)continue;
+    try{const r=await fetch("https://api.microlink.io/?url="+encodeURIComponent(x.url));const j=await r.json();const d=j&&j.status==="success"?j.data||{}:null;
+      x.pv=d?{img:safeUrl((d.image||d.logo||{}).url||""),title:String(d.title||"").slice(0,140),desc:String(d.description||"").slice(0,200)}:{none:true}}catch(_){x.pv={none:true}}
+    changed=true}
+  if(changed){save();if(ui.ptab==="vision"&&ui.vsub!=="explore")rerender()}}
+function linkPreview(x){const u=safeUrl(x.url);if(!u)return "";const em=linkEmbed(u);
+  if(em)return `<iframe class="vembed" src="${esc(em.src)}" title="${esc(linkSite(u))} post" loading="lazy" allowfullscreen allow="encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" style="${em.h?`height:${em.h}px`:"aspect-ratio:16/9"}"></iframe>`;
+  if(!x.pv){PVQ.add(x.id);return `<div class="vpv small muted">Loading preview…</div>`}
+  if(x.pv.none)return "";
+  return `<a class="vpv" href="${esc(u)}" target="_blank" rel="noopener nofollow">${x.pv.img?`<img src="${esc(x.pv.img)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:""}${x.pv.title?`<b class="small">${esc(x.pv.title)}</b>`:""}${x.pv.desc?`<span class="small muted">${esc(x.pv.desc)}</span>`:""}</a>`}
 function vitem(x){const who=x.by?`<span class="small muted">Added by ${esc(x.by)}</span>`:"";
   const del=`<button type="button" class="btn sm ghost x" data-act="delvision" data-id="${x.id}" aria-label="Remove from board">×</button>`,pill=`<span class="pill p-neutral" style="align-self:flex-start">${esc(x.cat||"Other")}</span>`;
   if(x.type==="note")return `<div class="card vitem note">${del}${pill}<p style="white-space:pre-line;margin:0;padding-right:24px">${esc(x.text)}</p>${who}</div>`;
-  if(x.type==="link"){const u=safeUrl(x.url);return `<div class="card vitem">${del}${pill}<b>${esc(linkSite(x.url))}</b>${x.text?`<p class="small" style="margin:0">${esc(x.text)}</p>`:""}${u?`<a class="btn sm" href="${esc(u)}" target="_blank" rel="noopener nofollow" style="align-self:flex-start">Open ${esc(linkSite(x.url))}</a>`:""}${who}</div>`}
+  if(x.type==="link"){const u=safeUrl(x.url);return `<div class="card vitem">${del}${pill}<b>${esc(linkSite(x.url))}</b>${linkPreview(x)}${x.text?`<p class="small" style="margin:0">${esc(x.text)}</p>`:""}${u?`<a class="btn sm" href="${esc(u)}" target="_blank" rel="noopener nofollow" style="align-self:flex-start">Open ${esc(linkSite(x.url))}</a>`:""}${who}</div>`}
   const src=x.type==="web"?safeUrl(x.src):x.src;return `<div class="card vitem">${del}${src?`<img src="${esc(src)}" alt="${esc(x.text||"Inspiration photo")}" loading="lazy" referrerpolicy="no-referrer">`:""}${pill}${x.text?`<p class="small" style="margin:0">${esc(x.text)}</p>`:""}
     ${x.type==="web"?`<span class="small muted">${x.credit?"Photo: "+esc(x.credit)+" · ":""}${safeUrl(x.url)?`<a href="${esc(x.url)}" target="_blank" rel="noopener nofollow">Source</a>`:""}</span>`:""}${who}</div>`}
 function pVision(){const sub=ui.vsub==="explore"?"explore":"board",items=visionItems();
@@ -1044,7 +1065,7 @@ function visionBoard(items){const add=ui.vadd||"photo",f=ui.vfilter||"all",cats=
      :add==="note"?`<form class="stack" style="gap:8px" data-form="vnote">${vcatSel("vb-ncat")}<label class="f">Your note<textarea name="text" id="vb-note" required placeholder="e.g. Emerald and gold for the engagement, white and gold for church"></textarea></label><div><button class="btn pri">Add note</button></div></form>`
      :`<form class="stack" style="gap:8px" data-form="vlink"><div class="grid g2">${vcatSel("vb-lcat")}<label class="f">Link<input name="url" id="vb-url" required autocapitalize="off" spellcheck="false" placeholder="https://www.instagram.com/p/…" inputmode="url"></label></div><label class="f">What you like about it (optional)<input name="text" id="vb-ltext"></label><div><button class="btn pri">Add link</button></div></form>`}</div>
    ${items.length?`<div class="chips"><button class="chip ${f==="all"?"on":""}" data-act="vfilter" data-id="all">Everything</button>${cats.map(c=>`<button class="chip ${f===c?"on":""}" data-act="vfilter" data-id="${esc(c)}">${esc(c)} (${items.filter(x=>(x.cat||"Other")===c).length})</button>`).join("")}</div>
-     <div class="vboard">${shown.map(vitem).join("")}</div>`:`<div class="empty">Your board is empty. Add a photo, a note or a link, or find ideas in Explore.</div>`}`}
+     <div class="vboard">${shown.map(vitem).join("")}</div>${(setTimeout(()=>PVQ.size&&loadPreviews(),0),"")}`:`<div class="empty">Your board is empty. Add a photo, a note or a link, or find ideas in Explore.</div>`}`}
 function visionExplore(){const x=ui.vx||{},q=x.q||"";
   return `<div class="card stack" style="gap:10px"><form class="row" data-form="vexplore"><input name="q" id="vx-q" value="${esc(q)}" placeholder="Search ideas, e.g. kente table decor" style="flex:2 1 220px" required><button class="btn pri">Search</button></form>
     <div class="chips">${VTOPICS.map(t=>`<button class="chip ${q===t[1]?"on":""}" data-act="vtopic" data-id="${esc(t[1])}" data-cat="${esc(t[2])}">${esc(t[0])}</button>`).join("")}</div>
