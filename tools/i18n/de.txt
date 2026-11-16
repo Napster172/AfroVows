@@ -1014,3 +1014,12 @@
 1013|{0} Personen warten auf deine Bestätigung.
 1014|Im Tab Team ansehen
 1015|Nur Braut und Bräutigam können die Geschichte und die Hochzeitsdetails ändern. Hier kannst du sie ansehen.
+1016|✓ Erledigt
+1017|Als erledigt markieren
+1018|Noch nicht erledigt
+1019|Am {0} als erledigt markiert
+1020|Als erledigt markiert
+1021|Zurück zu den offenen Plänen
+1022|Vergangene Pläne, nicht als erledigt markiert ({0})
+1023|Erledigt ({0})
+1024|Gerade steht nichts an.

@@ -1013,5 +1013,14 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.it={
 "{0} person is waiting for you to approve them.": "{0} persona attende la tua approvazione.",
 "{0} people are waiting for you to approve them.": "{0} persone attendono la tua approvazione.",
 "Review on the Team tab": "Vedi nella scheda Team",
-"Only the bride and groom can change the story and wedding details. You can view them here.": "Solo gli sposi possono modificare la storia e i dettagli del matrimonio. Qui puoi vederli."
+"Only the bride and groom can change the story and wedding details. You can view them here.": "Solo gli sposi possono modificare la storia e i dettagli del matrimonio. Qui puoi vederli.",
+"✓ Done": "✓ Fatto",
+"Mark as done": "Segna come fatto",
+"Not done yet": "Non ancora fatto",
+"Marked as done on {0}": "Segnato come fatto il {0}",
+"Marked as done": "Segnato come fatto",
+"Moved back to open plans": "Rimesso tra i piani aperti",
+"Past plans not marked as done ({0})": "Piani passati non segnati come fatti ({0})",
+"Completed ({0})": "Completati ({0})",
+"Nothing coming up right now.": "Nessun impegno in arrivo per ora."
 };

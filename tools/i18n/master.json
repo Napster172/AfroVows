@@ -1014,5 +1014,14 @@
 "{0} person is waiting for you to approve them.",
 "{0} people are waiting for you to approve them.",
 "Review on the Team tab",
-"Only the bride and groom can change the story and wedding details. You can view them here."
+"Only the bride and groom can change the story and wedding details. You can view them here.",
+"✓ Done",
+"Mark as done",
+"Not done yet",
+"Marked as done on {0}",
+"Marked as done",
+"Moved back to open plans",
+"Past plans not marked as done ({0})",
+"Completed ({0})",
+"Nothing coming up right now."
 ]
