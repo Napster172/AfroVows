@@ -975,3 +975,14 @@
 974|z. B. Probe in der Kirche
 975|Was anziehen oder mitbringen, wer leitet…
 976|Alle hier können diesen Planer öffnen und beim Budget, bei Gästen, Dienstleistern und Aufgaben helfen – außer Groomsmen und Brautjungfern, die nur die Tabs Brautgefolge, Fotos sowie Geschichte & Details sehen. Lade jemanden ein und schicke ihm den Einladungscode. Beitreten geht über die Paar-Anmeldung und dann „Mit Einladungscode beitreten“.
+977|Ihre Einträge
+978|Sie bieten mehr als eine Leistung an? Legen Sie für jede einen eigenen Eintrag an, zum Beispiel Fotografie und Video. Jeder Eintrag wird einzeln geprüft und hat seinen eigenen Tarif.
+979|+ Weiteren Eintrag hinzufügen
+980|Eintrag ohne Titel
+981|Diesen Eintrag löschen
+982|Diesen Eintrag löschen?
+983|Der Entwurf wird endgültig gelöscht. Ihre anderen Einträge bleiben unverändert.
+984|Behalten
+985|Neuer Eintrag angelegt. Wählen Sie die Hauptleistung, fügen Sie Pakete und Fotos hinzu und reichen Sie ihn zur Prüfung ein
+986|Eintrag gelöscht
+987|Weitere Einträge sind noch nicht freigeschaltet. Bitte kontaktieren Sie AfroVows.

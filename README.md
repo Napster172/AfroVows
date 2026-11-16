@@ -17,13 +17,13 @@ Wedding planning website for couples in Ghana: a free public vendor directory, a
 - **Public:** approved vendor listings (only their public version), reviews, About us, site text.
 - **Couples:** only their own wedding, and only the bride, groom and people they invite with an invite code. Removing someone from the Team tab removes their access.
 - **Guests:** the wedding page via the wedding code, without signing in. They can find their own invitation by exact name or WhatsApp number, RSVP and add photos. They never see the guest list, budget or planner.
-- **Vendors:** their own listing. They can't approve themselves or give themselves a paid plan. The business registration number is never public.
+- **Vendors:** their own listings (one or more, one per service). They can't approve themselves or give themselves a paid plan. The business registration number is never public.
 - **Site owner (admin):** listings, paid plans, contact messages and site text.
 - **Files:** invoices and receipts are in a private bucket that only the couple's team can open. Photos are in a public bucket under random file names.
 
 ## One-time setup
 
-1. **Database.** In Supabase, open SQL Editor → New query. Paste the whole of `supabase/migrations/20261115000000_init.sql` and click Run.
+1. **Database.** In Supabase, open SQL Editor → New query. Paste the whole of `supabase/migrations/20261115000000_init.sql` and click Run. Then run each later file in `supabase/migrations/` the same way, oldest first.
 2. **Sign-in settings.** Go to Authentication.
    - URL Configuration: set Site URL to the live address, e.g. `https://afrovows.pages.dev`.
    - Sign In / Providers → Email: "Confirm email" is on by default. Supabase's built-in email service only sends a few emails an hour, so either connect your own email sender (SMTP, e.g. Resend) before launch, or turn confirmation off while testing.

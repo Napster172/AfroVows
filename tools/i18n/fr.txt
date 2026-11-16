@@ -975,3 +975,14 @@
 974|ex. Répétition à l'église
 975|Quoi porter ou apporter, qui s'en charge…
 976|Tout le monde ici peut ouvrir ce planificateur et aider pour le budget, les invités, les prestataires et les tâches, sauf les garçons et demoiselles d'honneur, qui ne voient que les onglets Cortège nuptial, Photos et Histoire & détails. Invitez quelqu'un, puis envoyez-lui son code d'invitation. Il rejoint depuis Connexion couples, puis Rejoindre avec un code d'invitation.
+977|Vos annonces
+978|Vous proposez plus d'un service ? Ajoutez une annonce distincte pour chacun, par exemple photographie et vidéo. Chaque annonce est vérifiée séparément et a sa propre formule.
+979|+ Ajouter une autre annonce
+980|Annonce sans titre
+981|Supprimer cette annonce
+982|Supprimer cette annonce ?
+983|Ce brouillon sera supprimé définitivement. Vos autres annonces ne changent pas.
+984|La garder
+985|Nouvelle annonce créée. Choisissez son service principal, ajoutez ses forfaits et ses photos, puis soumettez-la pour validation
+986|Annonce supprimée
+987|Les annonces supplémentaires ne sont pas encore activées. Veuillez contacter AfroVows.

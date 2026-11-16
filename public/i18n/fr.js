@@ -975,5 +975,16 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.fr={
 "Colours and outfits, what to bring, who to call on the day, contributions…": "Couleurs et tenues, quoi apporter, qui appeler le jour J, contributions…",
 "e.g. Church rehearsal": "ex. Répétition à l'église",
 "What to wear or bring, who's leading it…": "Quoi porter ou apporter, qui s'en charge…",
-"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.": "Tout le monde ici peut ouvrir ce planificateur et aider pour le budget, les invités, les prestataires et les tâches, sauf les garçons et demoiselles d'honneur, qui ne voient que les onglets Cortège nuptial, Photos et Histoire & détails. Invitez quelqu'un, puis envoyez-lui son code d'invitation. Il rejoint depuis Connexion couples, puis Rejoindre avec un code d'invitation."
+"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.": "Tout le monde ici peut ouvrir ce planificateur et aider pour le budget, les invités, les prestataires et les tâches, sauf les garçons et demoiselles d'honneur, qui ne voient que les onglets Cortège nuptial, Photos et Histoire & détails. Invitez quelqu'un, puis envoyez-lui son code d'invitation. Il rejoint depuis Connexion couples, puis Rejoindre avec un code d'invitation.",
+"Your listings": "Vos annonces",
+"Offer more than one service? Add a separate listing for each one, for example photography and videography. Each listing is checked on its own and has its own plan.": "Vous proposez plus d'un service ? Ajoutez une annonce distincte pour chacun, par exemple photographie et vidéo. Chaque annonce est vérifiée séparément et a sa propre formule.",
+"+ Add another listing": "+ Ajouter une autre annonce",
+"Untitled listing": "Annonce sans titre",
+"Delete this listing": "Supprimer cette annonce",
+"Delete this listing?": "Supprimer cette annonce ?",
+"This removes the draft for good. Your other listings stay as they are.": "Ce brouillon sera supprimé définitivement. Vos autres annonces ne changent pas.",
+"Keep it": "La garder",
+"New listing started. Pick its main service, add its packages and photos, then submit it for approval": "Nouvelle annonce créée. Choisissez son service principal, ajoutez ses forfaits et ses photos, puis soumettez-la pour validation",
+"Listing deleted": "Annonce supprimée",
+"Extra listings aren't switched on yet. Please contact AfroVows.": "Les annonces supplémentaires ne sont pas encore activées. Veuillez contacter AfroVows."
 };

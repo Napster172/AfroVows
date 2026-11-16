@@ -975,3 +975,14 @@
 974|p. ej. Ensayo en la iglesia
 975|Qué ponerse o llevar, quién lo dirige…
 976|Todos aquí pueden abrir este planificador y ayudar con el presupuesto, los invitados, los proveedores y las tareas, excepto los padrinos y las damas de honor, que solo ven las pestañas Cortejo nupcial, Fotos e Historia y detalles. Invita a alguien y envíale su código de invitación. Se une desde Parejas: entrar, y luego Unirse con un código de invitación.
+977|Tus anuncios
+978|¿Ofreces más de un servicio? Añade un anuncio distinto para cada uno, por ejemplo fotografía y vídeo. Cada anuncio se revisa por separado y tiene su propio plan.
+979|+ Añadir otro anuncio
+980|Anuncio sin título
+981|Eliminar este anuncio
+982|¿Eliminar este anuncio?
+983|Este borrador se eliminará para siempre. Tus otros anuncios no cambian.
+984|Conservarlo
+985|Nuevo anuncio creado. Elige su servicio principal, añade sus paquetes y fotos y envíalo para aprobación
+986|Anuncio eliminado
+987|Los anuncios adicionales aún no están activados. Contacta con AfroVows.
