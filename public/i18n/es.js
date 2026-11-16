@@ -1012,5 +1012,6 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.es={
 "Use the name on their Ghana Card or as they'd normally write it. They must type the same first and last name to join.": "Usa el nombre de su Ghana Card o como lo escribe normalmente. Debe escribir el mismo nombre y apellido para unirse.",
 "{0} person is waiting for you to approve them.": "{0} persona espera tu aprobación.",
 "{0} people are waiting for you to approve them.": "{0} personas esperan tu aprobación.",
-"Review on the Team tab": "Revisar en la pestaña Equipo"
+"Review on the Team tab": "Revisar en la pestaña Equipo",
+"Only the bride and groom can change the story and wedding details. You can view them here.": "Solo los novios pueden cambiar la historia y los detalles de la boda. Aquí puedes verlos."
 };

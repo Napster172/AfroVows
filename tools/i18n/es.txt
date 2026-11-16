@@ -1013,3 +1013,4 @@
 1012|{0} persona espera tu aprobación.
 1013|{0} personas esperan tu aprobación.
 1014|Revisar en la pestaña Equipo
+1015|Solo los novios pueden cambiar la historia y los detalles de la boda. Aquí puedes verlos.

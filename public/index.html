@@ -90,6 +90,7 @@ body{overflow-x:clip}
 .catcard:hover{border-color:var(--muted)}
 .catcard > span{display:flex;flex-direction:column;padding:10px 12px;gap:2px;font-size:14px}
 .fs{border:1px solid var(--line);border-radius:8px;padding:12px;margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+fieldset.plain{border:0;padding:0;margin:0;min-width:0}.readonly .x,.readonly [data-act=addstory],.readonly [data-act=delstory],.readonly label.btn{display:none}.readonly input:disabled,.readonly select:disabled,.readonly textarea:disabled{color:var(--ink);opacity:1;background:var(--sunk)}
 .fs legend{font-weight:700;font-size:13px;padding:0 6px;color:var(--ink)}
 .stars{color:var(--gold);letter-spacing:1px}
 .contact{display:grid;grid-template-columns:1fr 1.2fr;gap:28px;align-items:start;padding-top:8px;border-top:1px solid var(--line)}
@@ -1035,8 +1036,8 @@ function gallery(canDelete){
 function uploader(){return `<form class="row" data-form="photo"><input name="by" id="ph-by" placeholder="Your name" style="flex:1 1 160px" required><label class="btn pri" style="position:relative">Add photos<input type="file" id="ph-file" accept="image/*" multiple style="position:absolute;inset:0;opacity:0;cursor:pointer"></label></form><p class="small muted">Photos are shrunk before upload so they send quickly on mobile data.</p>`}
 function pPhotos(){return `<div class="stack"><div class="split"><h3>Guest photos <span class="muted num">(${S.photos.length})</span></h3></div>${uploader()}${gallery(true)}</div>`}
 function pDetails(){
-  const w=S.wedding;
-  return `<form class="stack" data-form="details">
+  const w=S.wedding,lead=isCoupleLead();
+  return `${lead?"":`<div class="card small row" style="background:var(--gold-soft);padding:10px 14px"><span class="lock" aria-hidden="true"></span><span>Only the bride and groom can change the story and wedding details. You can view them here.</span></div>`}<form class="stack${lead?"":" readonly"}" data-form="details"><fieldset class="plain stack" ${lead?"":"disabled"}>
    <div class="card stack" style="gap:10px"><h3>The couple</h3><div class="grid g3">
      <label class="f">Partner 1<input name="p1" id="d-p1" value="${esc(w.p1)}"></label><label class="f">Partner 2<input name="p2" id="d-p2" value="${esc(w.p2)}"></label><label class="f">Hashtag<input name="hashtag" id="d-hash" value="${esc(w.hashtag)}"></label></div></div>
    ${w.events.map(e=>`<div class="card stack event ${e.id==="eng"?"eng":""}" style="gap:10px"><h3>${esc(e.name)}</h3><div class="grid g3">
@@ -1056,7 +1057,7 @@ function pDetails(){
    <div class="card stack" style="gap:10px"><h3>Gifts</h3><label class="f">Message<input name="g_note" id="d-gnote" value="${esc(w.gifts.note)}"></label>
      <div class="grid g3"><label class="f">Network<select name="g_net" id="d-gnet">${["MTN MoMo","Telecel Cash","AirtelTigo Money","Bank account"].map(n=>`<option ${n===w.gifts.momoNet?"selected":""}>${n}</option>`).join("")}</select></label>
      <label class="f">Number<input name="g_num" id="d-gnum" value="${esc(w.gifts.momoNum)}"></label><label class="f">Account name<input name="g_name" id="d-gname" value="${esc(w.gifts.momoName)}"></label></div></div>
-   <div class="row"><button class="btn pri">Save details</button><a class="btn" href="#wedding">Preview wedding page</a></div></form>`;
+   </fieldset><div class="row">${lead?`<button class="btn pri">Save details</button>`:""}<a class="btn" href="#wedding">Preview wedding page</a></div></form>`;
 }
 
 /* ---------- Public wedding page ---------- */
@@ -1509,7 +1510,7 @@ document.addEventListener("click",async e=>{
     case"atab":ui.atab=id;rerender();break;
     case"unpublish":{const l=listings(),x=l.find(v=>v.id===id);if(x){x.live=null;x.status="removed";x.note="Unpublished by AfroVows";setListings(l);toast("Listing unpublished");rerender()}break}
     case"leaveguest":ui.guestOf=null;S=null;owner=null;mode="none";rerender();break;
-    case"delsp":{collectDetails(true);const s=S.wedding.story.find(x=>x.id===id);if(s){s.photos=(s.photos||[]).filter(p=>p.id!==t.dataset.pid);save();rerender()}break}
+    case"delsp":{if(!isCoupleLead())break;collectDetails(true);const s=S.wedding.story.find(x=>x.id===id);if(s){s.photos=(s.photos||[]).filter(p=>p.id!==t.dataset.pid);save();rerender()}break}
     case"editb":budgetModal(id);break;
     case"editpp":if(isCoupleLead())partyModal(id);break;
     case"pfilter":ui.pfilter=id;rerender();break;
@@ -1531,8 +1532,8 @@ document.addEventListener("click",async e=>{
     case"vcat":ui.vcat=id;rerender();break;
     case"gocat":ui.vcat=id;location.hash="vendors";break;
     case"delp":S.photos=S.photos.filter(p=>p.id!==id);save();rerender();break;
-    case"addstory":collectDetails(true);S.wedding.story.push({id:uid(),year:"",title:"",text:""});save();rerender();break;
-    case"delstory":collectDetails(true);S.wedding.story=S.wedding.story.filter(s=>s.id!==id);save();rerender();break;
+    case"addstory":if(!isCoupleLead())break;collectDetails(true);S.wedding.story.push({id:uid(),year:"",title:"",text:""});save();rerender();break;
+    case"delstory":if(!isCoupleLead())break;collectDetails(true);S.wedding.story=S.wedding.story.filter(s=>s.id!==id);save();rerender();break;
     case"jump":e.preventDefault();document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"});break;
     case"copy":try{await navigator.clipboard.writeText(id);toast(t.dataset.msg||"Number copied")}catch(_){toast("Select the number to copy it")}break;
   }
@@ -1553,12 +1554,13 @@ document.addEventListener("change",e=>{const t=e.target;const a=t.dataset.act;
     setListings(l);rerender();toast(n?`${n} photo${n>1?"s":""} added`:"That file couldn't be read as a photo")})()}
   if(t.dataset.abphoto&&t.files[0]){(async()=>{try{const src=await shrink(t.files[0]);const A=collectAbout();if(t.dataset.abphoto==="owner")A.ownerPhoto=src;else{const m=A.team.find(x=>x.id===t.dataset.abphoto);if(m)m.photo=src}setAbout(A);rerender();toast("Photo updated")}catch(_){toast("That file couldn't be read as a photo")}})()}
   if(t.id==="ed-hero"&&t.files[0]){(async()=>{try{CONTENT["img.hero"]=await shrink(t.files[0],1800);if(!saveContent()){delete CONTENT["img.hero"];toast("That photo is too large to store. Try a smaller one");return}rerender();toast("Hero photo updated")}catch(_){toast("That file couldn't be read as a photo")}})()}
+  if(t.dataset.storyfile&&!isCoupleLead())return;
   if(t.dataset.storyfile){(async()=>{collectDetails(true);const s=S.wedding.story.find(x=>x.id===t.dataset.storyfile);if(!s)return;s.photos=s.photos||[];let n=0;
     for(const file of t.files){if(s.photos.length>=6)break;try{s.photos.push({id:uid(),src:await shrink(file)});n++}catch(_){}}
     save();rerender();toast(n?`${n} photo${n>1?"s":""} added to “${s.title||"this moment"}”`:"That file couldn't be read as a photo")})()}});
 let deb;document.addEventListener("input",e=>{const t=e.target,a=t.dataset.act;if(a!=="gsearch"&&a!=="vsearch")return;clearTimeout(deb);deb=setTimeout(()=>{ui[a]=t.value;rerender();const n=document.getElementById(a);if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length)}},250)});
 
-function collectDetails(silent){const f=document.querySelector('[data-form="details"]');if(!f)return;const d=Object.fromEntries(new FormData(f));const w=S.wedding;
+function collectDetails(silent){if(!isCoupleLead())return;const f=document.querySelector('[data-form="details"]');if(!f)return;const d=Object.fromEntries(new FormData(f));const w=S.wedding;
   w.p1=d.p1;w.p2=d.p2;w.hashtag=d.hashtag;
   w.events.forEach(e=>["name","date","time","venue","address","map","dress"].forEach(k=>{if(d[e.id+"_"+k]!==undefined)e[k]=d[e.id+"_"+k]}));
   w.story.forEach(s=>{if(d["st_year_"+s.id]!==undefined){s.year=d["st_year_"+s.id];s.title=d["st_title_"+s.id];s.text=d["st_text_"+s.id]}});
@@ -1576,7 +1578,7 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
     case"myvendor":{const rec={name:d.name.trim(),cat:d.cat,phone:d.phone.trim(),agreed:+d.agreed||0,paid:+d.paid||0,method:d.method||"",dues:[...f.querySelectorAll(".duerow")].map(r=>({date:r.querySelector("[name=due_date]").value,amount:+r.querySelector("[name=due_amt]").value||0})).filter(x=>x.date),status:d.status,notes:d.notes.trim(),vendorId:f.dataset.vid||""};
       if(id)Object.assign(S.myVendors.find(v=>v.id===id),rec);else S.myVendors.push({id:uid(),...rec});save();closeModal();
       if(!id&&rec.vendorId){toast("Added to My vendors");}else{rerender();toast("Vendor saved")}break}
-    case"details":collectDetails();save();rerender();break;
+    case"details":if(!isCoupleLead())break;collectDetails();save();rerender();break;
     case"findguest":if(HOSTED&&mode==="guest"){const out=$("#rsvp-out");(async()=>{const {data:g}=await DBX.sb.rpc("guest_find",{wcode:myCode(),q:d.q.trim()});
       if(g){S.guests=[g]}out.innerHTML=g?rsvpForm(g):`<p class="small" style="margin-top:8px">We couldn't find that invitation. Type your full name exactly as on the invite, or your WhatsApp number.</p>`})();break}
     {const q=d.q.trim().toLowerCase(),qd=q.replace(/\D/g,"");const out=$("#rsvp-out");
