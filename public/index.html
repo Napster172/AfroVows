@@ -471,6 +471,8 @@ const TROLES=["Bride","Groom","Best man","Groomsman","Maid of honour","Bridesmai
 const BP_MEN=["Best man","Groomsman"],BP_WOMEN=["Maid of honour","Bridesmaid"],BP_ROLES=BP_MEN.concat(BP_WOMEN);
 const BP_WHO={all:"Whole bridal party",men:"Groomsmen",women:"Bridesmaids"};
 const seesParty=()=>isCoupleLead()||BP_ROLES.includes((meMember()||{}).role);
+/* Groomsmen and bridesmaids only get these planner tabs. */
+const BP_TABS=["party","photos","details"],partyOnly=()=>!isCoupleLead()&&BP_ROLES.includes((meMember()||{}).role);
 const inviteCode=()=>"AV-"+Math.random().toString(36).slice(2,6).toUpperCase()+Math.floor(10+Math.random()*90);
 function ensureTeam(email){if(S.team)return;const w=S.wedding,demo=email===DEMO;
   S.team=[{id:uid(),name:w.p1,role:"Bride",email,status:"joined",owner:true},{id:uid(),name:w.p2,role:"Groom",email:"",status:"invited",code:demo?"AV-KOFI42":inviteCode()}];
@@ -695,8 +697,8 @@ function vHome(){
 /* ---------- Planner ---------- */
 const PTABS=[["overview","Overview"],["budget","Budget"],["myvendors","My vendors"],["todo","To-do"],["guests","Guests & RSVP"],["party","Bridal party"],["team","Team"],["photos","Photos"],["details","Story & details"]];
 function vPlanner(){
-  const w=S.wedding;if(ui.ptab==="party"&&!seesParty())ui.ptab="overview";
-  const tabs=PTABS.filter(t=>t[0]!=="party"||seesParty());
+  const w=S.wedding,lim=partyOnly();if(ui.ptab==="party"&&!seesParty())ui.ptab="overview";if(lim&&!BP_TABS.includes(ui.ptab))ui.ptab="party";
+  const tabs=PTABS.filter(t=>(t[0]!=="party"||seesParty())&&(!lim||BP_TABS.includes(t[0])));
   return `<div class="stack">
    <div class="split"><div><span class="eyebrow"><span class="lock" aria-hidden="true"></span>Private planner · only your wedding team can see this</span><h1 style="font-size:clamp(26px,5vw,36px)">${esc(coupleNames())}</h1>
      <p class="small muted">Wedding code for your guests: <span class="code">${esc(myCode())}</span>${meMember()?` · Signed in as <b>${esc(meMember().name)}</b> (${esc(meMember().role)})`:""}</p></div><a class="btn" href="#wedding">Preview guest page</a></div>
@@ -775,7 +777,7 @@ function todoDash(groups){
 function pTeam(){
   const lead=isCoupleLead();
   return `<div class="stack">
-   <p class="muted">Everyone here can open this planner and help with the budget, guests, vendors and to-dos. ${lead?"Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.":"Only the bride and groom can invite or remove people."}</p>
+   <p class="muted">Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. ${lead?"Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.":"Only the bride and groom can invite or remove people."}</p>
    <div class="grid g2">${(S.team||[]).map(t=>`<div class="card stack" style="gap:6px"><div class="split"><h3>${esc(t.name)}</h3><span class="pill ${t.status==="joined"?"p-yes":"p-pend"}">${t.status==="joined"?"Joined":"Invite sent"}</span></div>
      <p class="small muted">${esc(t.role)}${t.owner?" · created this wedding":""}${t.email&&t.email!==DEMO?" · "+esc(t.email):""}${t.email===me?" · <b>you</b>":""}</p>
      ${t.status==="invited"?`<p class="small">Invite code: <span class="code">${esc(t.code)}</span></p>${lead?`<div class="row">${t.phone?`<a class="btn sm wa" target="_blank" rel="noopener" href="https://wa.me/${waNum(t.phone)}?text=${encodeURIComponent(`Hi ${t.name}! Join our wedding planning on AfroVows. Go to Couples sign in, choose "Join with an invite code" and enter ${t.code}`)}">Send on WhatsApp</a>`:""}<button class="btn sm" data-act="copy" data-id="${esc(t.code)}">Copy code</button></div>`:""}`:""}

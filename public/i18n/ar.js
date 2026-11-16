@@ -974,5 +974,6 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.ar={
 "Tomorrow": "غدًا",
 "Colours and outfits, what to bring, who to call on the day, contributions…": "الألوان والملابس، ما يجب إحضاره، بمن يتصلون يوم الزفاف، المساهمات…",
 "e.g. Church rehearsal": "مثال: بروفة في الكنيسة",
-"What to wear or bring, who's leading it…": "ماذا يرتدون أو يحضرون، ومن يقود…"
+"What to wear or bring, who's leading it…": "ماذا يرتدون أو يحضرون، ومن يقود…",
+"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.": "يمكن لكل من هنا فتح هذا المخطط والمساعدة في الميزانية والضيوف والمزودين والمهام، باستثناء وصفاء العريس ووصيفات العروس الذين يرون فقط تبويبات موكب الزفاف والصور والقصة والتفاصيل. ادعُ شخصًا ثم أرسل له رمز الدعوة. ينضم من تسجيل دخول الأزواج ثم الانضمام برمز دعوة."
 };

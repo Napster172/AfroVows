@@ -974,5 +974,6 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.de={
 "Tomorrow": "Morgen",
 "Colours and outfits, what to bring, who to call on the day, contributions…": "Farben und Outfits, was mitzubringen ist, wen man am Tag anruft, Beiträge…",
 "e.g. Church rehearsal": "z. B. Probe in der Kirche",
-"What to wear or bring, who's leading it…": "Was anziehen oder mitbringen, wer leitet…"
+"What to wear or bring, who's leading it…": "Was anziehen oder mitbringen, wer leitet…",
+"Everyone here can open this planner and help with the budget, guests, vendors and to-dos, except groomsmen and bridesmaids, who only see the Bridal party, Photos and Story & details tabs. Invite someone, then send them their invite code. They join from Couples sign in, then Join with an invite code.": "Alle hier können diesen Planer öffnen und beim Budget, bei Gästen, Dienstleistern und Aufgaben helfen – außer Groomsmen und Brautjungfern, die nur die Tabs Brautgefolge, Fotos sowie Geschichte & Details sehen. Lade jemanden ein und schicke ihm den Einladungscode. Beitreten geht über die Paar-Anmeldung und dann „Mit Einladungscode beitreten“."
 };
