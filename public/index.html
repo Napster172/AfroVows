@@ -47,6 +47,11 @@ nav.main a{text-decoration:none;color:var(--muted);font-weight:600;padding:7px 1
 nav.main{order:2;flex:0 1 auto;min-width:0}
 @media (max-width:760px){.langsel{order:1}nav.main{flex-basis:100%}}
 @media (min-width:761px){.bar{flex-wrap:nowrap}nav.main{flex-wrap:wrap;justify-content:flex-end;overflow:visible;row-gap:4px}html:not([lang=en]) nav.main a{padding:7px 8px}}
+/* Wide screens: logo at the far left, language menu at the far right, all tabs on one line between them. */
+@media (min-width:1024px){header.top .bar{max-width:none;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+  .brand{margin-right:0}nav.main{flex:1 1 auto;justify-content:center;flex-wrap:wrap;gap:2px}nav.main a{padding:7px 10px}html:not([lang=en]) nav.main a{padding:7px 7px}}
+@media (min-width:1024px) and (max-width:1359px){nav.main a,html:not([lang=en]) nav.main a{padding:6px 7px;font-size:14px}nav.main .sep{margin:0 3px}}
+@media (min-width:1024px) and (max-width:1199px){nav.main a,html:not([lang=en]) nav.main a{padding:6px 5px;font-size:13.5px}.brand b{font-size:20px}}
 nav.main a.on{background:var(--sunk);color:var(--ink)}
 nav.main{align-items:center}
 nav.main .sep{width:1px;height:22px;background:var(--line);margin:0 6px;flex:none}
