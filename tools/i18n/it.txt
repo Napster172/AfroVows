@@ -862,3 +862,26 @@
 861|{0} mesi
 862|{0} non ancora impegnati
 863|Lingua
+864|Descrizione del pacchetto
+865|Prezzo
+866|Per (facoltativo)
+867|es. Servizio fotografico giornata intera
+868|es. per ospite
+869|Prezzo in cedi ghanesi
+870|Rimuovi questo pacchetto
+871|+ Aggiungi un altro pacchetto
+872|Lascia vuoto il prezzo se le coppie devono chiedere un preventivo.
+873|Social e sito web
+874|+ Aggiungi un altro link
+875|Instagram, Facebook, TikTok, YouTube, X, il tuo sito: tutto ciò che le coppie possono usare per vedere il tuo lavoro.
+876|es. instagram.com/latuaattivita
+877|Link social o sito web
+878|Rimuovi questo link
+879|Verifichiamo chi possiede ogni attività prima della pubblicazione.
+880|Tipo di documento del titolare *
+881|Numero di documento del titolare *
+882|es. GHA-{0}-{1}
+883|Ghana Card
+884|Patente di guida
+885|Solo il team di AfroVows vede questi numeri. Non vengono mai mostrati alle coppie.
+886|Online

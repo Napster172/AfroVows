@@ -862,3 +862,26 @@
 861|{0} meses
 862|{0} aún sin comprometer
 863|Idioma
+864|Descripción del paquete
+865|Tarifa
+866|Por (opcional)
+867|p. ej. Cobertura fotográfica de día completo
+868|p. ej. por invitado
+869|Tarifa en cedis de Ghana
+870|Quitar este paquete
+871|+ Añadir otro paquete
+872|Deja la tarifa vacía si las parejas deben pedir presupuesto.
+873|Redes sociales y sitio web
+874|+ Añadir otro enlace
+875|Instagram, Facebook, TikTok, YouTube, X, tu sitio web: cualquier cosa que las parejas puedan usar para ver tu trabajo.
+876|p. ej. instagram.com/tunegocio
+877|Enlace a red social o sitio web
+878|Quitar este enlace
+879|Comprobamos quién es el dueño de cada negocio antes de publicarlo.
+880|Tipo de documento del dueño *
+881|Número de documento del dueño *
+882|p. ej. GHA-{0}-{1}
+883|Ghana Card
+884|Permiso de conducir
+885|Solo el equipo de AfroVows ve estos números. Nunca se muestran a las parejas.
+886|En línea

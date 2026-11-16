@@ -132,6 +132,13 @@ main{padding-block:28px 64px}
 .btn.danger{color:var(--red)}
 input,select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;min-width:0}
 textarea{min-height:90px;resize:vertical}
+.pkrow{display:grid;grid-template-columns:2fr 1.2fr 1fr auto;gap:8px;align-items:end}
+.pkrow+.pkrow{border-top:1px dashed var(--line);padding-top:10px}
+@media (max-width:560px){.pkrow{grid-template-columns:1fr 1fr auto}.pkrow label:first-child{grid-column:1/-1}}
+.cedi{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--surface);overflow:hidden}
+.cedi:focus-within{outline:2px solid var(--gold);outline-offset:-1px}
+.cedi>span{padding:0 4px 0 10px;color:var(--muted);font-weight:700}
+.cedi input{border:0!important;box-shadow:none!important;padding-left:2px;min-width:0}
 label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600;color:var(--muted)}
 label.f > *{font-weight:400;color:var(--ink);font-size:15px}
 .chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
@@ -1042,7 +1049,7 @@ function vendorModal(id){
    <p>${esc(v.blurb)}</p>
    <dl class="kv"><dt>Based in</dt><dd>${esc(v.city)}, ${esc(v.region)}</dd>${v.areas?`<dt>Travels to</dt><dd>${esc(v.areas)}</dd>`:""}<dt>Ceremonies</dt><dd>${v.events==="eng"?"Traditional engagement":v.events==="wed"?"White wedding":"Engagement and white wedding"}</dd>
      ${v.years?`<dt>Experience</dt><dd>${esc(v.years)} years</dd>`:""}${v.contact?`<dt>Contact</dt><dd>${esc(v.contact)}</dd>`:""}<dt>Phone</dt><dd><span style="user-select:all">${esc(v.phone)}</span></dd>
-     ${v.email?`<dt>Email</dt><dd><span style="user-select:all">${esc(v.email)}</span></dd>`:""}${v.social?`<dt>Online</dt><dd>${esc(v.social)}</dd>`:""}${v.deposit?`<dt>Payment</dt><dd>${esc(v.deposit)}</dd>`:""}</dl>
+     ${v.email?`<dt>Email</dt><dd><span style="user-select:all">${esc(v.email)}</span></dd>`:""}${socials(v).length?`<dt>Online</dt><dd class="stack" style="gap:2px">${socials(v).map(socialLink).join("")}</dd>`:""}${v.deposit?`<dt>Payment</dt><dd>${esc(v.deposit)}</dd>`:""}</dl>
    <div><h3 style="margin-bottom:4px">Packages and fees</h3>${(v.packages||[]).map(p=>`<div class="pk" style="display:flex;justify-content:space-between;gap:10px;font-size:14px;border-top:1px dashed var(--line);padding-top:6px"><span>${esc(p.name)}</span><b class="num">${p.price?fmt(p.price):"Ask for a quote"}${p.unit?` <span class="muted small">${esc(p.unit)}</span>`:""}</b></div>`).join("")}</div>
    ${(v.gallery||[]).length?`<div><h3 style="margin-bottom:6px">Their work</h3><div class="photos sm">${v.gallery.map(g=>`<figure><img src="${g.src}" alt="Work by ${esc(v.name)}" loading="lazy"></figure>`).join("")}</div></div>`:""}
    <div class="stack" style="gap:10px"><h3>Reviews from couples</h3>
@@ -1083,11 +1090,24 @@ function vendorPlanCard(l){const pl=l.id?planOf(l):"basic",req=l.planReq,mo=new 
      :`<div class="grid g3"><div><span class="small muted">Views this month</span><div class="price num">${cur.views}</div></div><div><span class="small muted">WhatsApp taps this month</span><div class="price num">${cur.wa}</div></div><div><span class="small muted">All time</span><div class="num"><b>${tot.views}</b> views · <b>${tot.wa}</b> taps</div></div></div>`}
    ${l.status==="approved"||pl!=="basic"?plansHTML(pl,req&&req.plan):`<p class="small muted">You can choose a paid plan once your listing is approved.</p>`}</section>`}
 function myListing(){return listings().find(l=>l.owner===me)}
-const LFIELDS=["name","cat","events","contact","email","phone","social","city","region","areas","years","blurb","deposit","reg"];
-function parsePk(t){return (t||"").split("\n").map(r=>r.split(",")).filter(p=>p[0]&&p[0].trim()).map(p=>({name:p[0].trim(),price:+String(p[1]||"").replace(/[^\d.]/g,"")||0,unit:(p[2]||"").trim()}))}
+const LFIELDS=["name","cat","events","contact","email","phone","city","region","areas","years","blurb","deposit","reg","idType","idNo"];
+const IDTYPES=["Ghana Card","Driver's licence"];
+const money=v=>+String(v||"").replace(/[^\d.]/g,"")||0;
+const groupNum=v=>{const n=money(v);return n?n.toLocaleString("en-GB",{maximumFractionDigits:2}):""};
+function socials(v){return (v.socials&&v.socials.length?v.socials:(v.social?[v.social]:[])).filter(Boolean)}
+function socialLink(x){const u=/^https?:\/\//i.test(x)?x:/^(www\.|[\w-]+\.(com|gh|org|net|me|co)\b)/i.test(x)?"https://"+x:"";return u?`<a href="${esc(u)}" target="_blank" rel="noopener nofollow">${esc(x)}</a>`:esc(x)}
+function pkRow(p,i){p=p||{};const first=i===0;return `<div class="pkrow"><label class="f">Package description<input name="pk_name" ${first?"required":""} value="${esc(p.name||"")}" placeholder="e.g. Full day photo coverage"></label>
+  <label class="f">Fee<span class="cedi"><span aria-hidden="true">GH₵</span><input name="pk_fee" inputmode="decimal" value="${esc(groupNum(p.price))}" placeholder="0" aria-label="Fee in Ghana cedis"></span></label>
+  <label class="f">Per (optional)<input name="pk_unit" value="${esc(p.unit||"")}" placeholder="e.g. per guest"></label>
+  <button type="button" class="btn sm ghost danger" data-act="delpkrow" aria-label="Remove this package">×</button></div>`}
+function socialRow(x){return `<div class="row socrow" style="gap:6px;flex-wrap:nowrap"><input name="soc" value="${esc(x||"")}" placeholder="e.g. instagram.com/yourbusiness" aria-label="Social media or website link" style="flex:1"><button type="button" class="btn sm ghost danger" data-act="delsocrow" aria-label="Remove this link">×</button></div>`}
+
 function draftFromForm(){const f=document.querySelector('[data-form="listing"]');const fd=f?Object.fromEntries(new FormData(f)):{};
   const l=listings();let x=l.find(v=>v.owner===me);if(!x){x={id:"l"+uid(),owner:me,status:"draft",packages:[],gallery:[]};l.push(x)}
-  LFIELDS.forEach(k=>{if(fd[k]!==undefined)x[k]=String(fd[k]).trim()});if(fd.pk!==undefined)x.packages=parsePk(fd.pk);return [l,x]}
+  LFIELDS.forEach(k=>{if(fd[k]!==undefined)x[k]=String(fd[k]).trim()});
+  if(f){x.packages=[...f.querySelectorAll(".pkrow")].map(r=>({name:r.querySelector("[name=pk_name]").value.trim(),price:money(r.querySelector("[name=pk_fee]").value),unit:r.querySelector("[name=pk_unit]").value.trim()})).filter(p=>p.name);
+    x.socials=[...f.querySelectorAll("[name=soc]")].map(i=>i.value.trim()).filter(Boolean);delete x.social}
+  return [l,x]}
 function statusPill(l){return l.status==="approved"?'<span class="pill p-yes">Live in the directory</span>':l.status==="rejected"?'<span class="pill p-no">Changes needed</span>':l.status==="removed"?'<span class="pill p-no">Unpublished</span>':l.status==="draft"?'<span class="pill p-neutral">Not submitted</span>':'<span class="pill p-pend">Waiting for approval</span>'}
 function planModal(id){const p=PLANS.find(x=>x.id===id);if(!p)return;const m=planPrice(id);const name=TV("plan."+id+".name",p.name);
   modal(`<div class="split"><div><span class="eyebrow">Upgrade your listing</span><h2>${esc(name)} plan</h2></div><button class="btn sm ghost" data-act="close" aria-label="Close">×</button></div>
@@ -1125,17 +1145,20 @@ function vVendorDash(){
      <label class="f">Contact person *<input name="contact" id="ls-contact" required value="${esc(l.contact)}"></label>
      <label class="f">WhatsApp / phone *<input name="phone" id="ls-phone" required inputmode="tel" value="${esc(l.phone)}"></label>
      <label class="f">Email *<input name="email" id="ls-email" type="email" required value="${esc(l.email||me)}"></label>
-     <label class="f">Instagram, Facebook or website<input name="social" id="ls-social" value="${esc(l.social)}" placeholder="@yourbusiness"></label></div></fieldset>
+     </div><div class="stack" style="gap:6px"><span class="small muted" style="font-weight:600">Social media and website</span><div id="ls-socials" class="stack" style="gap:6px">${(socials(l).length?socials(l):[""]).map(socialRow).join("")}</div><div><button type="button" class="btn sm" data-act="addsocrow">+ Add another link</button></div><span class="small muted">Instagram, Facebook, TikTok, YouTube, X, your website, anything couples can use to see your work.</span></div></fieldset>
      <fieldset class="fs"><legend>Packages, fees and payment</legend>
-     <label class="f">Packages and fees * <span class="small muted" style="font-weight:400">One per line: package name, price in GH₵, unit (optional)</span><textarea name="pk" id="ls-pk" required placeholder="Engagement coverage, 5000&#10;Full day, 9000&#10;Buffet, 180, per guest">${esc((l.packages||[]).map(p=>p.name+", "+p.price+(p.unit?", "+p.unit:"")).join("\n"))}</textarea></label>
+     <div class="stack" style="gap:6px"><span class="small muted" style="font-weight:600">Packages and fees *</span><div id="ls-pks" class="stack" style="gap:10px">${((l.packages||[]).length?l.packages:[{}]).map(pkRow).join("")}</div><div><button type="button" class="btn sm" data-act="addpkrow">+ Add another package</button></div><span class="small muted">Leave the fee empty if couples should ask for a quote.</span></div>
      <label class="f">Deposit and payment terms *<input name="deposit" id="ls-deposit" required value="${esc(l.deposit)}" placeholder="e.g. 50% deposit to book, balance 1 week before. MoMo or bank transfer"></label></fieldset>
      <fieldset class="fs"><legend>Photos</legend>
      <div class="stack" style="gap:6px"><span class="small muted" style="font-weight:600">Cover photo</span><div class="row">${l.photo?`<img src="${l.photo}" alt="" style="width:96px;height:64px;object-fit:cover;border-radius:6px">`:""}<label class="btn sm" style="position:relative">${l.photo?"Change cover photo":"Upload cover photo"}<input type="file" accept="image/*" id="ls-photo" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label></div></div>
      <div class="stack" style="gap:6px"><span class="small muted" style="font-weight:600">Examples of your work (up to 6)</span><div class="photos sm">${(l.gallery||[]).map(g=>`<figure><img src="${g.src}" alt=""><button type="button" class="x" data-act="delgal" data-id="${g.id}" aria-label="Remove photo">×</button></figure>`).join("")}
        ${(l.gallery||[]).length<6?`<label class="btn sm" style="position:relative;aspect-ratio:1;justify-content:center;border-style:dashed;max-width:100%">+ Add photos<input type="file" accept="image/*" multiple id="ls-gallery" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label>`:""}</div></div></fieldset>
      <fieldset class="fs"><legend>Verification</legend>
+     <p class="small muted">We check who owns each business before it goes live.</p>
+     <div class="grid g2"><label class="f">Owner's ID type *<select name="idType" id="ls-idtype">${IDTYPES.map(t=>`<option ${t===l.idType?"selected":""}>${t}</option>`).join("")}</select></label>
+     <label class="f">Owner's ID number *<input name="idNo" id="ls-idno" required value="${esc(l.idNo)}" placeholder="e.g. GHA-123456789-0" autocomplete="off"></label></div>
      <label class="f">Business registration number (Registrar-General) <input name="reg" id="ls-reg" value="${esc(l.reg)}" placeholder="Optional, helps us approve you faster"></label>
-     <p class="small muted">Only the AfroVows team sees this number. It is never shown to couples.</p></fieldset>
+     <p class="small muted">Only the AfroVows team sees these numbers. They are never shown to couples.</p></fieldset>
      <div><button class="btn pri">${l.status==="draft"?"Submit for approval":"Save and resubmit for approval"}</button></div></form>
    <div class="stack" style="gap:8px"><span class="small muted" style="font-weight:600">How couples will see it</span>${vendorCard({...l,name:l.name||"Your business name",city:l.city||"Town",blurb:l.blurb||"A short description of what you offer.",packages:(l.packages||[]).length?l.packages:[{name:"Your first package",price:0}],phone:l.phone||"Your number",sample:false,unverified:true})}</div></div></div>`;
 }
@@ -1219,7 +1242,7 @@ function vAdmin(){
    <div><span class="eyebrow"><span class="lock" aria-hidden="true"></span>Site owner · only you can see this</span><h1 style="font-size:clamp(26px,5vw,36px)">Vendor approvals</h1></div>
    ${chips}
    ${list.length?`<div class="vgrid">${list.map(l=>`<div class="stack" style="gap:8px">
-     <div class="small muted">From ${esc(l.owner)} · ${l.submittedAt?new Date(l.submittedAt).toLocaleDateString("en-GB",{day:"numeric",month:"short"}):""}${l.live&&l.status==="pending"?" · <b>edit to a live listing</b>":""}<br>Registration no: ${l.reg?esc(l.reg):"not given"} · ${(l.gallery||[]).length} work photo${(l.gallery||[]).length===1?"":"s"}${l.email?" · "+esc(l.email):""}</div>
+     <div class="small muted">From ${esc(l.owner)} · ${l.submittedAt?new Date(l.submittedAt).toLocaleDateString("en-GB",{day:"numeric",month:"short"}):""}${l.live&&l.status==="pending"?" · <b>edit to a live listing</b>":""}<br>Owner ID: ${l.idNo?esc((l.idType||"ID")+" "+l.idNo):"not given"} · Registration no: ${l.reg?esc(l.reg):"not given"} · ${(l.gallery||[]).length} work photo${(l.gallery||[]).length===1?"":"s"}${l.email?" · "+esc(l.email):""}</div>
      ${vendorCard({...l,sample:false,unverified:l.status!=="approved"})}
      ${l.status==="pending"?`<form class="stack" style="gap:6px" data-form="decide" data-id="${l.id}"><input name="note" id="dn-${l.id}" placeholder="Reason if not approved (sent to the vendor)"><div class="row"><button class="btn pri sm" name="d" value="approve">Approve and publish</button><button class="btn sm danger" name="d" value="reject">Don't approve</button></div></form>`
       :l.status==="approved"?`<div class="row"><button class="btn sm danger" data-act="unpublish" data-id="${l.id}">Unpublish</button></div>`
@@ -1297,6 +1320,10 @@ document.addEventListener("click",async e=>{
     case"delg":S.guests=S.guests.filter(g=>g.id!==id);save();closeModal();rerender();toast("Guest removed");break;
     case"gfilter":ui.gfilter=id;rerender();break;
     case"editv":myVendorModal(id);break;
+    case"addpkrow":$("#ls-pks").insertAdjacentHTML("beforeend",pkRow());$("#ls-pks .pkrow:last-child [name=pk_name]").focus();break;
+    case"delpkrow":{const box=t.closest("#ls-pks");t.closest(".pkrow").remove();if(!box.children.length)box.insertAdjacentHTML("beforeend",pkRow());break}
+    case"addsocrow":$("#ls-socials").insertAdjacentHTML("beforeend",socialRow());$("#ls-socials .socrow:last-child input").focus();break;
+    case"delsocrow":{const box=t.closest("#ls-socials");t.closest(".socrow").remove();if(!box.children.length)box.insertAdjacentHTML("beforeend",socialRow());break}
     case"addduerow":$("#mv-dues").insertAdjacentHTML("beforeend",dueRow());break;
     case"delduerow":t.closest(".duerow").remove();break;
     case"delv":S.myVendors=S.myVendors.filter(v=>v.id!==id);save();closeModal();rerender();break;
@@ -1312,6 +1339,7 @@ document.addEventListener("click",async e=>{
 });
 /* Phones fire "change" while the date wheel is still open; redrawing then would close it and lock in today's date. Redraw once the field loses focus. */
 function commitDue(t){if(t.dataset.dirty!=="1")return;delete t.dataset.dirty;rerender();toast(t.value?"Due date set":"Due date cleared")}
+document.addEventListener("focusout",e=>{if(e.target.name==="pk_fee")e.target.value=groupNum(e.target.value)});
 document.addEventListener("focusout",e=>{const t=e.target;if(t.dataset&&t.dataset.act==="taskdue")setTimeout(()=>commitDue(t),0)});
 document.addEventListener("change",e=>{const t=e.target;const a=t.dataset.act;
   if(a==="task"){const x=S.tasks.find(x=>x.id===t.dataset.id);if(x){x.done=t.checked;save();rerender()}}
@@ -1401,7 +1429,7 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
     case"listing":{const [l,x]=draftFromForm();if(!x.packages.length)x.packages=[{name:"Ask for a quote",price:0,unit:""}];
       Object.assign(x,{status:"pending",note:"",submittedAt:Date.now()});setListings(l);toast("Submitted for approval");rerender();break}
     case"decide":{const l=listings(),x=l.find(v=>v.id===id);if(!x)break;const dec=e.submitter&&e.submitter.value;
-      if(dec==="approve"){x.status="approved";x.note="";const {owner,status,note,live,submittedAt,reg,_owner,plan,planUntil,planReq,...pub}=x;x.live={...pub,sample:false};toast("Approved. It's now live in the directory")}
+      if(dec==="approve"){x.status="approved";x.note="";const {owner,status,note,live,submittedAt,reg,idType,idNo,_owner,plan,planUntil,planReq,...pub}=x;x.live={...pub,sample:false};toast("Approved. It's now live in the directory")}
       else{if(!d.note.trim()){toast("Add a short reason so the vendor knows what to change");$("#dn-"+id).focus();break}x.status="rejected";x.note=d.note.trim();toast("Sent back to the vendor")}
       setListings(l);rerender();break}
     case"contact":{const m=messages();m.push({id:uid(),name:d.name.trim(),who:d.who,email:d.email.trim(),phone:d.phone.trim(),msg:d.msg.trim(),at:Date.now(),read:false});setMessages(m);
