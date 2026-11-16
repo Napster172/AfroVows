@@ -986,3 +986,30 @@
 985|Nuevo anuncio creado. Elige su servicio principal, añade sus paquetes y fotos y envíalo para aprobación
 986|Anuncio eliminado
 987|Los anuncios adicionales aún no están activados. Contacta con AfroVows.
+988|Enlace para unirse:
+989|Código copiado
+990|Copiar enlace
+991|Enlace copiado
+992|Todos aquí pueden abrir este planificador y ayudar con el presupuesto, los invitados, los proveedores y las tareas, excepto los padrinos y las damas de honor, que solo ven las pestañas Cortejo nupcial, Fotos e Historia y detalles. Invita a alguien y envíale su enlace para unirse. Escribe el nombre y el apellido que pusiste, y tú lo apruebas antes de que pueda ver nada.
+993|Tu código de invitación ya está rellenado. Añade tu nombre, correo y una contraseña para unirte.
+994|Ya has iniciado sesión en este dispositivo. Cierra sesión y vuelve a abrir el enlace de invitación.
+995|Nombre
+996|Apellido
+997|Pedir unirse
+998|Aprobar
+999|Rechazar
+1000|Comprobar de nuevo
+1001|Esperando aprobación
+1002|Tu solicitud no fue aprobada
+1003|Esperando tu aprobación
+1004|Tu código de invitación ya está rellenado. Escribe tu nombre y apellido exactamente como los escribió la pareja, luego tu correo y una contraseña.
+1005|¿Tienes un código de invitación de una pareja? Escribe tu nombre y apellido exactamente como los escribió la pareja. Los novios te aprueban antes de que puedas ver su planificador.
+1006|Ese nombre no coincide con esta invitación. Escribe tu nombre y apellido exactamente como los escribió la pareja, o pídeles que revisen la invitación.
+1007|Solicitud enviada. La pareja te aprobará pronto
+1008|La pareja no aprobó esta solicitud. Si te han enviado una nueva invitación, escríbela abajo.
+1009|Los novios comprobarán que eres tú y te aprobarán. Cuando lo hagan, actualiza esta página o vuelve a iniciar sesión para abrir el planificador.
+1010|Solicitud rechazada. Su enlace anterior ya no funciona. Si de verdad era esa persona, envíale el nuevo enlace
+1011|Usa el nombre de su Ghana Card o como lo escribe normalmente. Debe escribir el mismo nombre y apellido para unirse.
+1012|{0} persona espera tu aprobación.
+1013|{0} personas esperan tu aprobación.
+1014|Revisar en la pestaña Equipo

@@ -21,9 +21,13 @@ const {data:gf2}=await anon.rpc('guest_find',{wcode:'AMAKOFI11',q:'Efua'});ok(!g
 await anon.rpc('guest_rsvp',{wcode:'AMAKOFI11',guest_id:'g1',answers:{eng:'yes',wed:'maybe',x:'<b>'},note:'See you'});
 const {data:w2}=await a.from('weddings').select('data').single();ok(JSON.stringify(w2.data.guests[0].rsvp)==='{"eng":"yes"}'&&w2.data.guests[0].note==='See you','rsvp saved and cleaned');
 const {data:badp}=await anon.rpc('guest_add_photo',{wcode:'AMAKOFI11',by_name:'x',url:'https://evil.com/a.jpg'});ok(badp===false,'guest photo must be our storage URL');
-const {data:iv}=await anon.rpc('invite_valid',{invite:'av-test11'});ok(iv===true,'invite code valid');
-const {data:jw}=await b.rpc('join_wedding',{invite:'AV-TEST11',display_name:'Kofi'});ok(jw===w.id,'partner joins with invite (b already had no wedding)');
-const {data:bw2}=await b.from('weddings').select('data').single();ok(bw2&&bw2.data.team[1].status==='joined'&&bw2.data.team[1].email==='b@x.gh','partner can read and is marked joined');
+const {data:iv}=await anon.rpc('invite_check',{invite:'av-test11',first_name:'Kofi',last_name:'Mensah'});ok(iv==='ok','invite code valid for the invited first name');
+const {data:ivn}=await anon.rpc('invite_check',{invite:'AV-TEST11',first_name:'Kwame',last_name:'Mensah'});ok(ivn==='name','wrong name is refused');
+const {data:rq}=await b.rpc('request_join',{invite:'AV-TEST11',first_name:'Kofi',last_name:'Mensah'});ok(rq==='requested','partner asks to join');
+const {data:bw1}=await b.from('weddings').select('id');ok(bw1.length===0,'asking to join gives no access before approval');
+const {data:aw1}=await a.from('weddings').select('data').single();
+await a.from('weddings').update({data:{...aw1.data,team:aw1.data.team.map(x=>x.status==='requested'?{...x,status:'joined'}:x)}}).eq('id',w.id);
+const {data:bw2}=await b.from('weddings').select('data').single();ok(bw2&&bw2.data.team[1].status==='joined'&&bw2.data.team[1].email==='b@x.gh','approved partner can read and is marked joined');
 // remove partner from team -> loses access
 const t=bw2.data.team.filter(x=>x.role!=='Groom');await a.from('weddings').update({data:{...bw2.data,team:t}}).eq('id',w.id);
 const {data:bw3}=await b.from('weddings').select('id');ok(bw3.length===0,'removed partner loses access');

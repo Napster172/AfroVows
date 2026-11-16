@@ -986,3 +986,30 @@
 985|Neuer Eintrag angelegt. Wählen Sie die Hauptleistung, fügen Sie Pakete und Fotos hinzu und reichen Sie ihn zur Prüfung ein
 986|Eintrag gelöscht
 987|Weitere Einträge sind noch nicht freigeschaltet. Bitte kontaktieren Sie AfroVows.
+988|Beitrittslink:
+989|Code kopiert
+990|Link kopieren
+991|Link kopiert
+992|Alle hier können diesen Planer öffnen und beim Budget, bei Gästen, Dienstleistern und Aufgaben helfen – außer Groomsmen und Brautjungfern, die nur die Tabs Brautgefolge, Fotos sowie Geschichte & Details sehen. Lade jemanden ein und schicke ihm den Beitrittslink. Er gibt den Vor- und Nachnamen ein, den du eingetragen hast, und du bestätigst ihn, bevor er etwas sehen kann.
+993|Dein Einladungscode ist bereits eingetragen. Gib Namen, E-Mail und ein Passwort ein, um beizutreten.
+994|Du bist auf diesem Gerät bereits angemeldet. Melde dich zuerst ab und öffne den Einladungslink dann erneut.
+995|Vorname
+996|Nachname
+997|Beitritt anfragen
+998|Bestätigen
+999|Ablehnen
+1000|Erneut prüfen
+1001|Warten auf Bestätigung
+1002|Deine Anfrage wurde nicht bestätigt
+1003|Wartet auf deine Bestätigung
+1004|Dein Einladungscode ist bereits eingetragen. Gib Vor- und Nachnamen genau so ein, wie das Paar sie geschrieben hat, dann deine E-Mail und ein Passwort.
+1005|Du hast einen Einladungscode von einem Paar? Gib Vor- und Nachnamen genau so ein, wie das Paar sie geschrieben hat. Braut oder Bräutigam bestätigen dich, bevor du ihren Planer sehen kannst.
+1006|Dieser Name passt nicht zu dieser Einladung. Gib Vor- und Nachnamen genau so ein, wie das Paar sie geschrieben hat, oder bitte sie, die Einladung zu prüfen.
+1007|Anfrage gesendet. Das Paar bestätigt dich bald
+1008|Das Paar hat diese Anfrage nicht bestätigt. Falls es dir eine neue Einladung geschickt hat, gib sie unten ein.
+1009|Braut oder Bräutigam prüfen, ob du es wirklich bist, und bestätigen dich. Danach lade diese Seite neu oder melde dich erneut an, um den Planer zu öffnen.
+1010|Anfrage abgelehnt. Der alte Link funktioniert nicht mehr. Falls es wirklich diese Person war, schicke ihr den neuen Beitrittslink
+1011|Verwende den Namen auf der Ghana Card oder wie die Person ihn normalerweise schreibt. Sie muss denselben Vor- und Nachnamen eingeben, um beizutreten.
+1012|{0} Person wartet auf deine Bestätigung.
+1013|{0} Personen warten auf deine Bestätigung.
+1014|Im Tab Team ansehen
