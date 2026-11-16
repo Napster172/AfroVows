@@ -885,3 +885,20 @@
 884|Führerschein
 885|Nur das AfroVows-Team sieht diese Nummern. Paare sehen sie nie.
 886|Online
+887|Alle Details ansehen
+888|Arbeitsfotos ({0})
+889|Nichts hochgeladen
+890|Reist nach
+891|Über
+892|Ansprechperson
+893|Konto-E-Mail
+894|Pakete
+895|Zahlungsbedingungen
+896|Ausweis des Inhabers
+897|Registernummer
+898|Nicht angegeben
+899|Eingereicht
+900|Geändert gegenüber der Live-Version:
+901|nichts Sichtbares
+902|Titelfoto vergrößern
+903|Arbeitsfoto {0} vergrößern
