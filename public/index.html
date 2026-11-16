@@ -1310,10 +1310,13 @@ document.addEventListener("click",async e=>{
     case"copy":try{await navigator.clipboard.writeText(id);toast("Number copied")}catch(_){toast("Select the number to copy it")}break;
   }
 });
+/* Phones fire "change" while the date wheel is still open; redrawing then would close it and lock in today's date. Redraw once the field loses focus. */
+function commitDue(t){if(t.dataset.dirty!=="1")return;delete t.dataset.dirty;rerender();toast(t.value?"Due date set":"Due date cleared")}
+document.addEventListener("focusout",e=>{const t=e.target;if(t.dataset&&t.dataset.act==="taskdue")setTimeout(()=>commitDue(t),0)});
 document.addEventListener("change",e=>{const t=e.target;const a=t.dataset.act;
   if(a==="task"){const x=S.tasks.find(x=>x.id===t.dataset.id);if(x){x.done=t.checked;save();rerender()}}
   if(a==="taskwho"){const x=S.tasks.find(x=>x.id===t.dataset.id);if(x){x.who=t.value;save();rerender();toast(t.value?`Assigned to ${partnerName(t.value)}`:"Unassigned")}}
-  if(a==="taskdue"){const x=S.tasks.find(x=>x.id===t.dataset.id);if(x){x.due=t.value;save();rerender();toast(t.value?"Due date set":"Due date cleared")}}
+  if(a==="taskdue"){const x=S.tasks.find(x=>x.id===t.dataset.id);if(x){x.due=t.value;save();t.dataset.dirty="1";if(document.activeElement!==t)commitDue(t)}}
   if(a==="vregion"){ui.vregion=t.value;rerender()} if(a==="vevent"){ui.vevent=t.value;rerender()}
   if(t.id==="ls-photo"&&t.files[0]){(async()=>{try{const src=await shrink(t.files[0]);const [l,x]=draftFromForm();x.photo=src;setListings(l);rerender();toast("Cover photo added. Submit to send it for approval")}catch(_){toast("That file couldn't be read as a photo")}})()}
   if(t.id==="ls-gallery"&&t.files.length){(async()=>{const [l,x]=draftFromForm();x.gallery=x.gallery||[];let n=0;for(const f of t.files){if(x.gallery.length>=6)break;try{x.gallery.push({id:uid(),src:await shrink(f)});n++}catch(_){}}
