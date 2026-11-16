@@ -1103,5 +1103,6 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.de={
 "Inspiration photo": "Inspirationsfoto",
 "Shown at the top of your planner and your wedding page, above your names.": "Wird oben in deinem Planer und auf deiner Hochzeitsseite über euren Namen angezeigt.",
 "Cover photo removed": "Titelbild entfernt",
-"Cover photo added. Guests see it at the top of your wedding page": "Titelbild hinzugefügt. Gäste sehen es oben auf deiner Hochzeitsseite"
+"Cover photo added. Guests see it at the top of your wedding page": "Titelbild hinzugefügt. Gäste sehen es oben auf deiner Hochzeitsseite",
+"Only photos whose title or tags include every word you searched. Openly licensed photos from Openverse and Wikimedia Commons. Tap a photo to see its source and photographer.": "Nur Fotos, deren Titel oder Schlagwörter alle gesuchten Wörter enthalten. Frei lizenzierte Fotos von Openverse und Wikimedia Commons. Tippe auf ein Foto, um Quelle und Fotograf zu sehen."
 };

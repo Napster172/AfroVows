@@ -1104,3 +1104,4 @@
 1103|Wird oben in deinem Planer und auf deiner Hochzeitsseite über euren Namen angezeigt.
 1104|Titelbild entfernt
 1105|Titelbild hinzugefügt. Gäste sehen es oben auf deiner Hochzeitsseite
+1106|Nur Fotos, deren Titel oder Schlagwörter alle gesuchten Wörter enthalten. Frei lizenzierte Fotos von Openverse und Wikimedia Commons. Tippe auf ein Foto, um Quelle und Fotograf zu sehen.
