@@ -132,6 +132,12 @@ main{padding-block:28px 64px}
 .btn.danger{color:var(--red)}
 input,select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;min-width:0}
 textarea{min-height:90px;resize:vertical}
+.adet{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:10px 14px}
+.adet summary{cursor:pointer;font-weight:600;font-size:14px}
+.adet .kv dd{overflow-wrap:anywhere}
+button.zoom{padding:0;border:0;background:none;cursor:zoom-in;display:block;width:100%}
+button.zoom img{display:block}
+.photos button.zoom{aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--sunk)}
 .pkrow{display:grid;grid-template-columns:2fr 1.2fr 1fr auto;gap:8px;align-items:end}
 .pkrow+.pkrow{border-top:1px dashed var(--line);padding-top:10px}
 @media (max-width:560px){.pkrow{grid-template-columns:1fr 1fr auto}.pkrow label:first-child{grid-column:1/-1}}
@@ -1219,6 +1225,31 @@ function vAdminAuth(){
    <p class="small" id="ad-err" style="color:var(--red)" hidden></p><button class="btn pri" style="justify-content:center">Sign in</button></form>
    ${HOSTED?"":`<div class="card stack" style="gap:8px"><h3>Preview shortcut</h3><p class="small muted">In this preview there's no real owner login yet. Open the approvals page as the site owner to try it.</p><div><button class="btn" data-act="asowner">Open as site owner</button></div>`}</div></div>`;
 }
+/* Everything a vendor submitted, for the site owner to check before approving. */
+const EVNAME={both:"Engagement and white wedding",eng:"Traditional engagement",wed:"White wedding"};
+function adminDetails(l){
+  const row=(k,v)=>v?`<dt>${k}</dt><dd>${v}</dd>`:"";const t=x=>x?esc(String(x)):"";
+  const pv=l.live&&l.status==="pending"?l.live:null;
+  const changed=pv?[["name","Business name"],["cat","Service"],["events","Ceremonies"],["city","Town"],["region","Region"],["areas","Areas"],["years","Years"],["blurb","About"],["contact","Contact person"],["phone","Phone"],["email","Email"],["deposit","Payment terms"],["photo","Cover photo"]].filter(([k])=>(pv[k]||"")!==(l[k]||"")).map(x=>x[1])
+    .concat(JSON.stringify(pv.packages||[])!==JSON.stringify(l.packages||[])?["Packages"]:[],JSON.stringify(socials(pv))!==JSON.stringify(socials(l))?["Social links"]:[],(pv.gallery||[]).map(g=>g.src).join()!==(l.gallery||[]).map(g=>g.src).join()?["Work photos"]:[]):[];
+  const gal=l.gallery||[];
+  return `<details class="adet"><summary>See full details</summary><div class="stack" style="gap:12px;padding-top:10px">
+   ${pv?`<div class="card small" style="background:var(--gold-soft);padding:10px">Changed since the live version: <b>${changed.length?changed.map(esc).join(", "):"nothing visible"}</b></div>`:""}
+   <div class="stack" style="gap:6px"><b class="small">Cover photo</b>${l.photo?`<button type="button" class="zoom" data-act="zoomimg" aria-label="Enlarge cover photo"><img src="${l.photo}" alt="" style="width:100%;max-height:220px;object-fit:cover;border-radius:8px"></button>`:`<span class="small muted">None uploaded</span>`}</div>
+   <div class="stack" style="gap:6px"><b class="small">Work photos (${gal.length})</b>${gal.length?`<div class="photos sm">${gal.map((g,i)=>`<button type="button" class="zoom" data-act="zoomimg" aria-label="Enlarge work photo ${i+1}"><img src="${g.src}" alt="" loading="lazy"></button>`).join("")}</div>`:`<span class="small muted">None uploaded</span>`}</div>
+   <dl class="kv">
+    ${row("Business",t(l.name))}${row("Service",t(catName(l.cat)))}${row("Ceremonies",t(EVNAME[l.events]||l.events))}
+    ${row("Based in",[l.city,l.region].filter(Boolean).map(esc).join(", "))}${row("Travels to",t(l.areas))}${row("Years in business",t(l.years))}
+    ${row("About",t(l.blurb).replace(/\n/g,"<br>"))}
+    ${row("Contact person",t(l.contact))}${row("Phone",l.phone?`<span style="user-select:all">${esc(l.phone)}</span>${waNum(l.phone)?` · <a target="_blank" rel="noopener" href="https://wa.me/${waNum(l.phone)}">WhatsApp</a>`:""}`:"")}
+    ${row("Email",l.email?`<a href="mailto:${esc(l.email)}">${esc(l.email)}</a>`:"")}${row("Account email",t(l.owner))}
+    ${row("Online",socials(l).map(socialLink).join("<br>"))}
+    ${row("Packages",(l.packages||[]).map(p=>`${esc(p.name)}: <b class="num">${p.price?fmt(p.price):"Ask for a quote"}</b>${p.unit?" "+esc(p.unit):""}`).join("<br>"))}
+    ${row("Payment terms",t(l.deposit))}
+    ${row("Owner ID",l.idNo?`${esc(l.idType||"ID")} <span class="num" style="user-select:all">${esc(l.idNo)}</span>`:`<span class="pill p-no">Not given</span>`)}
+    ${row("Registration no",l.reg?`<span class="num" style="user-select:all">${esc(l.reg)}</span>`:"Not given")}
+    ${row("Submitted",l.submittedAt?esc(new Date(l.submittedAt).toLocaleString("en-GB",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})):"")}
+   </dl></div></details>`}
 function vAdmin(){
   const all=listings(),tab=ui.atab||"pending";
   const groups={pending:all.filter(l=>l.status==="pending"),approved:all.filter(l=>l.status==="approved"),rejected:all.filter(l=>l.status==="rejected"||l.status==="removed")};
@@ -1244,6 +1275,7 @@ function vAdmin(){
    ${list.length?`<div class="vgrid">${list.map(l=>`<div class="stack" style="gap:8px">
      <div class="small muted">From ${esc(l.owner)} · ${l.submittedAt?new Date(l.submittedAt).toLocaleDateString("en-GB",{day:"numeric",month:"short"}):""}${l.live&&l.status==="pending"?" · <b>edit to a live listing</b>":""}<br>Owner ID: ${l.idNo?esc((l.idType||"ID")+" "+l.idNo):"not given"} · Registration no: ${l.reg?esc(l.reg):"not given"} · ${(l.gallery||[]).length} work photo${(l.gallery||[]).length===1?"":"s"}${l.email?" · "+esc(l.email):""}</div>
      ${vendorCard({...l,sample:false,unverified:l.status!=="approved"})}
+     ${adminDetails(l)}
      ${l.status==="pending"?`<form class="stack" style="gap:6px" data-form="decide" data-id="${l.id}"><input name="note" id="dn-${l.id}" placeholder="Reason if not approved (sent to the vendor)"><div class="row"><button class="btn pri sm" name="d" value="approve">Approve and publish</button><button class="btn sm danger" name="d" value="reject">Don't approve</button></div></form>`
       :l.status==="approved"?`<div class="row"><button class="btn sm danger" data-act="unpublish" data-id="${l.id}">Unpublish</button></div>`
       :`<p class="small">${l.note?"Reason: "+esc(l.note):""}</p>`}</div>`).join("")}</div>`:`<div class="empty">Nothing here right now.</div>`}
@@ -1320,6 +1352,7 @@ document.addEventListener("click",async e=>{
     case"delg":S.guests=S.guests.filter(g=>g.id!==id);save();closeModal();rerender();toast("Guest removed");break;
     case"gfilter":ui.gfilter=id;rerender();break;
     case"editv":myVendorModal(id);break;
+    case"zoomimg":{const src=t.querySelector("img")?.src;if(src)modal(`<div class="split"><span></span><button class="btn sm ghost" data-act="close" aria-label="Close">×</button></div><img src="${src}" alt="" style="width:100%;max-height:75vh;object-fit:contain;border-radius:8px">`);break}
     case"addpkrow":$("#ls-pks").insertAdjacentHTML("beforeend",pkRow());$("#ls-pks .pkrow:last-child [name=pk_name]").focus();break;
     case"delpkrow":{const box=t.closest("#ls-pks");t.closest(".pkrow").remove();if(!box.children.length)box.insertAdjacentHTML("beforeend",pkRow());break}
     case"addsocrow":$("#ls-socials").insertAdjacentHTML("beforeend",socialRow());$("#ls-socials .socrow:last-child input").focus();break;

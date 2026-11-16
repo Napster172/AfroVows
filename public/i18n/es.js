@@ -885,5 +885,22 @@ window.AV_I18N=window.AV_I18N||{};window.AV_I18N.es={
 "Ghana Card": "Ghana Card",
 "Driver's licence": "Permiso de conducir",
 "Only the AfroVows team sees these numbers. They are never shown to couples.": "Solo el equipo de AfroVows ve estos números. Nunca se muestran a las parejas.",
-"Online": "En línea"
+"Online": "En línea",
+"See full details": "Ver todos los detalles",
+"Work photos ({0})": "Fotos de trabajos ({0})",
+"None uploaded": "No se ha subido ninguna",
+"Travels to": "Se desplaza a",
+"About": "Acerca de",
+"Contact person": "Persona de contacto",
+"Account email": "Correo de la cuenta",
+"Packages": "Paquetes",
+"Payment terms": "Condiciones de pago",
+"Owner ID": "Documento del dueño",
+"Registration no": "N.º de registro",
+"Not given": "No indicado",
+"Submitted": "Enviado",
+"Changed since the live version:": "Cambios respecto a la versión publicada:",
+"nothing visible": "nada visible",
+"Enlarge cover photo": "Ampliar foto de portada",
+"Enlarge work photo {0}": "Ampliar foto de trabajo {0}"
 };

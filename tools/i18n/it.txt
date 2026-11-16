@@ -885,3 +885,20 @@
 884|Patente di guida
 885|Solo il team di AfroVows vede questi numeri. Non vengono mai mostrati alle coppie.
 886|Online
+887|Vedi tutti i dettagli
+888|Foto dei lavori ({0})
+889|Nessuna caricata
+890|Si sposta a
+891|Informazioni
+892|Persona di contatto
+893|Email dell'account
+894|Pacchetti
+895|Condizioni di pagamento
+896|Documento del titolare
+897|N. di registrazione
+898|Non indicato
+899|Inviato
+900|Modificato rispetto alla versione pubblicata:
+901|niente di visibile
+902|Ingrandisci foto di copertina
+903|Ingrandisci foto del lavoro {0}
