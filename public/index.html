@@ -90,6 +90,15 @@ body{overflow-x:clip}
 .catcard:hover{border-color:var(--muted)}
 .catcard > span{display:flex;flex-direction:column;padding:10px 12px;gap:2px;font-size:14px}
 .fs{border:1px solid var(--line);border-radius:8px;padding:12px;margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+.favbtn{position:absolute;top:8px;right:8px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.94);color:#6b6b6b;display:grid;place-items:center;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.favbtn svg{width:21px;height:21px;fill:none}.favbtn.on{color:#C0392B}.favbtn.on svg{fill:currentColor}
+.vboard{columns:3 200px;column-gap:12px}.vitem{break-inside:avoid;margin:0 0 12px;display:flex;flex-direction:column;gap:6px;padding:10px;position:relative}
+.vitem img{width:100%;border-radius:8px;display:block;background:var(--sunk)}.vitem.note{background:var(--gold-soft)}.vitem .x{position:absolute;top:14px;right:14px;z-index:1;width:30px;height:30px;padding:0;justify-content:center;border-radius:50%;background:rgba(255,255,255,.94);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.vxgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.vxgrid figure{margin:0;display:flex;flex-direction:column;gap:4px}.vxgrid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;background:var(--sunk)}
+.coverhero{position:relative;isolation:isolate;border-radius:16px;overflow:hidden;min-height:clamp(180px,32vw,320px);background:var(--sunk) center/cover no-repeat;display:flex;align-items:flex-end;padding:18px 20px;color:#fff}
+.coverhero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.6))}.coverhero h1{color:#fff;font-size:clamp(28px,6vw,44px);margin:0}
+.site-hero.has-cover{position:relative;isolation:isolate;border-radius:16px;overflow:hidden;background:center/cover no-repeat;padding:clamp(90px,18vw,170px) 20px 34px;color:#fff}
+.site-hero.has-cover::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.62))}.site-hero.has-cover h1,.site-hero.has-cover .eyebrow{color:#fff}.site-hero.has-cover .muted{color:rgba(255,255,255,.92)}
 .ppdone h3{color:var(--muted)}fieldset.plain{border:0;padding:0;margin:0;min-width:0}.readonly .x,.readonly [data-act=addstory],.readonly [data-act=delstory],.readonly label.btn{display:none}.readonly input:disabled,.readonly select:disabled,.readonly textarea:disabled{color:var(--ink);opacity:1;background:var(--sunk)}
 .fs legend{font-weight:700;font-size:13px;padding:0 6px;color:var(--ink)}
 .stars{color:var(--gold);letter-spacing:1px}
@@ -157,9 +166,9 @@ article.tip p.lead{font-size:18px}
 .covertag,.mkcover{position:absolute;left:6px;bottom:6px;font-size:12px;padding:3px 8px;border-radius:999px;border:0}
 .covertag{background:var(--gold);color:#1a1a1a;font-weight:700}
 .mkcover{background:rgba(0,0,0,.65);color:#fff;cursor:pointer}
-.pkrow{display:grid;grid-template-columns:2fr 1.2fr 1fr auto;gap:8px;align-items:end}
+.pkrow{display:grid;grid-template-columns:2fr 1.1fr 1.1fr 1fr auto;gap:8px;align-items:end}
 .pkrow+.pkrow{border-top:1px dashed var(--line);padding-top:10px}
-@media (max-width:560px){.pkrow{grid-template-columns:1fr 1fr auto}.pkrow label:first-child{grid-column:1/-1}}
+@media (max-width:560px){.pkrow{grid-template-columns:1fr 1fr}.pkrow label:first-child{grid-column:1/-1}.pkrow [data-act=delpkrow]{justify-self:start}}
 .cedi{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--surface);overflow:hidden}
 .cedi:focus-within{outline:2px solid var(--gold);outline-offset:-1px}
 .cedi>span{padding:0 4px 0 10px;color:var(--muted);font-weight:700}
@@ -372,14 +381,14 @@ const BLEGACY={"Engagement":"engagement","Venue":"venues","Food & drinks":"cater
 const BORDER=()=>["engagement",...CATS.map(c=>c[0]),"gifts","other"];
 const bcat=i=>BLEGACY[i.cat]||i.cat||"other";
 const bcatName=id=>BEXTRA[id]||(CATS.some(c=>c[0]===id)?catName(id):id);
-const V=(id,name,cat,city,region,blurb,pk,phone,events)=>({id,name,cat,city,region,blurb,packages:pk.map(([n,p,u])=>({name:n,price:p,unit:u||""})),phone,events,sample:true,...(SAMPLE_CAP[id]||{})});
+const V=(id,name,cat,city,region,blurb,pk,phone,events)=>({id,name,cat,city,region,blurb,packages:pk.map(([n,p,u,to])=>({name:n,price:p,unit:u||"",priceTo:to||0})),phone,events,sample:true,...(SAMPLE_CAP[id]||{})});
 const SAMPLE_CAP={v19:{capMin:"100",capMax:"400"},v20:{capMin:"30",capMax:"150"}};
 const SAMPLE_VENDORS=[
- V("v1","Adwoa & Co. Events","planners","Accra","Greater Accra","Full planning for engagement and white wedding, including family liaison for the engagement list.",[["Day-of coordination",8000],["Partial planning",18000],["Full planning (both ceremonies)",35000]],"+233 00 000 0101","both"),
+ V("v1","Adwoa & Co. Events","planners","Accra","Greater Accra","Full planning for engagement and white wedding, including family liaison for the engagement list.",[["Day-of coordination",8000],["Partial planning",15000,"",22000],["Full planning (both ceremonies)",35000]],"+233 00 000 0101","both"),
  V("v2","Garden City Weddings","planners","Kumasi","Ashanti","Ashanti-based planners who know the Manhyia-area venues and chiefs' protocol.",[["Engagement only",7000],["Full planning",28000]],"+233 00 000 0102","both"),
- V("v3","Bloom & Batakari Décor","decor","Accra","Greater Accra","Kente-accent stage décor, fresh and silk florals, aisle and reception styling.",[["Engagement stage & seating",12000],["Church + reception package",30000],["Premium full venue",55000]],"+233 00 000 0201","both"),
+ V("v3","Bloom & Batakari Décor","decor","Accra","Greater Accra","Kente-accent stage décor, fresh and silk florals, aisle and reception styling.",[["Engagement stage & seating",12000],["Church + reception package",30000],["Premium full venue",45000,"",70000]],"+233 00 000 0201","both"),
  V("v4","Golden Stool Styling","decor","Kumasi","Ashanti","Traditional engagement setups with canopy draping and family seating plan.",[["Engagement setup",9000],["Reception décor",20000]],"+233 00 000 0202","eng"),
- V("v5","Mama Esi's Kitchen","catering","Accra","Greater Accra","Jollof, waakye, kelewele stations, grilled tilapia and continental options.",[["Buffet",180,"per guest"],["Plated 3-course",300,"per guest"],["Small chops add-on",45,"per guest"]],"+233 00 000 0301","both"),
+ V("v5","Mama Esi's Kitchen","catering","Accra","Greater Accra","Jollof, waakye, kelewele stations, grilled tilapia and continental options.",[["Buffet",150,"per guest",220],["Plated 3-course",300,"per guest"],["Small chops add-on",45,"per guest"]],"+233 00 000 0301","both"),
  V("v6","Volta Flavours Catering","catering","Ho","Volta","Ewe and Ga favourites plus a full drinks bar with bartenders.",[["Buffet",150,"per guest"],["Drinks bar (100 guests)",6000]],"+233 00 000 0302","both"),
  V("v7","Lens of Sankofa Studios","photo","Accra","Greater Accra","Documentary-style photos and same-week highlight film.",[["Engagement coverage",5000],["White wedding coverage",9000],["Both + highlight film",18000]],"+233 00 000 0401","both"),
  V("v8","Cape Light Photography","photo","Cape Coast","Central","Beach and castle-town shoots, drone footage available.",[["Pre-wedding shoot",2500],["Full day",8500]],"+233 00 000 0402","both"),
@@ -735,17 +744,18 @@ function vHome(){
 
 
 /* ---------- Planner ---------- */
-const PTABS=[["overview","Overview"],["budget","Budget"],["myvendors","My vendors"],["todo","To-do"],["guests","Guests & RSVP"],["party","Bridal party"],["team","Team"],["photos","Photos"],["details","Story & details"]];
+const PTABS=[["overview","Overview"],["budget","Budget"],["myvendors","My vendors"],["vision","Vision board"],["todo","To-do"],["guests","Guests & RSVP"],["party","Bridal party"],["team","Team"],["photos","Photos"],["details","Story & details"]];
 function vPlanner(){
   const w=S.wedding,lim=partyOnly();if(ui.ptab==="party"&&!seesParty())ui.ptab="overview";if(lim&&!BP_TABS.includes(ui.ptab))ui.ptab="party";
   const tabs=PTABS.filter(t=>(t[0]!=="party"||seesParty())&&(!lim||BP_TABS.includes(t[0])));
   const asks=isCoupleLead()?(S.team||[]).filter(t=>t.status==="requested").length:0;
   return `<div class="stack">
-   <div class="split"><div><span class="eyebrow"><span class="lock" aria-hidden="true"></span>Private planner · only your wedding team can see this</span><h1 style="font-size:clamp(26px,5vw,36px)">${esc(coupleNames())}</h1>
+   ${w.cover?`<div class="coverhero" role="img" aria-label="${esc(coupleNames())} cover photo" style="background-image:url(&quot;${esc(w.cover)}&quot;)"><h1>${esc(coupleNames())}</h1></div>`:""}
+   <div class="split"><div><span class="eyebrow"><span class="lock" aria-hidden="true"></span>Private planner · only your wedding team can see this</span>${w.cover?"":`<h1 style="font-size:clamp(26px,5vw,36px)">${esc(coupleNames())}</h1>`}
      <p class="small muted">Wedding code for your guests: <span class="code">${esc(myCode())}</span>${meMember()?` · Signed in as <b>${esc(meMember().name)}</b> (${esc(meMember().role)})`:""}</p></div><a class="btn" href="#wedding">Preview guest page</a></div>
    ${asks&&ui.ptab!=="team"?`<div class="card row small" style="justify-content:space-between;background:var(--gold-soft);padding:10px 14px"><span>${asks===1?"1 person is waiting for you to approve them.":asks+" people are waiting for you to approve them."}</span><button class="btn sm pri" data-act="ptab" data-id="team">Review on the Team tab</button></div>`:""}
    <div class="chips" role="tablist">${tabs.map(t=>`<button class="chip ${ui.ptab===t[0]?"on":""}" role="tab" aria-selected="${ui.ptab===t[0]}" data-act="ptab" data-id="${t[0]}">${t[1]}</button>`).join("")}</div>
-   <div>${({overview:pOverview,budget:pBudget,guests:pGuests,todo:pTodo,team:pTeam,party:pParty,myvendors:pMyVendors,photos:pPhotos,details:pDetails})[ui.ptab]()}</div></div>`;
+   <div>${({overview:pOverview,budget:pBudget,guests:pGuests,todo:pTodo,team:pTeam,party:pParty,vision:pVision,myvendors:pMyVendors,photos:pPhotos,details:pDetails})[ui.ptab]()}</div></div>`;
 }
 function budgetTotals(){const it=S.budget.items;return{est:it.reduce((a,b)=>a+(+b.est||0),0),actual:it.reduce((a,b)=>a+(+b.actual||0),0),paid:it.reduce((a,b)=>a+(+b.paid||0),0)}}
 function rsvpStats(ev){const gs=S.guests.filter(g=>(g.events||"").split(",").includes(ev));const s={invited:gs.length,yes:0,no:0,pend:0,heads:0};
@@ -1008,8 +1018,58 @@ function dueRow(x){x=x||{};return `<div class="duerow grid" style="grid-template
 function paymentsDue(){const xs=S.myVendors.flatMap(v=>dueList(v).filter(x=>!x.paid).map(x=>({...x,v}))).sort((a,b)=>a.date.localeCompare(b.date));
   if(!xs.length)return"";
   return `<div class="card stack" style="gap:8px"><h3>Payments due</h3>${xs.slice(0,8).map(x=>`<div class="split" style="gap:8px;flex-wrap:wrap"><span><b>${esc(x.v.name)}</b> <span class="small muted num">${shortDate(x.date)}${x.amount?" · "+fmt(x.amount):""}</span></span>${duePill(x)}</div>`).join("")}</div>`}
+/* ---------- Vision board: notes, photos, social links, and ideas found with Explore ---------- */
+const VCATS=["Decor","Venue","Attire","Hair & makeup","Flowers","Cake","Other"];
+const VTOPICS=[["Kente wedding decor","kente wedding decoration","Decor"],["Traditional engagement","ghana traditional wedding","Decor"],["Reception tables","wedding reception table setting","Decor"],["Garden venues","garden wedding venue","Venue"],["Ballroom venues","wedding ballroom","Venue"],["Beach weddings","beach wedding ceremony","Venue"],["Wedding dresses","wedding dress","Attire"],["Groom's style","groom wedding suit","Attire"],["Bridal hair","bridal hairstyle","Hair & makeup"],["Bouquets","bridal bouquet","Flowers"],["Wedding cakes","wedding cake","Cake"]];
+const visionItems=()=>{S.vision=S.vision||{items:[]};return S.vision.items};
+function linkSite(u){const h=(String(u).match(/^https?:\/\/(?:www\.)?([^/]+)/i)||[])[1]||"";return /instagram/.test(h)?"Instagram":/pinterest|pin\.it/.test(h)?"Pinterest":/tiktok/.test(h)?"TikTok":/facebook|fb\./.test(h)?"Facebook":/youtu/.test(h)?"YouTube":/(^|\.)x\.com|twitter/.test(h)?"X":h||"Link"}
+const safeUrl=u=>/^https:\/\//i.test(u||"")?u:"";
+function vitem(x){const who=x.by?`<span class="small muted">Added by ${esc(x.by)}</span>`:"";
+  const del=`<button type="button" class="btn sm ghost x" data-act="delvision" data-id="${x.id}" aria-label="Remove from board">×</button>`,pill=`<span class="pill p-neutral" style="align-self:flex-start">${esc(x.cat||"Other")}</span>`;
+  if(x.type==="note")return `<div class="card vitem note">${del}${pill}<p style="white-space:pre-line;margin:0;padding-right:24px">${esc(x.text)}</p>${who}</div>`;
+  if(x.type==="link"){const u=safeUrl(x.url);return `<div class="card vitem">${del}${pill}<b>${esc(linkSite(x.url))}</b>${x.text?`<p class="small" style="margin:0">${esc(x.text)}</p>`:""}${u?`<a class="btn sm" href="${esc(u)}" target="_blank" rel="noopener nofollow" style="align-self:flex-start">Open ${esc(linkSite(x.url))}</a>`:""}${who}</div>`}
+  const src=x.type==="web"?safeUrl(x.src):x.src;return `<div class="card vitem">${del}${src?`<img src="${esc(src)}" alt="${esc(x.text||"Inspiration photo")}" loading="lazy" referrerpolicy="no-referrer">`:""}${pill}${x.text?`<p class="small" style="margin:0">${esc(x.text)}</p>`:""}
+    ${x.type==="web"?`<span class="small muted">${x.credit?"Photo: "+esc(x.credit)+" · ":""}${safeUrl(x.url)?`<a href="${esc(x.url)}" target="_blank" rel="noopener nofollow">Source</a>`:""}</span>`:""}${who}</div>`}
+function pVision(){const sub=ui.vsub==="explore"?"explore":"board",items=visionItems();
+  return `<div class="stack">
+   <p class="muted">Collect the looks you love for both ceremonies: write notes, upload photos, save Instagram, Pinterest or TikTok posts, or explore ideas from the web. Everyone planning with you can see and add to this board.</p>
+   <div class="chips" role="tablist"><button class="chip ${sub==="board"?"on":""}" role="tab" aria-selected="${sub==="board"}" data-act="vsub" data-id="board">My board (${items.length})</button><button class="chip ${sub==="explore"?"on":""}" role="tab" aria-selected="${sub==="explore"}" data-act="vsub" data-id="explore">Explore ideas</button></div>
+   ${sub==="board"?visionBoard(items):visionExplore()}</div>`}
+const vcatSel=(id,cur)=>`<label class="f">Category<select name="cat" id="${id}">${VCATS.map(c=>`<option ${c===(cur||ui.vlastcat||"Decor")?"selected":""}>${c}</option>`).join("")}</select></label>`;
+function visionBoard(items){const add=ui.vadd||"photo",f=ui.vfilter||"all",cats=VCATS.filter(c=>items.some(x=>(x.cat||"Other")===c));
+  const shown=items.filter(x=>f==="all"||(x.cat||"Other")===f);
+  return `<div class="card stack" style="gap:10px"><h3>Add to your board</h3>
+    <div class="chips"><button class="chip ${add==="photo"?"on":""}" data-act="vadd" data-id="photo">Photo</button><button class="chip ${add==="note"?"on":""}" data-act="vadd" data-id="note">Note</button><button class="chip ${add==="link"?"on":""}" data-act="vadd" data-id="link">Social media link</button></div>
+    ${add==="photo"?`<div class="grid g2">${vcatSel("vb-pcat")}<label class="f">Caption (optional)<input id="vb-pcap" placeholder="e.g. Love these chair sashes"></label></div><div><label class="btn pri" style="position:relative">Upload photos<input type="file" accept="image/*" multiple data-vbfile="1" id="vb-file" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label></div>`
+     :add==="note"?`<form class="stack" style="gap:8px" data-form="vnote">${vcatSel("vb-ncat")}<label class="f">Your note<textarea name="text" id="vb-note" required placeholder="e.g. Emerald and gold for the engagement, white and gold for church"></textarea></label><div><button class="btn pri">Add note</button></div></form>`
+     :`<form class="stack" style="gap:8px" data-form="vlink"><div class="grid g2">${vcatSel("vb-lcat")}<label class="f">Link<input name="url" id="vb-url" required autocapitalize="off" spellcheck="false" placeholder="https://www.instagram.com/p/…" inputmode="url"></label></div><label class="f">What you like about it (optional)<input name="text" id="vb-ltext"></label><div><button class="btn pri">Add link</button></div></form>`}</div>
+   ${items.length?`<div class="chips"><button class="chip ${f==="all"?"on":""}" data-act="vfilter" data-id="all">Everything</button>${cats.map(c=>`<button class="chip ${f===c?"on":""}" data-act="vfilter" data-id="${esc(c)}">${esc(c)} (${items.filter(x=>(x.cat||"Other")===c).length})</button>`).join("")}</div>
+     <div class="vboard">${shown.map(vitem).join("")}</div>`:`<div class="empty">Your board is empty. Add a photo, a note or a link, or find ideas in Explore.</div>`}`}
+function visionExplore(){const x=ui.vx||{},q=x.q||"";
+  return `<div class="card stack" style="gap:10px"><form class="row" data-form="vexplore"><input name="q" id="vx-q" value="${esc(q)}" placeholder="Search ideas, e.g. kente table decor" style="flex:2 1 220px" required><button class="btn pri">Search</button></form>
+    <div class="chips">${VTOPICS.map(t=>`<button class="chip ${q===t[1]?"on":""}" data-act="vtopic" data-id="${esc(t[1])}" data-cat="${esc(t[2])}">${esc(t[0])}</button>`).join("")}</div>
+    <div class="row small" style="gap:8px">Save ideas into ${`<select id="vx-cat" data-act="vxcat" aria-label="Board category" style="width:auto">${VCATS.map(c=>`<option ${c===(ui.vlastcat||"Decor")?"selected":""}>${c}</option>`).join("")}</select>`}</div></div>
+   ${x.status==="loading"?`<p class="muted">Finding ideas…</p>`:x.status==="error"?`<div class="empty">We couldn't load ideas just now. Check your connection, or try the links below.</div>`
+     :x.items?(x.items.length?`<div class="vxgrid">${x.items.map((r,i)=>{const saved=visionItems().some(v=>v.type==="web"&&v.src===r.thumb);return `<figure><a href="${esc(r.url)}" target="_blank" rel="noopener nofollow"><img src="${esc(r.thumb)}" alt="${esc(r.title||"Idea")}" loading="lazy" referrerpolicy="no-referrer"></a>
+       <button class="btn sm ${saved?"":"pri"}" data-act="vxsave" data-id="${i}" ${saved?"disabled":""}>${saved?"Saved":"Save to board"}</button>${r.credit?`<span class="small muted" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.credit)}</span>`:""}</figure>`}).join("")}</div>
+       <p class="small muted">Openly licensed photos from ${x.src==="wikimedia"?"Wikimedia Commons":"Openverse"}. Tap a photo to see its source and photographer.</p>`:`<div class="empty">No ideas found for “${esc(q)}”. Try other words.</div>`):""}
+   <div class="card stack" style="gap:8px"><h3>Look further</h3><p class="small muted">Find something you love on Instagram, Pinterest or TikTok? Copy its link and add it to My board as a social media link.</p>
+    <div class="row">${[["Pinterest","https://www.pinterest.com/search/pins/?q="],["Instagram","https://www.instagram.com/explore/search/keyword/?q="],["TikTok","https://www.tiktok.com/search?q="],["Google Images","https://www.google.com/search?tbm=isch&q="]].map(([n,u])=>`<a class="btn sm" target="_blank" rel="noopener" href="${u+encodeURIComponent(q||"ghana wedding inspiration")}">${n}</a>`).join("")}</div></div>`}
+async function exploreIdeas(q){ui.vx={q,status:"loading"};rerender();
+  const strip=h=>String(h||"").replace(/<[^>]*>/g,"").trim().slice(0,80);let items=[],src="openverse";
+  try{const r=await fetch("https://api.openverse.org/v1/images/?page_size=24&mature=false&q="+encodeURIComponent(q));if(!r.ok)throw 0;const j=await r.json();
+    items=(j.results||[]).filter(x=>x.thumbnail&&x.foreign_landing_url).map(x=>({thumb:x.thumbnail,url:x.foreign_landing_url,title:x.title||"",credit:x.creator||""}))}catch(_){items=[]}
+  if(!items.length){src="wikimedia";try{const r=await fetch("https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=24&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=400&gsrsearch="+encodeURIComponent(q+" filetype:bitmap"));if(!r.ok)throw 0;const j=await r.json();
+    items=Object.values((j.query||{}).pages||{}).map(p=>{const ii=(p.imageinfo||[])[0]||{};return {thumb:ii.thumburl,url:ii.descriptionurl,title:(p.title||"").replace(/^File:|\.\w+$/g,""),credit:strip(((ii.extmetadata||{}).Artist||{}).value)}}).filter(x=>x.thumb&&x.url)}catch(_){if(!items.length){if(ui.vx&&ui.vx.q===q){ui.vx={q,status:"error"};rerender()}return}}}
+  if(ui.vx&&ui.vx.q===q){ui.vx={q,status:"done",items,src};rerender()}}
+function favBlock(){const all=allVendors(),f=(S.favs||[]).map(id=>all.find(v=>v.id===id)).filter(Boolean);
+  return `<div class="card stack" style="gap:10px"><div class="split"><h3>♥ Favourites</h3><a class="btn sm" href="#vendors">Browse vendors</a></div>
+   ${f.length?f.map(v=>`<div class="split" style="border-top:1px solid var(--line);padding-top:8px;gap:8px"><div style="min-width:0"><b>${esc(v.name)}</b><div class="small muted">${esc(catName(v.cat))} · ${esc(v.city)}${(v.packages||[]).length?" · from "+esc(pkPrice(v.packages[0])):""}</div></div>
+     <div class="row" style="gap:6px"><button class="btn sm" data-act="vdetail" data-id="${v.id}">Details</button>${S.myVendors.some(m=>m.vendorId===v.id)?`<span class="pill p-yes">In my vendors</span>`:`<button class="btn sm pri" data-act="addfromdir" data-id="${v.id}">Add to my vendors</button>`}<button class="btn sm ghost" data-act="fav" data-id="${v.id}" aria-label="Remove ${esc(v.name)} from favourites">Remove</button></div></div>`).join("")
+     :`<p class="small muted">Tap the heart on any vendor in the directory to save them here while you decide.</p>`}</div>`}
 function pMyVendors(){
   return `<div class="stack">
+   ${favBlock()}
    ${vendorSummary()}
    ${S.myVendors.length?`<div class="grid g2">${S.myVendors.map(v=>{const st=VSTAT.indexOf(v.status);return `<div class="card stack" style="gap:8px">
      <div class="split"><div><h3>${esc(v.name)}</h3><span class="small muted">${esc(catName(v.cat))}</span></div><span class="pill ${st>=3?"p-yes":st>=1?"p-neutral":"p-pend"}">${esc(v.status)}</span></div>
@@ -1041,6 +1101,9 @@ function pPhotos(){return `<div class="stack"><div class="split"><h3>Guest photo
 function pDetails(){
   const w=S.wedding,lead=isCoupleLead();
   return `${lead?"":`<div class="card small row" style="background:var(--gold-soft);padding:10px 14px"><span class="lock" aria-hidden="true"></span><span>Only the bride and groom can change the story and wedding details. You can view them here.</span></div>`}<form class="stack${lead?"":" readonly"}" data-form="details"><fieldset class="plain stack" ${lead?"":"disabled"}>
+   <div class="card stack" style="gap:10px"><div><h3>Cover photo</h3><p class="small muted">Shown at the top of your planner and your wedding page, above your names.</p></div>
+     ${w.cover?`<div class="coverhero" style="background-image:url(&quot;${esc(w.cover)}&quot;);min-height:160px"><h1>${esc(w.p1)} &amp; ${esc(w.p2)}</h1></div>`:""}
+     <div class="row"><label class="btn sm" style="position:relative">${w.cover?"Change cover photo":"Upload cover photo"}<input type="file" accept="image/*" data-coverfile="1" id="d-cover" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label>${w.cover?`<button type="button" class="btn sm ghost danger" data-act="delcover">Remove</button>`:""}</div></div>
    <div class="card stack" style="gap:10px"><h3>The couple</h3><div class="grid g3">
      <label class="f">Partner 1<input name="p1" id="d-p1" value="${esc(w.p1)}"></label><label class="f">Partner 2<input name="p2" id="d-p2" value="${esc(w.p2)}"></label><label class="f">Hashtag<input name="hashtag" id="d-hash" value="${esc(w.hashtag)}"></label></div></div>
    ${w.events.map(e=>`<div class="card stack event ${e.id==="eng"?"eng":""}" style="gap:10px"><h3>${esc(e.name)}</h3><div class="grid g3">
@@ -1069,7 +1132,7 @@ function vWedding(asGuest){
   return `<div class="stack" style="gap:36px;max-width:820px;margin:0 auto">
    ${asGuest?`<div class="card row small" style="justify-content:space-between;padding:10px 14px"><span><span class="lock" aria-hidden="true"></span>You're viewing a private wedding page with code <span class="code">${esc(myCode())}</span></span><button class="btn sm" data-act="leaveguest">Close page</button></div>`
      :`<div class="card row small" style="justify-content:space-between;padding:10px 14px"><span>This is what guests see after entering your code <span class="code">${esc(myCode())}</span>. They never see your planner or guest list.</span><a class="btn sm" href="#planner">Back to planner</a></div>`}
-   <section class="site-hero"><span class="eyebrow">${esc(w.hashtag)}</span><h1>${esc(w.p1)} <span style="color:var(--gold)">&</span> ${esc(w.p2)}</h1>
+   <section class="site-hero${w.cover?" has-cover":""}" ${w.cover?`style="background-image:url(&quot;${esc(w.cover)}&quot;)"`:""}><span class="eyebrow">${esc(w.hashtag)}</span><h1>${esc(w.p1)} <span style="color:var(--gold)">&</span> ${esc(w.p2)}</h1>
      <p class="muted">${d!=null&&d>0?`<b class="num">${d}</b> days until we celebrate`:"Thank you for celebrating with us"}</p>
      <div class="row" style="justify-content:center"><a class="btn pri" href="#rsvp" data-act="jump" data-id="rsvp">RSVP</a><a class="btn" href="#photos-sec" data-act="jump" data-id="photos-sec">Share photos</a></div></section>
    <section class="grid g2">${w.events.map(e=>`<div class="card event ${e.id==="eng"?"eng":""} stack" style="gap:6px"><span class="eyebrow">${e.id==="eng"?"Traditional":"Church & reception"}</span><h2>${esc(e.name)}</h2>
@@ -1152,18 +1215,24 @@ const ICON={
 const catTile=cat=>{const i=Math.max(0,CATS.findIndex(c=>c[0]===cat));return `<div class="tile t${i%4}" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${ICON[cat]||ICON.planners}</svg></div>`};
 const thumb=v=>v.photo?`<div class="tile"><img src="${v.photo}" alt="${esc(v.name)}"></div>`:catTile(v.cat);
 const REGIONS=["Greater Accra","Ashanti","Central","Eastern","Western","Western North","Volta","Oti","Northern","Savannah","North East","Upper East","Upper West","Bono","Bono East","Ahafo"];
+/* ---------- Favourites: couples tap the heart to save vendors they want to come back to ---------- */
+function canFav(){if(role()!=="couple"||pendingJoin())return false;useCouple();return !partyOnly()}
+const favIds=()=>canFav()?(S.favs||[]):[];
+const isFav=id=>favIds().includes(id);
+const favBtn=v=>v.unverified||(role()&&!canFav())?"":`<button type="button" class="favbtn${isFav(v.id)?" on":""}" data-act="fav" data-id="${v.id}" aria-pressed="${isFav(v.id)}" aria-label="${isFav(v.id)?"Remove from favourites":"Save to favourites"}" title="${isFav(v.id)?"Remove from favourites":"Save to favourites"}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.4C1.4 7.6 3.6 4 7.2 4c2 0 3.6 1.1 4.8 2.8C13.2 5.1 14.8 4 16.8 4c3.6 0 5.8 3.6 4.5 7.1-1.8 4.8-9.3 9.4-9.3 9.4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>`;
 function vendorCard(v,actions){const pl=planOf(v);
-  return `<article class="card vcard${pl==="featured"?" feat":""}" style="padding:0;overflow:hidden">${thumb(v)}<div class="vcard" style="padding:0 16px 16px;flex:1">
+  return `<article class="card vcard${pl==="featured"?" feat":""}" style="padding:0;overflow:hidden"><div style="position:relative">${thumb(v)}${favBtn(v)}</div><div class="vcard" style="padding:0 16px 16px;flex:1">
    <div><div class="split"><h3>${esc(v.name)}</h3><span class="row" style="gap:4px;justify-content:flex-end">${v.sample?'<span class="pill p-neutral">Sample</span>':""}${planBadges(pl)}</span></div><p class="small muted">${esc(catName(v.cat))} · ${esc(v.city)}, ${esc(v.region)} · ${v.events==="eng"?"Engagement":v.events==="wed"?"White wedding":"Both ceremonies"}</p>${capText(v)?`<p class="small"><b>Capacity:</b> ${capText(v)}</p>`:""}${v.unverified?"":`<div>${ratingLine(v.id)}</div>`}</div>
    <p class="small">${esc(v.blurb)}</p>
-   <div>${(v.packages||[]).map(p=>`<div class="pk"><span>${esc(p.name)}</span><span class="num">${p.price?fmt(p.price):"Ask for a quote"}${p.unit?` <span class="muted small">${esc(p.unit)}</span>`:""}</span></div>`).join("")}</div>
+   <div>${(v.packages||[]).map(p=>`<div class="pk"><span>${esc(p.name)}</span><span class="num">${pkPrice(p)}${p.unit?` <span class="muted small">${esc(p.unit)}</span>`:""}</span></div>`).join("")}</div>
    <p class="small">Call or WhatsApp: <span class="num" style="user-select:all">${esc(v.phone)}</span>${v.contact?` · ${esc(v.contact)}`:""}</p>
    ${v.deposit?`<p class="small muted">Payment: ${esc(v.deposit)}</p>`:""}
    ${actions?`<div class="row" style="margin-top:auto">${actions}</div>`:""}</div></article>`;
 }
 function vVendors(){
   const vs=allVendors();const regions=[...new Set(vs.map(v=>v.region))].sort();
-  let list=vs.filter(v=>(ui.vcat==="all"||v.cat===ui.vcat)&&(ui.vregion==="all"||v.region===ui.vregion)&&(ui.vevent==="all"||v.events==="both"||v.events===ui.vevent)&&fitsCap(v,ui.vcat==="venues"?ui.vcap:"all"));
+  const favs=favIds();if(ui.vcat==="fav"&&!favs.length)ui.vcat="all";
+  let list=vs.filter(v=>(ui.vcat==="all"||(ui.vcat==="fav"?favs.includes(v.id):v.cat===ui.vcat))&&(ui.vregion==="all"||v.region===ui.vregion)&&(ui.vevent==="all"||v.events==="both"||v.events===ui.vevent)&&fitsCap(v,ui.vcat==="venues"?ui.vcap:"all"));
   if(ui.vsearch){const q=ui.vsearch.toLowerCase();list=list.filter(v=>(v.name+v.blurb+v.city+catName(v.cat)).toLowerCase().includes(q))}
   list=list.map((v,i)=>[v,i]).sort((a,b)=>PLAN_RANK[planOf(a[0])]-PLAN_RANK[planOf(b[0])]||a[1]-b[1]).map(x=>x[0]);
   const groups=CATS.filter(c=>list.some(v=>v.cat===c[0]));
@@ -1173,7 +1242,7 @@ function vVendors(){
      <select id="vregion" data-act="vregion" style="flex:1 1 150px"><option value="all">All regions</option>${regions.map(r=>`<option ${r===ui.vregion?"selected":""}>${esc(r)}</option>`).join("")}</select>
      <select id="vevent" data-act="vevent" style="flex:1 1 150px">${[["all","Any ceremony"],["eng","Traditional engagement"],["wed","White wedding"]].map(([v,l])=>`<option value="${v}" ${v===ui.vevent?"selected":""}>${l}</option>`).join("")}</select>
      ${ui.vcat==="venues"?`<select id="vcap" data-act="vcap" aria-label="Number of guests" style="flex:1 1 170px">${CAPS.map(([v,l])=>`<option value="${v}" ${v===ui.vcap?"selected":""}>${l}</option>`).join("")}</select>`:""}</div>
-   <div class="chips"><button class="chip ${ui.vcat==="all"?"on":""}" data-act="vcat" data-id="all">All services</button>${CATS.map(c=>`<button class="chip ${ui.vcat===c[0]?"on":""}" data-act="vcat" data-id="${c[0]}">${c[1]}</button>`).join("")}</div>
+   <div class="chips"><button class="chip ${ui.vcat==="all"?"on":""}" data-act="vcat" data-id="all">All services</button>${favs.length?`<button class="chip ${ui.vcat==="fav"?"on":""}" data-act="vcat" data-id="fav">♥ Favourites (${favs.length})</button>`:""}${CATS.map(c=>`<button class="chip ${ui.vcat===c[0]?"on":""}" data-act="vcat" data-id="${c[0]}">${c[1]}</button>`).join("")}</div>
    ${groups.length?groups.map(c=>`<section class="stack" style="gap:10px"><h2>${c[1]} <span class="muted small num">${list.filter(v=>v.cat===c[0]).length}</span></h2><div class="vgrid">
      ${list.filter(v=>v.cat===c[0]).map(v=>vendorCard(v,`<button class="btn sm" data-act="vdetail" data-id="${v.id}">Details & reviews</button><button class="btn sm pri" data-act="addfromdir" data-id="${v.id}">${role()==="couple"?"Add to my vendors":"Save to my wedding"}</button>${v.sample||planOf(v)==="basic"?"":`<a class="btn sm wa" target="_blank" rel="noopener" data-act="wastat" data-id="${v.id}" href="https://wa.me/${waNum(v.phone)}">WhatsApp</a>`}`)).join("")}</div></section>`).join(""):`<div class="empty">No vendors match. Try another region or service.</div>`}
    <p class="small muted">${T("vendors.note","Fees are starting prices set by each vendor. Every listing is checked by AfroVows before it goes live. Always confirm the final quote before paying a deposit.")}</p></div>`;
@@ -1183,12 +1252,13 @@ function vendorModal(id){
   const v=allVendors().find(x=>x.id===id);if(!v)return;const rs=reviewsFor(id),ro=role();
   const mine=ro==="couple"&&rs.find(r=>r.by===me);
   modal(`<div class="split"><div><span class="eyebrow">${esc(catName(v.cat))}</span><h2>${esc(v.name)}</h2><div>${ratingLine(id)}</div></div><button class="btn sm ghost" data-act="close" aria-label="Close">×</button></div>
+   ${!ro||canFav()?`<div><button class="btn sm" data-act="fav" data-id="${v.id}" aria-pressed="${isFav(v.id)}">${isFav(v.id)?"♥ Saved to favourites":"♡ Save to favourites"}</button></div>`:""}
    ${v.photo?`<img src="${v.photo}" alt="" style="width:100%;max-height:220px;object-fit:cover;border-radius:8px">`:catTile(v.cat)}
    <p>${esc(v.blurb)}</p>
    <dl class="kv"><dt>Based in</dt><dd>${esc(v.city)}, ${esc(v.region)}</dd>${v.areas?`<dt>Travels to</dt><dd>${esc(v.areas)}</dd>`:""}${capText(v)?`<dt>Capacity</dt><dd>${capText(v)}</dd>`:""}<dt>Ceremonies</dt><dd>${v.events==="eng"?"Traditional engagement":v.events==="wed"?"White wedding":"Engagement and white wedding"}</dd>
      ${v.years?`<dt>Experience</dt><dd>${esc(v.years)} years</dd>`:""}${v.contact?`<dt>Contact</dt><dd>${esc(v.contact)}</dd>`:""}<dt>Phone</dt><dd><span style="user-select:all">${esc(v.phone)}</span></dd>
      ${v.email?`<dt>Email</dt><dd><span style="user-select:all">${esc(v.email)}</span></dd>`:""}${socials(v).length?`<dt>Online</dt><dd class="stack" style="gap:2px">${socials(v).map(socialLink).join("")}</dd>`:""}${v.deposit?`<dt>Payment</dt><dd>${esc(v.deposit)}</dd>`:""}</dl>
-   <div><h3 style="margin-bottom:4px">Packages and fees</h3>${(v.packages||[]).map(p=>`<div class="pk" style="display:flex;justify-content:space-between;gap:10px;font-size:14px;border-top:1px dashed var(--line);padding-top:6px"><span>${esc(p.name)}</span><b class="num">${p.price?fmt(p.price):"Ask for a quote"}${p.unit?` <span class="muted small">${esc(p.unit)}</span>`:""}</b></div>`).join("")}</div>
+   <div><h3 style="margin-bottom:4px">Packages and fees</h3>${(v.packages||[]).map(p=>`<div class="pk" style="display:flex;justify-content:space-between;gap:10px;font-size:14px;border-top:1px dashed var(--line);padding-top:6px"><span>${esc(p.name)}</span><b class="num">${pkPrice(p)}${p.unit?` <span class="muted small">${esc(p.unit)}</span>`:""}</b></div>`).join("")}</div>
    ${(v.gallery||[]).length?`<div><h3 style="margin-bottom:6px">Their work</h3><div class="photos sm">${v.gallery.map(g=>`<figure><img src="${g.src}" alt="Work by ${esc(v.name)}" loading="lazy"></figure>`).join("")}</div></div>`:""}
    <div class="stack" style="gap:10px"><h3>Reviews from couples</h3>
      ${rs.length?rs.map(r=>`<div style="border-top:1px solid var(--line);padding-top:8px"><div class="split"><span><span class="stars">${starsTxt(r.rating)}</span> <b class="small">${esc(r.name)}</b></span><span class="small muted">${new Date(r.at).toLocaleDateString("en-GB",{month:"short",year:"numeric"})}</span></div>
@@ -1244,8 +1314,11 @@ const money=v=>+String(v||"").replace(/[^\d.]/g,"")||0;
 const groupNum=v=>{const n=money(v);return n?n.toLocaleString("en-GB",{maximumFractionDigits:2}):""};
 function socials(v){return (v.socials&&v.socials.length?v.socials:(v.social?[v.social]:[])).filter(Boolean)}
 function socialLink(x){const u=/^https?:\/\//i.test(x)?x:/^(www\.|[\w-]+\.(com|gh|org|net|me|co)\b)/i.test(x)?"https://"+x:"";return u?`<a href="${esc(u)}" target="_blank" rel="noopener nofollow">${esc(x)}</a>`:esc(x)}
+/* "GH₵ 5,000", "GH₵ 5,000 – 12,000" for a range, or "Ask for a quote". */
+const pkPrice=p=>p.price?(p.priceTo>p.price?`${fmt(p.price)} – ${fmt(p.priceTo).replace(/^GH₵\s?/,"")}`:fmt(p.price)):"Ask for a quote";
 function pkRow(p,i){p=p||{};const first=i===0;return `<div class="pkrow"><label class="f">Package description<input name="pk_name" ${first?"required":""} value="${esc(p.name||"")}" placeholder="e.g. Full day photo coverage"></label>
-  <label class="f">Fee<span class="cedi"><span aria-hidden="true">GH₵</span><input name="pk_fee" inputmode="decimal" value="${esc(groupNum(p.price))}" placeholder="0" aria-label="Fee in Ghana cedis"></span></label>
+  <label class="f">Fee from<span class="cedi"><span aria-hidden="true">GH₵</span><input name="pk_fee" inputmode="decimal" value="${esc(groupNum(p.price))}" placeholder="0" aria-label="Fee in Ghana cedis, or the lowest fee"></span></label>
+  <label class="f">To (optional)<span class="cedi"><span aria-hidden="true">GH₵</span><input name="pk_to" inputmode="decimal" value="${esc(groupNum(p.priceTo))}" placeholder="" aria-label="Highest fee in Ghana cedis, for a price range"></span></label>
   <label class="f">Per (optional)<input name="pk_unit" value="${esc(p.unit||"")}" placeholder="e.g. per guest"></label>
   <button type="button" class="btn sm ghost danger" data-act="delpkrow" aria-label="Remove this package">×</button></div>`}
 function socialRow(x){return `<div class="row socrow" style="gap:6px;flex-wrap:nowrap"><input name="soc" value="${esc(x||"")}" placeholder="e.g. instagram.com/yourbusiness" aria-label="Social media or website link" style="flex:1"><button type="button" class="btn sm ghost danger" data-act="delsocrow" aria-label="Remove this link">×</button></div>`}
@@ -1253,7 +1326,7 @@ function socialRow(x){return `<div class="row socrow" style="gap:6px;flex-wrap:n
 function draftFromForm(){const f=document.querySelector('[data-form="listing"]');const fd=f?Object.fromEntries(new FormData(f)):{};
   const l=listings(),cur=myListing();let x=cur&&l.find(v=>v.id===cur.id);if(!x){x={id:"l"+uid(),owner:me,status:"draft",packages:[],gallery:[]};l.push(x);ui.lid=x.id}
   LFIELDS.forEach(k=>{if(fd[k]!==undefined)x[k]=String(fd[k]).trim()});
-  if(f){x.packages=[...f.querySelectorAll(".pkrow")].map(r=>({name:r.querySelector("[name=pk_name]").value.trim(),price:money(r.querySelector("[name=pk_fee]").value),unit:r.querySelector("[name=pk_unit]").value.trim()})).filter(p=>p.name);
+  if(f){x.packages=[...f.querySelectorAll(".pkrow")].map(r=>({name:r.querySelector("[name=pk_name]").value.trim(),price:money(r.querySelector("[name=pk_fee]").value),priceTo:(n=>n>money(r.querySelector("[name=pk_fee]").value)?n:0)(money(r.querySelector("[name=pk_to]").value)),unit:r.querySelector("[name=pk_unit]").value.trim()})).filter(p=>p.name);
     x.socials=[...f.querySelectorAll("[name=soc]")].map(i=>i.value.trim()).filter(Boolean);delete x.social}
   return [l,x]}
 function statusPill(l){return l.status==="approved"?'<span class="pill p-yes">Live in the directory</span>':l.status==="rejected"?'<span class="pill p-no">Changes needed</span>':l.status==="removed"?'<span class="pill p-no">Unpublished</span>':l.status==="draft"?'<span class="pill p-neutral">Not submitted</span>':'<span class="pill p-pend">Waiting for approval</span>'}
@@ -1299,7 +1372,7 @@ function vVendorDash(){
      <label class="f">Email *<input name="email" id="ls-email" type="email" required value="${esc(l.email||me)}"></label>
      </div><div class="stack" style="gap:6px"><span class="small muted" style="font-weight:600">Social media and website</span><div id="ls-socials" class="stack" style="gap:6px">${(socials(l).length?socials(l):[""]).map(socialRow).join("")}</div><div><button type="button" class="btn sm" data-act="addsocrow">+ Add another link</button></div><span class="small muted">Instagram, Facebook, TikTok, YouTube, X, your website, anything couples can use to see your work.</span></div></fieldset>
      <fieldset class="fs"><legend>Packages, fees and payment</legend>
-     <div class="stack" style="gap:6px"><span class="small muted" style="font-weight:600">Packages and fees *</span><div id="ls-pks" class="stack" style="gap:10px">${((l.packages||[]).length?l.packages:[{}]).map(pkRow).join("")}</div><div><button type="button" class="btn sm" data-act="addpkrow">+ Add another package</button></div><span class="small muted">Leave the fee empty if couples should ask for a quote.</span></div>
+     <div class="stack" style="gap:6px"><span class="small muted" style="font-weight:600">Packages and fees *</span><div id="ls-pks" class="stack" style="gap:10px">${((l.packages||[]).length?l.packages:[{}]).map(pkRow).join("")}</div><div><button type="button" class="btn sm" data-act="addpkrow">+ Add another package</button></div><span class="small muted">Leave the fee empty if couples should ask for a quote. Add a "To" amount to show a price range.</span></div>
      <label class="f">Deposit and payment terms *<input name="deposit" id="ls-deposit" required value="${esc(l.deposit)}" placeholder="e.g. 50% deposit to book, balance 1 week before. MoMo or bank transfer"></label></fieldset>
      <fieldset class="fs"><legend>Photos</legend>
      <div class="stack" style="gap:6px"><span class="small muted" style="font-weight:600">Cover photo <span style="font-weight:400">(the big picture at the top of your listing; upload one or tap "Make cover" on a work photo)</span></span><div class="row">${l.photo?`<img src="${l.photo}" alt="" style="width:96px;height:64px;object-fit:cover;border-radius:6px">`:""}<label class="btn sm" style="position:relative">${l.photo?"Change cover photo":"Upload cover photo"}<input type="file" accept="image/*" id="ls-photo" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label></div></div>
@@ -1390,7 +1463,7 @@ function adminDetails(l){
     ${row("Contact person",t(l.contact))}${row("Phone",l.phone?`<span style="user-select:all">${esc(l.phone)}</span>${waNum(l.phone)?` · <a target="_blank" rel="noopener" href="https://wa.me/${waNum(l.phone)}">WhatsApp</a>`:""}`:"")}
     ${row("Email",l.email?`<a href="mailto:${esc(l.email)}">${esc(l.email)}</a>`:"")}${row("Account email",t(l.owner))}
     ${row("Online",socials(l).map(socialLink).join("<br>"))}
-    ${row("Packages",(l.packages||[]).map(p=>`${esc(p.name)}: <b class="num">${p.price?fmt(p.price):"Ask for a quote"}</b>${p.unit?" "+esc(p.unit):""}`).join("<br>"))}
+    ${row("Packages",(l.packages||[]).map(p=>`${esc(p.name)}: <b class="num">${pkPrice(p)}</b>${p.unit?" "+esc(p.unit):""}`).join("<br>"))}
     ${row("Payment terms",t(l.deposit))}
     ${row("Owner ID",l.idNo?`${esc(l.idType||"ID")} <span class="num" style="user-select:all">${esc(l.idNo)}</span>`:`<span class="pill p-no">Not given</span>`)}
     ${row("Registration no",l.reg?`<span class="num" style="user-select:all">${esc(l.reg)}</span>`:"Not given")}
@@ -1534,6 +1607,17 @@ document.addEventListener("click",async e=>{
     case"delv":S.myVendors=S.myVendors.filter(v=>v.id!==id);save();closeModal();rerender();break;
     case"addfromdir":e.preventDefault();if(me&&role()!=="couple"){toast("Saving vendors is for couple accounts. Sign out and sign in as a couple.");break}if(!me){ui.after=["","home"].includes(location.hash.slice(1))?"home":"vendors";ui.authTab="signin";toast("Sign in to save vendors to your wedding");location.hash="signin";break}useCouple();myVendorModal(null,id);break;
     case"vcat":ui.vcat=id;rerender();break;
+    case"fav":{e.preventDefault();if(!me){ui.after=["","home"].includes(location.hash.slice(1))?"home":"vendors";ui.authTab="signin";closeModal();toast("Sign in to save favourites to your wedding");location.hash="signin";break}
+      if(!canFav()){toast("Favourites are for couple accounts.");break}const on=!(S.favs||[]).includes(id);S.favs=on?(S.favs||[]).concat(id):(S.favs||[]).filter(x=>x!==id);save();
+      const modalOpen=!!document.querySelector("#layer .modal");rerender();if(modalOpen)vendorModal(id);toast(on?"Saved to favourites. Find them under My vendors":"Removed from favourites");break}
+    case"vsub":ui.vsub=id;rerender();break;
+    case"vadd":ui.vadd=id;rerender();break;
+    case"vfilter":ui.vfilter=id;rerender();break;
+    case"delvision":S.vision.items=visionItems().filter(x=>x.id!==id);save();rerender();toast("Removed from your board");break;
+    case"vtopic":ui.vlastcat=t.dataset.cat||ui.vlastcat;exploreIdeas(id);break;
+    case"vxsave":{const r=((ui.vx||{}).items||[])[+id];if(!r)break;const cat=($("#vx-cat")||{}).value||"Other";ui.vlastcat=cat;
+      ui.vfilter="all";visionItems().unshift({id:uid(),type:"web",src:r.thumb,url:r.url,credit:r.credit,text:r.title,cat,by:(meMember()||{}).name||"",at:Date.now()});save();rerender();toast("Saved to your vision board");break}
+    case"delcover":if(!isCoupleLead())break;collectDetails(true);delete S.wedding.cover;save();rerender();toast("Cover photo removed");break;
     case"gocat":ui.vcat=id;location.hash="vendors";break;
     case"delp":S.photos=S.photos.filter(p=>p.id!==id);save();rerender();break;
     case"addstory":if(!isCoupleLead())break;collectDetails(true);S.wedding.story.push({id:uid(),year:"",title:"",text:""});save();rerender();break;
@@ -1544,7 +1628,7 @@ document.addEventListener("click",async e=>{
 });
 /* Phones fire "change" while the date wheel is still open; redrawing then would close it and lock in today's date. Redraw once the field loses focus. */
 function commitDue(t){if(t.dataset.dirty!=="1")return;delete t.dataset.dirty;rerender();toast(t.value?"Due date set":"Due date cleared")}
-document.addEventListener("focusout",e=>{if(e.target.name==="pk_fee")e.target.value=groupNum(e.target.value)});
+document.addEventListener("focusout",e=>{if(e.target.name==="pk_fee"||e.target.name==="pk_to")e.target.value=groupNum(e.target.value)});
 document.addEventListener("focusout",e=>{const t=e.target;if(t.dataset&&t.dataset.act==="taskdue")setTimeout(()=>commitDue(t),0)});
 document.addEventListener("change",e=>{const t=e.target;const a=t.dataset.act;
   if(a==="task"){const x=S.tasks.find(x=>x.id===t.dataset.id);if(x){x.done=t.checked;save();rerender()}}
@@ -1558,6 +1642,11 @@ document.addEventListener("change",e=>{const t=e.target;const a=t.dataset.act;
     setListings(l);rerender();toast(n?`${n} photo${n>1?"s":""} added`:"That file couldn't be read as a photo")})()}
   if(t.dataset.abphoto&&t.files[0]){(async()=>{try{const src=await shrink(t.files[0]);const A=collectAbout();if(t.dataset.abphoto==="owner")A.ownerPhoto=src;else{const m=A.team.find(x=>x.id===t.dataset.abphoto);if(m)m.photo=src}setAbout(A);rerender();toast("Photo updated")}catch(_){toast("That file couldn't be read as a photo")}})()}
   if(t.id==="ed-hero"&&t.files[0]){(async()=>{try{CONTENT["img.hero"]=await shrink(t.files[0],1800);if(!saveContent()){delete CONTENT["img.hero"];toast("That photo is too large to store. Try a smaller one");return}rerender();toast("Hero photo updated")}catch(_){toast("That file couldn't be read as a photo")}})()}
+  if(t.dataset.act==="vxcat"){ui.vlastcat=t.value;return}
+  if(t.dataset.vbfile){(async()=>{const cat=($("#vb-pcat")||{}).value||"Other",cap=(($("#vb-pcap")||{}).value||"").trim();ui.vlastcat=cat;let n=0;
+    for(const file of t.files){try{visionItems().unshift({id:uid(),type:"photo",src:await shrink(file,1200),text:cap,cat,by:(meMember()||{}).name||"",at:Date.now()});n++}catch(_){}}
+    save();rerender();toast(n?`${n} photo${n>1?"s":""} added to your board`:"That file couldn't be read as a photo")})();return}
+  if(t.dataset.coverfile){if(!isCoupleLead())return;(async()=>{try{collectDetails(true);S.wedding.cover=await shrink(t.files[0],1600);save();rerender();toast("Cover photo added. Guests see it at the top of your wedding page")}catch(_){toast("That file couldn't be read as a photo")}})();return}
   if(t.dataset.storyfile&&!isCoupleLead())return;
   if(t.dataset.storyfile){(async()=>{collectDetails(true);const s=S.wedding.story.find(x=>x.id===t.dataset.storyfile);if(!s)return;s.photos=s.photos||[];let n=0;
     for(const file of t.files){if(s.photos.length>=6)break;try{s.photos.push({id:uid(),src:await shrink(file)});n++}catch(_){}}
@@ -1650,6 +1739,10 @@ document.addEventListener("submit",async e=>{const f=e.target.closest("form[data
     case"partyplan":{if(!isCoupleLead())break;S.party=S.party||{};const pl=partyPlans().slice(),rec={title:d.title.trim(),date:d.date,time:d.time,place:d.place.trim(),who:d.who,notes:d.notes.trim()};
       const i=pl.findIndex(x=>x.id===f.dataset.id);if(i>=0)pl[i]={...pl[i],...rec};else pl.push({id:uid(),...rec});S.party.plans=pl;save();closeModal();rerender();toast("Plan saved");break}
     case"partynote":{if(!isCoupleLead())break;S.party=S.party||{};S.party.note=d.note.trim();save();rerender();toast("Notes saved");break}
+    case"vnote":{const cat=d.cat||"Other";ui.vlastcat=cat;visionItems().unshift({id:uid(),type:"note",text:d.text.trim(),cat,by:(meMember()||{}).name||"",at:Date.now()});save();rerender();toast("Note added to your board");break}
+    case"vlink":{let u=d.url.trim();if(!/^https?:\/\//i.test(u))u="https://"+u;u=u.replace(/^http:/i,"https:");const cat=d.cat||"Other";ui.vlastcat=cat;
+      visionItems().unshift({id:uid(),type:"link",url:u,text:(d.text||"").trim(),cat,by:(meMember()||{}).name||"",at:Date.now()});save();rerender();toast("Link added to your board");break}
+    case"vexplore":exploreIdeas(d.q.trim());break;
     case"rejoin":{const err=$("#rj-err"),bad=m=>{err.textContent=m;err.hidden=false};
       if(HOSTED){(async()=>{const {data:r,error}=await DBX.sb.rpc("request_join",{invite:d.code.trim().toUpperCase(),first_name:d.first.trim(),last_name:d.last.trim()});
         if(error)return bad("We couldn't send that just now. Try again in a moment.");if(r==="requested")return dbReload("planner","Request sent. The couple will approve you soon");bad(r==="name"?NAME_MISMATCH:"That invite code isn't valid or has already been used. Ask the couple for a new one.")})();break}

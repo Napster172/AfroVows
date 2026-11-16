@@ -1023,3 +1023,84 @@
 1022|Plans passés non marqués comme faits ({0})
 1023|Terminés ({0})
 1024|Rien de prévu pour le moment.
+1025|Tarif à partir de
+1026|Jusqu'à (facultatif)
+1027|Laissez le tarif vide si les couples doivent demander un devis. Ajoutez un montant « Jusqu'à » pour afficher une fourchette de prix.
+1028|Tarif en cedis ghanéens, ou le tarif le plus bas
+1029|Tarif le plus élevé en cedis ghanéens, pour une fourchette
+1030|Retirer des favoris
+1031|Ajouter aux favoris
+1032|♥ Favoris ({0})
+1033|♥ Ajouté aux favoris
+1034|♡ Ajouter aux favoris
+1035|♥ Favoris
+1036|Dans mes prestataires
+1037|Touchez le cœur d'un prestataire dans l'annuaire pour l'enregistrer ici le temps de décider.
+1038|Connectez-vous pour enregistrer des favoris pour votre mariage
+1039|Les favoris sont réservés aux comptes de couple.
+1040|Ajouté aux favoris. Retrouvez-les dans Mes prestataires
+1041|Retiré des favoris
+1042|Tableau d'inspiration
+1043|Rassemblez les styles que vous aimez pour les deux cérémonies : écrivez des notes, ajoutez des photos, enregistrez des publications Instagram, Pinterest ou TikTok, ou explorez des idées sur le web. Toutes les personnes qui planifient avec vous peuvent voir ce tableau et y ajouter des idées.
+1044|Mon tableau ({0})
+1045|Explorer des idées
+1046|Ajouter à votre tableau
+1047|Photo
+1048|Note
+1049|Lien de réseau social
+1050|Légende (facultatif)
+1051|ex. J'adore ces nœuds de chaise
+1052|Ajouter des photos
+1053|Votre note
+1054|ex. Émeraude et or pour les fiançailles, blanc et or pour l'église
+1055|Ajouter la note
+1056|Lien
+1057|Ce qui vous plaît (facultatif)
+1058|Ajouter le lien
+1059|Décoration
+1060|Tenues
+1061|Coiffure et maquillage
+1062|Fleurs
+1063|Gâteau
+1064|Décoration ({0})
+1065|Lieu ({0})
+1066|Tenues ({0})
+1067|Coiffure et maquillage ({0})
+1068|Fleurs ({0})
+1069|Gâteau ({0})
+1070|Autre ({0})
+1071|Votre tableau est vide. Ajoutez une photo, une note ou un lien, ou trouvez des idées dans Explorer.
+1072|Chercher des idées, ex. déco de table kente
+1073|Rechercher
+1074|Déco de mariage kente
+1075|Tables de réception
+1076|Lieux en jardin
+1077|Salles de bal
+1078|Mariages à la plage
+1079|Robes de mariée
+1080|Style du marié
+1081|Coiffure de mariée
+1082|Bouquets
+1083|Gâteaux de mariage
+1084|Enregistrer les idées dans
+1085|Catégorie du tableau
+1086|Recherche d'idées…
+1087|Impossible de charger des idées pour le moment. Vérifiez votre connexion ou essayez les liens ci-dessous.
+1088|Enregistrer
+1089|Enregistré
+1090|Photos sous licence libre d'Openverse. Touchez une photo pour voir sa source et son photographe.
+1091|Photos sous licence libre de Wikimedia Commons. Touchez une photo pour voir sa source et son photographe.
+1092|Chercher plus loin
+1093|Vous avez trouvé quelque chose sur Instagram, Pinterest ou TikTok ? Copiez son lien et ajoutez-le à Mon tableau comme lien de réseau social.
+1094|Source
+1095|Retiré de votre tableau
+1096|Enregistré dans votre tableau d'inspiration
+1097|Note ajoutée à votre tableau
+1098|Lien ajouté à votre tableau
+1099|{0} photo ajoutée à votre tableau
+1100|{0} photos ajoutées à votre tableau
+1101|Retirer du tableau
+1102|Photo d'inspiration
+1103|Affichée en haut de votre planificateur et de votre page de mariage, au-dessus de vos noms.
+1104|Photo de couverture supprimée
+1105|Photo de couverture ajoutée. Les invités la voient en haut de votre page de mariage

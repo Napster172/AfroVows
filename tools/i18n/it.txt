@@ -1023,3 +1023,84 @@
 1022|Piani passati non segnati come fatti ({0})
 1023|Completati ({0})
 1024|Nessun impegno in arrivo per ora.
+1025|Prezzo da
+1026|Fino a (facoltativo)
+1027|Lascia vuoto il prezzo se le coppie devono chiedere un preventivo. Aggiungi un importo «Fino a» per mostrare una fascia di prezzo.
+1028|Prezzo in cedi ghanesi, o il più basso
+1029|Prezzo più alto in cedi ghanesi, per una fascia
+1030|Rimuovi dai preferiti
+1031|Salva nei preferiti
+1032|♥ Preferiti ({0})
+1033|♥ Salvato nei preferiti
+1034|♡ Salva nei preferiti
+1035|♥ Preferiti
+1036|Tra i miei fornitori
+1037|Tocca il cuore di un fornitore nell'elenco per salvarlo qui mentre decidi.
+1038|Accedi per salvare i preferiti per il tuo matrimonio
+1039|I preferiti sono per gli account di coppia.
+1040|Salvato nei preferiti. Li trovi in I miei fornitori
+1041|Rimosso dai preferiti
+1042|Moodboard
+1043|Raccogli gli stili che ami per entrambe le cerimonie: scrivi note, carica foto, salva post di Instagram, Pinterest o TikTok, oppure esplora idee dal web. Tutti quelli che pianificano con te possono vedere questa bacheca e aggiungere idee.
+1044|La mia bacheca ({0})
+1045|Esplora idee
+1046|Aggiungi alla bacheca
+1047|Foto
+1048|Nota
+1049|Link social
+1050|Didascalia (facoltativa)
+1051|es. Adoro questi fiocchi per sedie
+1052|Carica foto
+1053|La tua nota
+1054|es. Smeraldo e oro per il fidanzamento, bianco e oro per la chiesa
+1055|Aggiungi nota
+1056|Link
+1057|Cosa ti piace (facoltativo)
+1058|Aggiungi link
+1059|Decorazioni
+1060|Abiti
+1061|Capelli e trucco
+1062|Fiori
+1063|Torta
+1064|Decorazioni ({0})
+1065|Location ({0})
+1066|Abiti ({0})
+1067|Capelli e trucco ({0})
+1068|Fiori ({0})
+1069|Torta ({0})
+1070|Altro ({0})
+1071|La bacheca è vuota. Aggiungi una foto, una nota o un link, oppure trova idee in Esplora.
+1072|Cerca idee, es. decorazioni da tavola kente
+1073|Cerca
+1074|Decorazioni kente
+1075|Tavoli del ricevimento
+1076|Location in giardino
+1077|Sale da ballo
+1078|Matrimoni in spiaggia
+1079|Abiti da sposa
+1080|Stile dello sposo
+1081|Acconciatura da sposa
+1082|Bouquet
+1083|Torte nuziali
+1084|Salva le idee in
+1085|Categoria della bacheca
+1086|Ricerca di idee…
+1087|Non è stato possibile caricare idee ora. Controlla la connessione o prova i link qui sotto.
+1088|Salva in bacheca
+1089|Salvato
+1090|Foto con licenza aperta da Openverse. Tocca una foto per vedere fonte e fotografo.
+1091|Foto con licenza aperta da Wikimedia Commons. Tocca una foto per vedere fonte e fotografo.
+1092|Cerca altrove
+1093|Hai trovato qualcosa su Instagram, Pinterest o TikTok? Copia il link e aggiungilo a La mia bacheca come link social.
+1094|Fonte
+1095|Rimosso dalla bacheca
+1096|Salvato nella tua moodboard
+1097|Nota aggiunta alla bacheca
+1098|Link aggiunto alla bacheca
+1099|{0} foto aggiunta alla bacheca
+1100|{0} foto aggiunte alla bacheca
+1101|Rimuovi dalla bacheca
+1102|Foto d'ispirazione
+1103|Mostrata in cima al planner e alla pagina del matrimonio, sopra i vostri nomi.
+1104|Foto di copertina rimossa
+1105|Foto di copertina aggiunta. Gli ospiti la vedono in cima alla pagina del matrimonio

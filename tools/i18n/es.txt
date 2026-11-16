@@ -1023,3 +1023,84 @@
 1022|Planes pasados sin marcar como hechos ({0})
 1023|Completados ({0})
 1024|No hay nada próximo por ahora.
+1025|Precio desde
+1026|Hasta (opcional)
+1027|Deja el precio vacío si las parejas deben pedir presupuesto. Añade un importe «Hasta» para mostrar un rango de precios.
+1028|Precio en cedis ghaneses, o el más bajo
+1029|Precio más alto en cedis ghaneses, para un rango
+1030|Quitar de favoritos
+1031|Guardar en favoritos
+1032|♥ Favoritos ({0})
+1033|♥ Guardado en favoritos
+1034|♡ Guardar en favoritos
+1035|♥ Favoritos
+1036|En mis proveedores
+1037|Toca el corazón de cualquier proveedor del directorio para guardarlo aquí mientras decides.
+1038|Inicia sesión para guardar favoritos en tu boda
+1039|Los favoritos son para cuentas de pareja.
+1040|Guardado en favoritos. Los encontrarás en Mis proveedores
+1041|Quitado de favoritos
+1042|Tablero de inspiración
+1043|Reúne los estilos que te encantan para las dos ceremonias: escribe notas, sube fotos, guarda publicaciones de Instagram, Pinterest o TikTok, o explora ideas de la web. Todos los que planifican contigo pueden ver este tablero y añadir ideas.
+1044|Mi tablero ({0})
+1045|Explorar ideas
+1046|Añadir a tu tablero
+1047|Foto
+1048|Nota
+1049|Enlace de redes sociales
+1050|Pie de foto (opcional)
+1051|p. ej. Me encantan estos lazos de silla
+1052|Subir fotos
+1053|Tu nota
+1054|p. ej. Esmeralda y dorado para el compromiso, blanco y dorado para la iglesia
+1055|Añadir nota
+1056|Enlace
+1057|Lo que te gusta (opcional)
+1058|Añadir enlace
+1059|Decoración
+1060|Vestuario
+1061|Peinado y maquillaje
+1062|Flores
+1063|Tarta
+1064|Decoración ({0})
+1065|Lugar ({0})
+1066|Vestuario ({0})
+1067|Peinado y maquillaje ({0})
+1068|Flores ({0})
+1069|Tarta ({0})
+1070|Otro ({0})
+1071|Tu tablero está vacío. Añade una foto, una nota o un enlace, o busca ideas en Explorar.
+1072|Buscar ideas, p. ej. decoración de mesa kente
+1073|Buscar
+1074|Decoración de boda kente
+1075|Mesas del banquete
+1076|Lugares con jardín
+1077|Salones de baile
+1078|Bodas en la playa
+1079|Vestidos de novia
+1080|Estilo del novio
+1081|Peinado de novia
+1082|Ramos
+1083|Tartas de boda
+1084|Guardar ideas en
+1085|Categoría del tablero
+1086|Buscando ideas…
+1087|No pudimos cargar ideas ahora. Revisa tu conexión o prueba los enlaces de abajo.
+1088|Guardar en el tablero
+1089|Guardado
+1090|Fotos con licencia abierta de Openverse. Toca una foto para ver su fuente y su fotógrafo.
+1091|Fotos con licencia abierta de Wikimedia Commons. Toca una foto para ver su fuente y su fotógrafo.
+1092|Buscar más
+1093|¿Encontraste algo que te encanta en Instagram, Pinterest o TikTok? Copia el enlace y añádelo a Mi tablero como enlace de redes sociales.
+1094|Fuente
+1095|Quitado de tu tablero
+1096|Guardado en tu tablero de inspiración
+1097|Nota añadida a tu tablero
+1098|Enlace añadido a tu tablero
+1099|{0} foto añadida a tu tablero
+1100|{0} fotos añadidas a tu tablero
+1101|Quitar del tablero
+1102|Foto de inspiración
+1103|Se muestra arriba en tu planificador y en tu página de boda, sobre vuestros nombres.
+1104|Foto de portada eliminada
+1105|Foto de portada añadida. Los invitados la ven arriba en tu página de boda
